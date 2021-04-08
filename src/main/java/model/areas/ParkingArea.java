@@ -3,15 +3,12 @@ package model.areas;
 import model.Coords;
 import model.Size;
 
-/**
- *
- */
-public class ShelvingArea implements Area {
+public class ParkingArea implements Area {
 
     private Coords upperLeft;
     private Coords lowerRight;
     private Size size;
-    private final AreaType type = AreaType.SHELVING;
+    private final AreaType type = AreaType.PARKING;
 
     @Override
     public AreaType getType() {
@@ -30,23 +27,20 @@ public class ShelvingArea implements Area {
 
     @Override
     public Size getSize() {
-        calcSize();
         return size;
     }
 
     @Override
     public void setUpperLeft(Coords c) {
         this.upperLeft = c;
-        calcSize();
     }
 
     @Override
     public void setLowerRight(Coords c) {
         this.lowerRight = c;
-        calcSize();
     }
 
     private void calcSize(){
-        this.size = new Size(lowerRight.getX() - upperLeft.getX(), lowerRight.getY() - upperLeft.getY());
+        this.size = new Size(lowerRight.getRow() - upperLeft.getRow(), lowerRight.getColumn() - upperLeft.getColumn());
     }
 }

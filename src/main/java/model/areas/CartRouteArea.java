@@ -52,6 +52,6 @@ public class CartRouteArea implements Area {
     }
 
     private void calcSize(){
-        this.size = new Size(lowerRight.getX() - upperLeft.getX(), lowerRight.getY() - upperLeft.getY());
+        this.size = new Size(lowerRight.getRow() - upperLeft.getRow(), lowerRight.getColumn() - upperLeft.getColumn());
     }
 }
