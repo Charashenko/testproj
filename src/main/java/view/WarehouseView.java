@@ -1,5 +1,8 @@
 package view;
 
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import model.Coords;
 import model.Size;
@@ -16,6 +19,12 @@ public class WarehouseView {
         guiWarehouse.setGridLinesVisible(false);
         guiWarehouse.setHgap(2);
         guiWarehouse.setVgap(2);
+        guiWarehouse.setAlignment(Pos.CENTER);
+        for (int i = 0; i < sizeOfWarehouse.getColumnCount(); i++) {
+            ColumnConstraints cc = new ColumnConstraints();
+            cc.setHalignment(HPos.CENTER);
+            guiWarehouse.getColumnConstraints().add(cc);
+        }
         warehouse = new Warehouse(sizeOfWarehouse);
         Coords start = new Coords(0, 0);
         Coords end = new Coords(sizeOfWarehouse.getRowCount()-1, 1);

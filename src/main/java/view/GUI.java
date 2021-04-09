@@ -1,10 +1,13 @@
 package view;
 
-import controller.Controller;
+import controller.OnExitApp;
+import controller.OnImportOrderFile;
+import controller.OnShowAppAbout;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -21,6 +24,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.*;
@@ -38,7 +42,7 @@ import java.util.List;
 public class GUI extends Application {
 
     private static int clock = 1000;
-    private static Text informationText = new Text();
+    private static final Text informationText = new Text();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -70,10 +74,12 @@ public class GUI extends Application {
         MenuBar menuBar = new MenuBar();
         Menu fileMenu = new Menu("File");
         MenuItem importOrderItem = new MenuItem("Import order file");
-        importOrderItem.setOnAction(Controller::importOrderFile);
+        importOrderItem.setOnAction(actionEvent -> new OnImportOrderFile().handle(actionEvent));
+        MenuItem showAppAboutItem = new MenuItem("About");
+        showAppAboutItem.setOnAction(actionEvent -> new OnShowAppAbout().handle(actionEvent));
         MenuItem exitItem = new MenuItem("Exit");
-        exitItem.setOnAction(Controller::exitApp);
-        fileMenu.getItems().addAll(importOrderItem, exitItem);
+        exitItem.setOnAction(actionEvent -> new OnExitApp().handle(actionEvent));
+        fileMenu.getItems().addAll(importOrderItem, showAppAboutItem, exitItem);
         menuBar.getMenus().addAll(fileMenu);
 
         GridPane gridPane = new GridPane();
@@ -89,25 +95,26 @@ public class GUI extends Application {
         tabPane.getTabs().addAll(warehouseTab, ordersTab);
         tabPane.setPrefHeight(1080);
 
-        StackPane informationTextPane = new StackPane();
-        informationTextPane.setAlignment(Pos.TOP_LEFT);
-
-        informationText.setTextOrigin(VPos.TOP);
+        Pane informationTextPane = new Pane();
         informationTextPane.getChildren().add(informationText);
+        informationTextPane.setStyle(borderStyle);
 
         HBox hboxButtons = new HBox();
-        Button show = new Button("Show");
-        Button hide = new Button("Hide");
+        Button show = new Button("Run");
+        Button hide = new Button("Stop");
         hboxButtons.getChildren().addAll(show, hide);
 
         gridPane.add(tabPane, 0, 0, 1, 2);
         gridPane.add(informationText, 1, 0, 1, 1);
         gridPane.add(hboxButtons, 1, 1, 1, 1);
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setStyle(borderStyle);
 
         ColumnConstraints column1 = new ColumnConstraints();
         column1.setPercentWidth(75);
         ColumnConstraints column2 = new ColumnConstraints();
         column2.setPercentWidth(25);
+        column2.setHalignment(HPos.CENTER);
         gridPane.getColumnConstraints().addAll(column1, column2);
         RowConstraints row1 = new RowConstraints();
         row1.setPercentHeight(90);
@@ -119,6 +126,8 @@ public class GUI extends Application {
         gridPane.setHgap(5);
         gridPane.setVgap(5);
 
+        hboxButtons.setAlignment(Pos.BOTTOM_RIGHT);
+
         SimpleDateFormat formatter= new SimpleDateFormat("HH:mm:ss");
         Date date = new Date(System.currentTimeMillis());
 
@@ -126,6 +135,7 @@ public class GUI extends Application {
         Label hboxClockLabel = new Label(formatter.format(date));
         ProgressIndicator pi = new ProgressIndicator(-1);
         pi.setPrefWidth(20);
+        pi.setVisible(false);
         show.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> pi.setVisible(true));
         hide.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> pi.setVisible(false));
         hboxClock.getChildren().addAll(hboxClockLabel, pi);
@@ -134,7 +144,7 @@ public class GUI extends Application {
         hboxClock.setPrefWidth(1080);
 
         Timeline timeline = new Timeline(new KeyFrame(
-                Duration.millis(clock), ae -> updateClock(hboxClockLabel)));
+                Duration.millis(clock), ae -> {if(pi.isVisible()) systemUpdate(hboxClockLabel);}));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
@@ -155,15 +165,20 @@ public class GUI extends Application {
                     svpane.getChildren().add(sv.getGuiShelf());
                     svpane.setStyle("-fx-border-style: solid outside;" +
                             "-fx-border-width: 2;");
-                    sv.getShelfContents().add(new Goods(GoodsType.KLADIVO, 20, 1.5));
+                    sv.getShelfContents().add(new Goods(GoodsType.KLADIVO, i, j));
                     warehouseView.getGuiWarehouse().add(svpane, j, i);
                 } else {
-                    Rectangle r = new Rectangle(60, 60, Color.BISQUE);
-                    warehouseView.getGuiWarehouse().add(r, j, i);
+                    Rectangle rectangle = new Rectangle(60,60, Color.WHITESMOKE);
+                    warehouseView.getGuiWarehouse().add(rectangle, j, i);
                 }
             }
         }
-        warehouseView.getGuiWarehouse().add(new Rectangle(60,60, Color.CRIMSON), 9, 0);
+        Pane cvpane = new Pane();
+        cvpane.setStyle("-fx-border-style: solid outside;" +
+                "-fx-border-width: 2;");
+        CartView cartView = new CartView(new Coords(0, 9), informationText);
+        warehouseView.getGuiWarehouse().add(cartView.getGuiCart(),
+                cartView.getCart().getPosition().getColumn(), cartView.getCart().getPosition().getRow());
         warehouseView.getGuiWarehouse().autosize();
         return zoomablePane;
     }
@@ -181,7 +196,7 @@ public class GUI extends Application {
         return null;
     }
 
-    public static void updateClock(Label cl){
+    public static void systemUpdate(Label cl){
         SimpleDateFormat formatter= new SimpleDateFormat("HH:mm:ss");
         Date date = new Date(System.currentTimeMillis());
         cl.setText(formatter.format(date));

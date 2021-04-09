@@ -1,6 +1,6 @@
 package view;
 
-import controller.Controller;
+import controller.OnShelfInteraction;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -19,7 +19,7 @@ public class ShelfView {
 
     public ShelfView(Coords c, Text informationText) {
         this.guiShelf = new Rectangle(60, 60, Color.DODGERBLUE);
-        this.guiShelf.addEventHandler(MouseEvent.ANY, mouseEvent -> Controller.showShelfContents(mouseEvent, this));
+        this.guiShelf.addEventHandler(MouseEvent.ANY, mouseEvent -> new OnShelfInteraction().handle(mouseEvent, this));
         this.shelf = new Shelf(c);
         this.informationText = informationText;
     }
