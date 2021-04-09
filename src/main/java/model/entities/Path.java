@@ -5,15 +5,9 @@ import model.Direction;
 
 public class Path implements Entity {
 
-    private final EntityType type = EntityType.SHELF;
     private Coords position;
     private Direction[] connectedPaths = new Direction[4];
     private Blockage blockage;
-
-    @Override
-    public EntityType getEntityType() {
-        return type;
-    }
 
     @Override
     public Coords getPosition() {

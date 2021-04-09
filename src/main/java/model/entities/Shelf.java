@@ -8,17 +8,11 @@ import java.util.List;
 
 public class Shelf implements Entity {
 
-    private final EntityType type = EntityType.SHELF;
     private Coords position;
     private List<Goods> goods = new ArrayList<>();
 
     public Shelf(Coords position) {
         this.position = position;
-    }
-
-    @Override
-    public EntityType getEntityType() {
-        return type;
     }
 
     @Override
