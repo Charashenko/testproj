@@ -1,7 +1,5 @@
 package model;
 
-import model.areas.Area;
-
 public class Warehouse {
 
     private final Area[][] warehouse;
@@ -15,8 +13,8 @@ public class Warehouse {
     public void addArea(Area a){
         Coords c1 = a.getUpperLeft();
         Coords c2 = a.getLowerRight();
-        for (int row = 0; row < (c2.getRow() - c1.getRow())+1; row++) {
-            for (int col = 0; col < (c2.getColumn() - c1.getColumn())+1; col++) {
+        for (int row = c1.getRow(); row <= (c2.getRow() - c1.getRow()); row++) {
+            for (int col = c1.getColumn(); col <= (c2.getColumn() - c1.getColumn()); col++) {
                 warehouse[row][col] = a;
             }
         }

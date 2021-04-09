@@ -1,8 +1,6 @@
-package model.entities.physical;
+package model.entities;
 
 import model.Coords;
-import model.entities.Entity;
-import model.entities.EntityType;
 
 public class Blockage implements Entity {
 

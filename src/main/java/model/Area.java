@@ -1,7 +1,6 @@
-package model.areas;
+package model;
 
-import model.Coords;
-import model.Size;
+import model.areas.AreaType;
 
 public interface Area {
 

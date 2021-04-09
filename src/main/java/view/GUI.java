@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -32,7 +33,7 @@ import java.util.List;
 
 /**
  * @author Stefan Olenocin
- * @author Victor Shapo
+ * @author Victor Shapochkin
  */
 public class GUI extends Application {
 
@@ -96,8 +97,8 @@ public class GUI extends Application {
 
         HBox hboxButtons = new HBox();
         Button show = new Button("Show");
-        Button delete = new Button("Delete");
-        hboxButtons.getChildren().addAll(show, delete);
+        Button hide = new Button("Hide");
+        hboxButtons.getChildren().addAll(show, hide);
 
         gridPane.add(tabPane, 0, 0, 1, 2);
         gridPane.add(informationText, 1, 0, 1, 1);
@@ -125,6 +126,8 @@ public class GUI extends Application {
         Label hboxClockLabel = new Label(formatter.format(date));
         ProgressIndicator pi = new ProgressIndicator(-1);
         pi.setPrefWidth(20);
+        show.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> pi.setVisible(true));
+        hide.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> pi.setVisible(false));
         hboxClock.getChildren().addAll(hboxClockLabel, pi);
         hboxClock.setAlignment(Pos.CENTER_LEFT);
         hboxClock.setPrefHeight(10);

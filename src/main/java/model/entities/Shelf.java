@@ -1,9 +1,7 @@
-package model.entities.physical;
+package model.entities;
 
 import model.Coords;
 import model.Goods;
-import model.entities.Entity;
-import model.entities.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;

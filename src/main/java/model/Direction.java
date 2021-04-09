@@ -1,4 +1,4 @@
-package model.entities.path_related;
+package model;
 
 public enum Direction {
 

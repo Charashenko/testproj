@@ -1,5 +1,6 @@
 package model.areas;
 
+import model.Area;
 import model.Coords;
 import model.Size;
 

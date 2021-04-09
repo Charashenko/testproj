@@ -1,9 +1,7 @@
-package model.entities.physical;
+package model.entities;
 
 import model.Coords;
-import model.entities.Entity;
-import model.entities.EntityType;
-import model.entities.path_related.CartRoute;
+import model.CartRoute;
 
 public class Cart implements Entity {
 

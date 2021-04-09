@@ -46,7 +46,7 @@ public class Coords {
      * Sets COLUMN coordinate of Coords.
      * @param column Integer to be set as COLUMN coordinate.
      */
-    public void setY(int column) {
+    public void setColumn(int column) {
         this.column = column;
     }
 }

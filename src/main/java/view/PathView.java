@@ -1,7 +1,7 @@
 package view;
 
 import javafx.scene.shape.Rectangle;
-import model.entities.physical.Path;
+import model.entities.Path;
 
 public class PathView {
 
