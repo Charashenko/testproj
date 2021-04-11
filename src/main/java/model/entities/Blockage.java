@@ -2,7 +2,7 @@ package model.entities;
 
 import model.Coords;
 
-public class Blockage implements Entity {
+public class Blockage {
 
     private Coords position;
 
@@ -10,12 +10,10 @@ public class Blockage implements Entity {
         this.position = position;
     }
 
-    @Override
     public Coords getPosition() {
         return position;
     }
 
-    @Override
     public void setPosition(Coords position) {
         this.position = position;
     }

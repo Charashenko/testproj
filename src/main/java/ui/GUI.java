@@ -1,4 +1,4 @@
-package view;
+package ui;
 
 import controller.OnExitApp;
 import controller.OnImportOrderFile;
@@ -14,22 +14,21 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import model.*;
+import model.Coords;
+import model.Goods;
+import model.GoodsType;
+import model.Size;
 import model.areas.ShelvingArea;
-import view.utils.ZoomableScrollPane;
+import view.CartView;
+import view.ShelfView;
+import view.WarehouseView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -68,9 +67,7 @@ public class GUI extends Application {
                 "-fx-border-style: solid inside;" +
                 "-fx-border-width: 2;" +
                 "-fx-border-insets: 2;" +
-                "-fx-border-radius: 5;" +
                 "-fx-border-color: black;";
-
         MenuBar menuBar = new MenuBar();
         Menu fileMenu = new Menu("File");
         MenuItem importOrderItem = new MenuItem("Import order file");
@@ -108,7 +105,6 @@ public class GUI extends Application {
         gridPane.add(informationText, 1, 0, 1, 1);
         gridPane.add(hboxButtons, 1, 1, 1, 1);
         gridPane.setAlignment(Pos.CENTER);
-        gridPane.setStyle(borderStyle);
 
         ColumnConstraints column1 = new ColumnConstraints();
         column1.setPercentWidth(75);
@@ -126,7 +122,8 @@ public class GUI extends Application {
         gridPane.setHgap(5);
         gridPane.setVgap(5);
 
-        hboxButtons.setAlignment(Pos.BOTTOM_RIGHT);
+        hboxButtons.setAlignment(Pos.CENTER);
+        hboxButtons.setStyle(borderStyle);
 
         SimpleDateFormat formatter= new SimpleDateFormat("HH:mm:ss");
         Date date = new Date(System.currentTimeMillis());
@@ -142,6 +139,7 @@ public class GUI extends Application {
         hboxClock.setAlignment(Pos.CENTER_LEFT);
         hboxClock.setPrefHeight(10);
         hboxClock.setPrefWidth(1080);
+        hboxClock.setStyle(borderStyle);
 
         Timeline timeline = new Timeline(new KeyFrame(
                 Duration.millis(clock), ae -> {if(pi.isVisible()) systemUpdate(hboxClockLabel);}));

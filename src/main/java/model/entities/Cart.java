@@ -8,7 +8,7 @@ import model.GoodsType;
 import java.util.Collections;
 import java.util.List;
 
-public class Cart implements Entity {
+public class Cart {
 
     private Coords position;
     private CartRoute plannedRoute;
@@ -19,12 +19,10 @@ public class Cart implements Entity {
         setTransportedGoods(Collections.singletonList(new Goods(GoodsType.GITARA, 24, 1)));
     }
 
-    @Override
     public Coords getPosition() {
         return position;
     }
 
-    @Override
     public void setPosition(Coords position) {
         this.position = position;
     }

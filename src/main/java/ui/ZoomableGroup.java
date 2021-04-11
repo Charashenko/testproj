@@ -1,4 +1,4 @@
-package view.utils;
+package ui;
 
 import javafx.scene.Group;
 import javafx.scene.Node;

@@ -3,18 +3,16 @@ package model.entities;
 import model.Coords;
 import model.Direction;
 
-public class Path implements Entity {
+public class Path {
 
     private Coords position;
     private Direction[] connectedPaths = new Direction[4];
     private Blockage blockage;
 
-    @Override
     public Coords getPosition() {
         return position;
     }
 
-    @Override
     public void setPosition(Coords position) {
         this.position = position;
     }

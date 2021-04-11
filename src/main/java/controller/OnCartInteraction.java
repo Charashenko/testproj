@@ -4,11 +4,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import model.Goods;
-import model.GoodsType;
 import view.CartView;
 
-import javax.annotation.processing.Completion;
-import java.util.Collections;
 import java.util.HashMap;
 
 /**

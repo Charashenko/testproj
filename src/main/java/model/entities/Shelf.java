@@ -6,7 +6,7 @@ import model.Goods;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Shelf implements Entity {
+public class Shelf {
 
     private Coords position;
     private List<Goods> goods = new ArrayList<>();
@@ -15,12 +15,10 @@ public class Shelf implements Entity {
         this.position = position;
     }
 
-    @Override
     public Coords getPosition() {
         return position;
     }
 
-    @Override
     public void setPosition(Coords position) {
         this.position = position;
     }
