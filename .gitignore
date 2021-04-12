@@ -1,2 +1,4 @@
-# Project exclude paths
-/build/
+out
+dest
+.idea
+build
