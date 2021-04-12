@@ -7,7 +7,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import model.Coords;
 import model.Goods;
-import model.entities.Shelf;
+import model.Shelf;
 
 import java.util.List;
 

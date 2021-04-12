@@ -1,7 +1,4 @@
-package model.entities;
-
-import model.Coords;
-import model.Goods;
+package model;
 
 import java.util.ArrayList;
 import java.util.List;

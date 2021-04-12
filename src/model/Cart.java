@@ -1,11 +1,6 @@
-package model.entities;
+package model;
 
-import model.Coords;
-import model.CartRoute;
-import model.Goods;
-import model.GoodsType;
-
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 public class Cart {
@@ -16,7 +11,8 @@ public class Cart {
 
     public Cart(Coords position) {
         this.position = position;
-        setTransportedGoods(Collections.singletonList(new Goods(GoodsType.GITARA, 24, 1)));
+        setTransportedGoods(Arrays.asList(new Goods(GoodsType.GITARA, 24, 1), new Goods(GoodsType.GITARA, 24, 1),
+                new Goods(GoodsType.STOL, 35, 15), new Goods(GoodsType.KOBEREC, 12, 0.5)));
     }
 
     public Coords getPosition() {

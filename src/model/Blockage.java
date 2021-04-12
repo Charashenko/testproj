@@ -1,6 +1,4 @@
-package model.entities;
-
-import model.Coords;
+package model;
 
 public class Blockage {
 

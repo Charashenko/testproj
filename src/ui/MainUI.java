@@ -32,20 +32,23 @@ import view.WarehouseView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
+ * Main MainUI class
  * @author Stefan Olenocin
  * @author Victor Shapochkin
  */
-public class GUI extends Application {
+public class MainUI extends Application {
 
     private static int clock = 1000;
     private static final Text informationText = new Text();
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //Parent parent = FXMLLoader.load(getClass().getResource("Warehouse.fxml"));
         VBox root = new VBox();
         setupLayout(root);
 
@@ -57,11 +60,10 @@ public class GUI extends Application {
         primaryStage.show();
     }
 
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
+    /**
+     * Setup main UI layout
+     * @param root Root node
+     */
     public static void setupLayout(VBox root) {
         String borderStyle = "-fx-padding: 5;" +
                 "-fx-border-style: solid inside;" +
@@ -146,9 +148,14 @@ public class GUI extends Application {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        root.getChildren().addAll(menuBar, gridPane, hboxClock);
+        root.getChildren().addAll(gridPane, hboxClock);
     }
 
+    /**
+     * Setup warehouse tab in UI
+     * @param informationText Text information area
+     * @return Main node of warehouse tab
+     */
     public static Node setupWarehouseTab(Text informationText) {
         Size warehouseSize = new Size(10, 10);
         ZoomableScrollPane zoomablePane = new ZoomableScrollPane();
@@ -181,6 +188,10 @@ public class GUI extends Application {
         return zoomablePane;
     }
 
+    /**
+     * Setup orders tab in UI
+     * @return Main node of orders tab
+     */
     public static Node setupOrdersTab() {
         StackPane root = new StackPane();
         root.setAlignment(Pos.TOP_LEFT);
@@ -190,10 +201,18 @@ public class GUI extends Application {
         return root;
     }
 
-    public static List<ShelfView> initialFillUp() {
-        return null;
+    /**
+     * Initial fill up of warehouse shelves
+     * @param warehouseView Warehouse view object
+     */
+    public static void initialFillUp(WarehouseView warehouseView) {
+
     }
 
+    /**
+     * Updates system on passed time. For testing purposes updates label every second with current time
+     * @param cl Label to be updated
+     */
     public static void systemUpdate(Label cl){
         SimpleDateFormat formatter= new SimpleDateFormat("HH:mm:ss");
         Date date = new Date(System.currentTimeMillis());

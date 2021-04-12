@@ -1,7 +1,4 @@
-package model.entities;
-
-import model.Coords;
-import model.Direction;
+package model;
 
 public class Path {
 
