@@ -36,7 +36,7 @@ import java.util.Date;
 /**
  * Main MainUI class
  * @author Stefan Olenocin
- * @author Victor Shapochkin
+ * @author Viktor Shapochkin
  */
 public class MainUI extends Application {
 

@@ -1,4 +1,4 @@
-<project name="testproj">
+<project name="xshapo00">
 
     <property name="project.name" value="${ant.project.name}"/>
     <property name="main.class" value="ui.MainUI"/>
