@@ -34,9 +34,10 @@ public class TestOlenocin extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         VBox root = new VBox();
-        Label infoAboutTest = new Label("Ukazka zoomovania, posuvania, spustania a stop simulacie");
+        Label infoAboutTest = new Label("Ukazka zoomovania, posuvania, spustania a pauznutia \n" +
+                "simulacie s pevne danym casovym intervalom");
         infoAboutTest.setPadding(new Insets(3));
         ZoomableScrollPane zoomableScrollPane = new ZoomableScrollPane();
         zoomableScrollPane.setPadding(new Insets(5));

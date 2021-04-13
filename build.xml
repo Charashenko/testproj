@@ -27,6 +27,12 @@
             </manifest>
             <zipgroupfileset dir="lib" includes="**/*.jar"/>
         </jar>
+
+        <javadoc packagenames="*" sourcepath="src"
+                 destdir="doc" version="true" windowtitle="Warehouse application">
+            <excludepackage name="javafx.*"/>
+            <classpath refid="lib.classpath"/>
+        </javadoc>
     </target>
 
     <target name="run" depends="compile">
