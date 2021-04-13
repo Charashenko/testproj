@@ -1,0 +1,1 @@
+echo "JavaFx knihovna jiz stazena ve slozce lib"

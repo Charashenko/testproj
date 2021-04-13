@@ -1,0 +1,14 @@
+shelf1:
+    col: 0
+    row: 0
+    content:
+        - STOL
+        - STOLICKA
+
+shelf2:
+    col: 1
+    row: 0
+    content:
+        - KOBEREC
+        - KLADIVO
+        - STETEC

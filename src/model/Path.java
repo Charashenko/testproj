@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Object representing path for carts.
+ */
 public class Path {
 
     private Coords position;
@@ -10,10 +13,18 @@ public class Path {
         return position;
     }
 
+    /**
+     * Set's position of path.
+     * @param position Coordinates of path to be set.
+     */
     public void setPosition(Coords position) {
         this.position = position;
     }
 
+    /**
+     * Get's connected paths
+     * @return
+     */
     public Direction[] getConnectedPaths() {
         return connectedPaths;
     }
@@ -25,6 +36,7 @@ public class Path {
     public Blockage getBlockage() {
         return blockage;
     }
+
 
     public boolean isBlocked() {
         return getBlockage() != null;

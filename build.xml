@@ -1,7 +1,7 @@
-<project name="xshapo00">
+<project name="xshapo00" basedir=".">
 
     <property name="project.name" value="${ant.project.name}"/>
-    <property name="main.class" value="ui.MainUI"/>
+    <property name="main.class" value="ui.hw2.TestOlenocin"/>
 
     <path id="lib.classpath">
         <fileset dir="lib" includes="**/*.jar"/>
