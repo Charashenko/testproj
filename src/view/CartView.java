@@ -13,9 +13,10 @@ public class CartView {
     private Rectangle guiCart;
     private Cart cart;
     private Text informationText;
+    private Color cartColor = Color.valueOf("1a4d4dff");
 
     public CartView(Coords position, Text informationText) {
-        guiCart = new Rectangle(30,30, Color.FORESTGREEN);
+        guiCart = new Rectangle(30,30, cartColor);
         guiCart.addEventHandler(MouseEvent.ANY, mouseEvent -> new OnCartInteraction().handle(mouseEvent, this));
         this.informationText = informationText;
         cart = new Cart(position);
@@ -31,5 +32,13 @@ public class CartView {
 
     public Text getInformationText() {
         return informationText;
+    }
+
+    public Color getCartColor() {
+        return cartColor;
+    }
+
+    public void setCartColor(Color cartColor) {
+        this.cartColor = cartColor;
     }
 }

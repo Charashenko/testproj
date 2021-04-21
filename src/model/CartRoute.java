@@ -8,15 +8,12 @@ public class CartRoute {
     private HashMap<Integer, Direction> directions;
     private int step = 0;
 
-    public List<Direction> getPlannedPath() {
-        return (List<Direction>) directions.values();
+    public HashMap<Integer, Direction> getPlannedPath() {
+        return directions;
     }
 
-    public void setPlannedPath(List<Direction> directions) {
-        this.directions.clear();
-        for (Direction d : directions) {
-            this.directions.put(directions.listIterator().nextIndex(), d);
-        }
+    public void setPlannedPath(HashMap<Integer, Direction> directions) {
+        this.directions = directions;
     }
 
     public void removeRestOfThePath(int step){

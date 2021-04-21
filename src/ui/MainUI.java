@@ -23,10 +23,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import model.Coords;
-import model.Goods;
-import model.GoodsType;
-import model.Size;
+import model.*;
 import model.areas.ShelvingArea;
 import view.CartView;
 import view.PathView;
@@ -177,7 +174,6 @@ public class MainUI extends Application {
                         svpane.getChildren().add(sv.getGuiShelf());
                         svpane.setStyle("-fx-border-style: solid outside;" +
                                 "-fx-border-width: 2;");
-                        sv.getShelfContents().add(new Goods(GoodsType.KLADIVO, row, col));
                         warehouseView.getGuiWarehouse().add(svpane, col, row);
                         break;
                     case PATH:
@@ -213,7 +209,7 @@ public class MainUI extends Application {
         root.setAlignment(Pos.TOP_LEFT);
         Button b = new Button("Orders");
         b.setPadding(new Insets(2, 10, 2, 10));
-        root.getChildren().add(b);
+        root.getChildren().addAll(b);
         return root;
     }
 

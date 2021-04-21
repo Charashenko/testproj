@@ -1,8 +1,11 @@
 package controller;
 
+import javafx.scene.Scene;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import model.Goods;
 import view.CartView;
 
@@ -42,7 +45,7 @@ public class OnCartInteraction {
             r.setFill(Color.GOLDENROD);
             cv.getInformationText().setText(output);
         } else if (event.getEventType().equals(MouseEvent.MOUSE_EXITED)) {
-            r.setFill(Color.FORESTGREEN);
+            r.setFill(cv.getCartColor());
             cv.getInformationText().setText("");
         }
     }

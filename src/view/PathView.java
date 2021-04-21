@@ -11,9 +11,11 @@ public class PathView {
 
     private Rectangle guiPath;
     private Path path;
+    private Color pathColor = Color.LIGHTGRAY;
+    private Color blockedPathColor = Color.INDIANRED;
 
     public PathView(Coords position) {
-        this.guiPath = new Rectangle(60,60, Color.TAN);
+        this.guiPath = new Rectangle(60,60, pathColor);
         this.guiPath.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> new OnPathClick().handle(event, this));
         this.path = new Path(position);
     }
@@ -28,9 +30,25 @@ public class PathView {
 
     public void updatePathColor(){
         if(getPath().isBlocked()){
-            getGuiPath().setFill(Color.INDIANRED);
+            getGuiPath().setFill(blockedPathColor);
         } else {
-            getGuiPath().setFill(Color.TAN);
+            getGuiPath().setFill(pathColor);
         }
+    }
+
+    public Color getPathColor() {
+        return pathColor;
+    }
+
+    public void setPathColor(Color pathColor) {
+        this.pathColor = pathColor;
+    }
+
+    public Color getBlockedPathColor() {
+        return blockedPathColor;
+    }
+
+    public void setBlockedPathColor(Color blockedPathColor) {
+        this.blockedPathColor = blockedPathColor;
     }
 }
