@@ -42,7 +42,7 @@ public class OnCartInteraction {
             r.setFill(Color.GOLDENROD);
             cv.getInformationText().setText(output);
         } else if (event.getEventType().equals(MouseEvent.MOUSE_EXITED)) {
-            r.setFill(Color.CRIMSON);
+            r.setFill(Color.FORESTGREEN);
             cv.getInformationText().setText("");
         }
     }

@@ -15,7 +15,7 @@ public class CartView {
     private Text informationText;
 
     public CartView(Coords position, Text informationText) {
-        guiCart = new Rectangle(30,30, Color.CRIMSON);
+        guiCart = new Rectangle(30,30, Color.FORESTGREEN);
         guiCart.addEventHandler(MouseEvent.ANY, mouseEvent -> new OnCartInteraction().handle(mouseEvent, this));
         this.informationText = informationText;
         cart = new Cart(position);

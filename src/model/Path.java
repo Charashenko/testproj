@@ -7,7 +7,7 @@ public class Path {
 
     private Coords position;
     private Direction[] connectedPaths = new Direction[4];
-    private Blockage blockage;
+    private boolean blocked = false;
 
     public Path(Coords position) {
         this.position = position;
@@ -37,16 +37,11 @@ public class Path {
         this.connectedPaths = connectedPaths;
     }
 
-    public Blockage getBlockage() {
-        return blockage;
-    }
-
-
     public boolean isBlocked() {
-        return getBlockage() != null;
+        return blocked;
     }
 
-    public void setBlockage(Blockage blockage) {
-        this.blockage = blockage;
+    public void setBlockage(boolean toBeBlocked) {
+        this.blocked = toBeBlocked;
     }
 }

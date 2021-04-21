@@ -181,12 +181,8 @@ public class MainUI extends Application {
                         warehouseView.getGuiWarehouse().add(svpane, col, row);
                         break;
                     case PATH:
-                        Pane pvpane = new Pane();
                         PathView pv = new PathView(new Coords(row, col));
-                        pvpane.getChildren().add(pv.getGuiPath());
-                        pvpane.setStyle("-fx-border-style: solid outside;" +
-                                "-fx-border-width: 2;");
-                        warehouseView.getGuiWarehouse().add(pvpane, col, row);
+                        warehouseView.getGuiWarehouse().add(pv.getGuiPath(), col, row);
                         break;
                     case PARKING:
                         break;
