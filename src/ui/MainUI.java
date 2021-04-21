@@ -1,5 +1,6 @@
 package ui;
 
+import controller.OnConfigureButtonClick;
 import controller.OnExitApp;
 import controller.OnImportOrderFile;
 import controller.OnShowAppAbout;
@@ -99,9 +100,10 @@ public class MainUI extends Application {
         informationTextPane.setStyle(borderStyle);
 
         HBox hboxButtons = new HBox();
-        Button show = new Button("Run");
-        Button hide = new Button("Stop");
-        hboxButtons.getChildren().addAll(show, hide);
+        Button run = new Button("Run");
+        Button stop = new Button("Stop");
+        Button configure = new Button("Configure");
+        hboxButtons.getChildren().addAll(run, configure, stop);
 
         gridPane.add(tabPane, 0, 0, 1, 2);
         gridPane.add(informationText, 1, 0, 1, 1);
@@ -135,8 +137,9 @@ public class MainUI extends Application {
         ProgressIndicator pi = new ProgressIndicator(-1);
         pi.setPrefWidth(20);
         pi.setVisible(false);
-        show.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> pi.setVisible(true));
-        hide.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> pi.setVisible(false));
+        run.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> pi.setVisible(true));
+        stop.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> pi.setVisible(false));
+        configure.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> new OnConfigureButtonClick().handle(mouseEvent));
         hboxClock.getChildren().addAll(hboxClockLabel, pi);
         hboxClock.setAlignment(Pos.CENTER_LEFT);
         hboxClock.setPrefHeight(10);
@@ -162,19 +165,21 @@ public class MainUI extends Application {
         WarehouseView warehouseView = new WarehouseView(warehouseSize);
         zoomablePane.addContent(warehouseView.getGuiWarehouse());
 
-        for (int i = 0; i < warehouseSize.getRowCount(); i++) {
-            for (int j = 0; j < warehouseSize.getColumnCount(); j++) {
-                if (warehouseView.getWarehouse().getWarehouseLayout()[i][j] instanceof ShelvingArea) {
+        for (int row = 0; row < warehouseSize.getRowCount(); row++) {
+            for (int col = 0; col < warehouseSize.getColumnCount(); col++) {
+                System.out.println(row + " " + col);
+                System.out.println(warehouseView.getWarehouse().getWarehouseLayout()[row][col]);
+                if (warehouseView.getWarehouse().getWarehouseLayout()[row][col] instanceof ShelvingArea) {
                     Pane svpane = new Pane();
-                    ShelfView sv = new ShelfView(new Coords(i, j), informationText);
+                    ShelfView sv = new ShelfView(new Coords(row, col), informationText);
                     svpane.getChildren().add(sv.getGuiShelf());
                     svpane.setStyle("-fx-border-style: solid outside;" +
                             "-fx-border-width: 2;");
-                    sv.getShelfContents().add(new Goods(GoodsType.KLADIVO, i, j));
-                    warehouseView.getGuiWarehouse().add(svpane, j, i);
+                    sv.getShelfContents().add(new Goods(GoodsType.KLADIVO, row, col));
+                    warehouseView.getGuiWarehouse().add(svpane, col, row);
                 } else {
                     Rectangle rectangle = new Rectangle(60,60, Color.WHITESMOKE);
-                    warehouseView.getGuiWarehouse().add(rectangle, j, i);
+                    warehouseView.getGuiWarehouse().add(rectangle, col, row);
                 }
             }
         }

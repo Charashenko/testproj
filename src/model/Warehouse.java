@@ -13,9 +13,10 @@ public class Warehouse {
     public void addArea(Area a){
         Coords c1 = a.getUpperLeft();
         Coords c2 = a.getLowerRight();
-        for (int row = c1.getRow(); row <= (c2.getRow() - c1.getRow()); row++) {
-            for (int col = c1.getColumn(); col <= (c2.getColumn() - c1.getColumn()); col++) {
+        for (int row = c1.getRow(); row <= c2.getRow(); row++) {
+            for (int col = c1.getColumn(); col <= c2.getColumn(); col++) {
                 warehouse[row][col] = a;
+                System.out.println("added at "+ row + " " + col);
             }
         }
     }

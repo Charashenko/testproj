@@ -7,6 +7,7 @@ import javafx.scene.layout.GridPane;
 import model.Coords;
 import model.Size;
 import model.Warehouse;
+import model.areas.CartRouteArea;
 import model.areas.ShelvingArea;
 
 public class WarehouseView {
@@ -15,6 +16,7 @@ public class WarehouseView {
     private Warehouse warehouse;
 
     public WarehouseView(Size sizeOfWarehouse) {
+        // set grid style
         guiWarehouse = new GridPane();
         guiWarehouse.setGridLinesVisible(false);
         guiWarehouse.setHgap(2);
@@ -25,14 +27,19 @@ public class WarehouseView {
             cc.setHalignment(HPos.CENTER);
             guiWarehouse.getColumnConstraints().add(cc);
         }
+
         warehouse = new Warehouse(sizeOfWarehouse);
         Coords start = new Coords(0, 0);
-        Coords end = new Coords(sizeOfWarehouse.getRowCount()-1, 1);
-        warehouse.addArea(new ShelvingArea(start, end));
+        Coords end = new Coords(sizeOfWarehouse.getRowCount()-1, sizeOfWarehouse.getColumnCount()-1);
+        getWarehouse().addArea(new CartRouteArea(start, end));
 
-        Coords start1 = new Coords(0, 4);
-        Coords end1 = new Coords(sizeOfWarehouse.getRowCount()-1, 5);
-        warehouse.addArea(new ShelvingArea(start1, end1));
+        start = new Coords(0, 0);
+        end = new Coords(sizeOfWarehouse.getRowCount()-1, 1);
+        getWarehouse().addArea(new ShelvingArea(start, end));
+
+        start = new Coords(0, 4);
+        end = new Coords(sizeOfWarehouse.getRowCount()-1, 5);
+        getWarehouse().addArea(new ShelvingArea(start, end));
 
     }
 
