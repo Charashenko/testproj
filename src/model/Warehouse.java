@@ -16,7 +16,6 @@ public class Warehouse {
         for (int row = c1.getRow(); row <= c2.getRow(); row++) {
             for (int col = c1.getColumn(); col <= c2.getColumn(); col++) {
                 warehouse[row][col] = a;
-                System.out.println("added at "+ row + " " + col);
             }
         }
     }

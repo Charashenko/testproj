@@ -9,6 +9,10 @@ public class Path {
     private Direction[] connectedPaths = new Direction[4];
     private Blockage blockage;
 
+    public Path(Coords position) {
+        this.position = position;
+    }
+
     public Coords getPosition() {
         return position;
     }

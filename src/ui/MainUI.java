@@ -8,6 +8,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -28,6 +29,7 @@ import model.GoodsType;
 import model.Size;
 import model.areas.ShelvingArea;
 import view.CartView;
+import view.PathView;
 import view.ShelfView;
 import view.WarehouseView;
 
@@ -58,6 +60,7 @@ public class MainUI extends Application {
         primaryStage.setScene(scene);
         primaryStage.minWidthProperty().setValue(800);
         primaryStage.minHeightProperty().setValue(600);
+        primaryStage.setOnCloseRequest(windowEvent -> Platform.exit());
         primaryStage.show();
     }
 
@@ -167,19 +170,31 @@ public class MainUI extends Application {
 
         for (int row = 0; row < warehouseSize.getRowCount(); row++) {
             for (int col = 0; col < warehouseSize.getColumnCount(); col++) {
-                System.out.println(row + " " + col);
-                System.out.println(warehouseView.getWarehouse().getWarehouseLayout()[row][col]);
-                if (warehouseView.getWarehouse().getWarehouseLayout()[row][col] instanceof ShelvingArea) {
-                    Pane svpane = new Pane();
-                    ShelfView sv = new ShelfView(new Coords(row, col), informationText);
-                    svpane.getChildren().add(sv.getGuiShelf());
-                    svpane.setStyle("-fx-border-style: solid outside;" +
-                            "-fx-border-width: 2;");
-                    sv.getShelfContents().add(new Goods(GoodsType.KLADIVO, row, col));
-                    warehouseView.getGuiWarehouse().add(svpane, col, row);
-                } else {
-                    Rectangle rectangle = new Rectangle(60,60, Color.WHITESMOKE);
-                    warehouseView.getGuiWarehouse().add(rectangle, col, row);
+                switch (warehouseView.getWarehouse().getWarehouseLayout()[row][col].getType()){
+                    case SHELVING:
+                        Pane svpane = new Pane();
+                        ShelfView sv = new ShelfView(new Coords(row, col), informationText);
+                        svpane.getChildren().add(sv.getGuiShelf());
+                        svpane.setStyle("-fx-border-style: solid outside;" +
+                                "-fx-border-width: 2;");
+                        sv.getShelfContents().add(new Goods(GoodsType.KLADIVO, row, col));
+                        warehouseView.getGuiWarehouse().add(svpane, col, row);
+                        break;
+                    case PATH:
+                        Pane pvpane = new Pane();
+                        PathView pv = new PathView(new Coords(row, col));
+                        pvpane.getChildren().add(pv.getGuiPath());
+                        pvpane.setStyle("-fx-border-style: solid outside;" +
+                                "-fx-border-width: 2;");
+                        warehouseView.getGuiWarehouse().add(pvpane, col, row);
+                        break;
+                    case PARKING:
+                        break;
+                    case UNLOADING:
+                        break;
+                    default:
+                        Rectangle rectangle = new Rectangle(60,60, Color.WHITESMOKE);
+                        warehouseView.getGuiWarehouse().add(rectangle, col, row);
                 }
             }
         }
