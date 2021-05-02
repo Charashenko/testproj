@@ -12,3 +12,24 @@ shelf2:
         - KOBEREC
         - KLADIVO
         - STETEC
+
+unit:
+    col: 1
+    row: 2
+    type: cartroute/parking/shelving/unloading
+
+order:
+    id: 23
+    content:
+        item1:
+            type: stol
+            count: 3
+            weight: 23
+        item2:
+            type: stolicka
+            count: 2
+            weight: 23
+        item3:
+            type: LOPTA
+            count: 6
+            weight: 23

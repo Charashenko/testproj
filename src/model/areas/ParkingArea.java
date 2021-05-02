@@ -11,6 +11,11 @@ public class ParkingArea implements Area {
     private Size size;
     private final AreaType type = AreaType.PARKING;
 
+    public ParkingArea(Coords upperLeft, Coords lowerRight) {
+        this.upperLeft = upperLeft;
+        this.lowerRight = lowerRight;
+    }
+
     @Override
     public AreaType getType() {
         return type;

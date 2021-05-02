@@ -8,6 +8,7 @@ import model.Coords;
 import model.Size;
 import model.Warehouse;
 import model.areas.CartRouteArea;
+import model.areas.ParkingArea;
 import model.areas.ShelvingArea;
 
 public class WarehouseView {
@@ -21,25 +22,29 @@ public class WarehouseView {
         guiWarehouse.setGridLinesVisible(false);
         guiWarehouse.setHgap(2);
         guiWarehouse.setVgap(2);
-        guiWarehouse.setAlignment(Pos.CENTER);
+        //guiWarehouse.setAlignment(Pos.CENTER);
         for (int i = 0; i < sizeOfWarehouse.getColumnCount(); i++) {
             ColumnConstraints cc = new ColumnConstraints();
             cc.setHalignment(HPos.CENTER);
             guiWarehouse.getColumnConstraints().add(cc);
         }
 
-        warehouse = new Warehouse(sizeOfWarehouse);
-        Coords start = new Coords(0, 0);
+        warehouse = new Warehouse(sizeOfWarehouse); //default
+        Coords start = new Coords(0, 1);
         Coords end = new Coords(sizeOfWarehouse.getRowCount()-1, sizeOfWarehouse.getColumnCount()-1);
         getWarehouse().addArea(new CartRouteArea(start, end));
 
-        start = new Coords(0, 0);
-        end = new Coords(sizeOfWarehouse.getRowCount()-1, 1);
+        start = new Coords(0, 1);
+        end = new Coords(sizeOfWarehouse.getRowCount()-1, 2);
         getWarehouse().addArea(new ShelvingArea(start, end));
 
-        start = new Coords(0, 3);
-        end = new Coords(sizeOfWarehouse.getRowCount()-4, 5);
+        start = new Coords(0, 5);
+        end = new Coords(sizeOfWarehouse.getRowCount()-4, 7);
         getWarehouse().addArea(new ShelvingArea(start, end));
+
+        start = new Coords(0, 9);
+        end = new Coords(0, 9);
+        getWarehouse().addArea(new ParkingArea(start, end));
 
     }
 

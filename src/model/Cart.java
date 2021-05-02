@@ -11,8 +11,6 @@ public class Cart {
 
     public Cart(Coords position) {
         this.position = position;
-        setTransportedGoods(Arrays.asList(new Goods(GoodsType.GITARA, 24, 1), new Goods(GoodsType.GITARA, 24, 1),
-                new Goods(GoodsType.STOL, 35, 15), new Goods(GoodsType.KOBEREC, 12, 0.5)));
     }
 
     public Coords getPosition() {
@@ -37,5 +35,9 @@ public class Cart {
 
     public void setTransportedGoods(List<Goods> transportedGoods) {
         this.transportedGoods = transportedGoods;
+    }
+
+    public void addTransportedGoods(Goods goods){
+        this.transportedGoods.add(goods);
     }
 }

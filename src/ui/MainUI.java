@@ -86,7 +86,7 @@ public class MainUI extends Application {
         fileMenu.getItems().addAll(importOrderItem, showAppAboutItem, exitItem);
         menuBar.getMenus().addAll(fileMenu);
 
-        GridPane gridPane = new GridPane();
+        HBox mainSection = new HBox();
         TabPane tabPane = new TabPane();
         Tab warehouseTab = new Tab("Warehouse");
         warehouseTab.setContent(setupWarehouseTab(informationText));
@@ -97,7 +97,6 @@ public class MainUI extends Application {
         ordersTab.setClosable(false);
         ordersTab.getContent().setStyle(borderStyle);
         tabPane.getTabs().addAll(warehouseTab, ordersTab);
-        tabPane.setPrefHeight(1080);
 
         VBox informationPanel = new VBox();
         informationPanel.setAlignment(Pos.TOP_CENTER);
@@ -129,19 +128,10 @@ public class MainUI extends Application {
         informationText.setFont(new Font("", 18));
         informationText.setTextAlignment(TextAlignment.CENTER);
         informationPanel.getChildren().addAll(clockBox, buttonBox, informationText);
+        informationPanel.setMinWidth(350);
 
-        gridPane.add(tabPane, 0, 0);
-        gridPane.add(informationPanel, 1, 0);
-        gridPane.setAlignment(Pos.CENTER);
-
-        ColumnConstraints column1 = new ColumnConstraints();
-        column1.setPercentWidth(80);
-        ColumnConstraints column2 = new ColumnConstraints();
-        column2.setPercentWidth(20);
-        column2.setHalignment(HPos.CENTER);
-        gridPane.getColumnConstraints().addAll(column1, column2);
-        gridPane.setGridLinesVisible(false);
-        gridPane.setHgap(5);
+        mainSection.getChildren().add(tabPane);
+        mainSection.getChildren().add(informationPanel);
 
         Timeline timeline = new Timeline(new KeyFrame(
                 Duration.millis(clock), ae -> {
@@ -150,7 +140,7 @@ public class MainUI extends Application {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        root.getChildren().addAll(menuBar, gridPane);
+        root.getChildren().addAll(menuBar, mainSection);
     }
 
     /**
@@ -160,39 +150,45 @@ public class MainUI extends Application {
      * @return Main node of warehouse tab
      */
     public static Node setupWarehouseTab(Text informationText) {
-        Size warehouseSize = new Size(10, 10);
+        Size warehouseSize = new Size(20, 20); //default
         ZoomableScrollPane zoomablePane = new ZoomableScrollPane();
         WarehouseView warehouseView = new WarehouseView(warehouseSize);
         zoomablePane.addContent(warehouseView.getGuiWarehouse());
 
         for (int row = 0; row < warehouseSize.getRowCount(); row++) {
             for (int col = 0; col < warehouseSize.getColumnCount(); col++) {
-                switch (warehouseView.getWarehouse().getWarehouseLayout()[row][col].getType()) {
-                    case SHELVING:
-                        Pane svpane = new Pane();
-                        ShelfView sv = new ShelfView(new Coords(row, col), informationText);
-                        svpane.getChildren().add(sv.getGuiShelf());
-                        svpane.setStyle("-fx-border-style: solid outside;" +
-                                "-fx-border-width: 2;");
-                        warehouseView.getGuiWarehouse().add(svpane, col, row);
-                        break;
-                    case PATH:
-                        PathView pv = new PathView(new Coords(row, col), informationText);
-                        warehouseView.getGuiWarehouse().add(pv.getGuiPath(), col, row);
-                        break;
-                    case PARKING:
-                        break;
-                    case UNLOADING:
-                        break;
-                    default:
-                        Rectangle rectangle = new Rectangle(60, 60, Color.WHITESMOKE);
-                        warehouseView.getGuiWarehouse().add(rectangle, col, row);
+                try {
+                    switch (warehouseView.getWarehouse().getWarehouseLayout()[row][col].getType()) {
+                        case SHELVING:
+                            Pane svpane = new Pane();
+                            ShelfView sv = new ShelfView(new Coords(row, col), informationText);
+                            sv.getShelf().addGoods(new Goods(GoodsType.GITARA, row, col));
+                            svpane.getChildren().add(sv.getGuiShelf());
+                            svpane.setStyle("-fx-border-style: solid outside;" +
+                                    "-fx-border-width: 2;");
+                            warehouseView.getGuiWarehouse().add(svpane, col, row);
+                            break;
+                        case PATH:
+                            PathView pv = new PathView(new Coords(row, col), informationText);
+                            warehouseView.getGuiWarehouse().add(pv.getGuiPath(), col, row);
+                            break;
+                        case PARKING:
+                            CartView cv = new CartView(new Coords(row, col), informationText);
+                            cv.getCart().addTransportedGoods(new Goods(GoodsType.STETEC, row, col));
+                            warehouseView.getGuiWarehouse().add(cv.getGuiCart(), col, row);
+                            break;
+                        case UNLOADING:
+                            break;
+//                        default:
+//                            Rectangle rectangle = new Rectangle(60, 60, Color.WHITESMOKE);
+//                            warehouseView.getGuiWarehouse().add(rectangle, col, row);
+                    }
+                } catch (NullPointerException e){
+                    Rectangle rectangle = new Rectangle(60, 60, Color.WHITESMOKE);
+                    warehouseView.getGuiWarehouse().add(rectangle, col, row);
                 }
             }
         }
-        CartView cartView = new CartView(new Coords(0, 9), informationText);
-        warehouseView.getGuiWarehouse().add(cartView.getGuiCart(),
-                cartView.getCart().getPosition().getColumn(), cartView.getCart().getPosition().getRow());
 
         warehouseView.getGuiWarehouse().autosize();
         return zoomablePane;
