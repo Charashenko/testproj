@@ -13,9 +13,9 @@ import java.util.List;
 
 public class ShelfView {
 
-    private Rectangle guiShelf;
-    private Shelf shelf;
-    private Text informationText;
+    private final Rectangle guiShelf;
+    private final Shelf shelf;
+    private final Text informationText;
 
     public ShelfView(Coords c, Text informationText) {
         this.guiShelf = new Rectangle(60, 60, Color.DODGERBLUE);

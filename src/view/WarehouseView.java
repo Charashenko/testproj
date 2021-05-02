@@ -12,8 +12,8 @@ import model.areas.ShelvingArea;
 
 public class WarehouseView {
 
-    private GridPane guiWarehouse;
-    private Warehouse warehouse;
+    private final GridPane guiWarehouse;
+    private final Warehouse warehouse;
 
     public WarehouseView(Size sizeOfWarehouse) {
         // set grid style
@@ -37,8 +37,8 @@ public class WarehouseView {
         end = new Coords(sizeOfWarehouse.getRowCount()-1, 1);
         getWarehouse().addArea(new ShelvingArea(start, end));
 
-        start = new Coords(0, 4);
-        end = new Coords(sizeOfWarehouse.getRowCount()-1, 5);
+        start = new Coords(0, 3);
+        end = new Coords(sizeOfWarehouse.getRowCount()-4, 5);
         getWarehouse().addArea(new ShelvingArea(start, end));
 
     }

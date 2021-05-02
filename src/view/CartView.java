@@ -10,9 +10,9 @@ import model.Coords;
 
 public class CartView {
 
-    private Rectangle guiCart;
-    private Cart cart;
-    private Text informationText;
+    private final Rectangle guiCart;
+    private final Cart cart;
+    private final Text informationText;
     private Color cartColor = Color.valueOf("1a4d4dff");
 
     public CartView(Coords position, Text informationText) {

@@ -31,4 +31,8 @@ public class Shelf {
     public void addGoods(Goods goods){
         this.goods.add(goods);
     }
+
+    public List<Goods> takeOutGoods(List<Goods> wantedGoods) {
+        return null;
+    }
 }

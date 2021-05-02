@@ -1,11 +1,8 @@
 package controller;
 
-import javafx.scene.Scene;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 import model.Goods;
 import view.CartView;
 
@@ -33,7 +30,7 @@ public class OnCartInteraction {
                     if(numberOfSameGoods.containsKey(g)){
                         int count = numberOfSameGoods.get(g);
                         numberOfSameGoods.put(g, ++count);
-                    }else {
+                    } else {
                         numberOfSameGoods.put(g, 1);
                     }
                 }
