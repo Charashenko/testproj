@@ -14,15 +14,15 @@ public class CartView implements UnitView {
     private final Cart cart;
     private final Text informationText;
     private final Color cartColor = Color.valueOf("1a4d4dff");
-    private final UnitTypes unitType = UnitTypes.SHELFVIEW;
+    private final UnitTypes unitType = UnitTypes.CARTVIEW;
     private Coords unitPosition;
 
     public CartView(Coords position, Text informationText) {
         this.guiCart = new Rectangle(30,30, cartColor);
         this.guiCart.addEventHandler(MouseEvent.ANY, mouseEvent -> new OnCartInteraction().handle(mouseEvent, this));
         this.informationText = informationText;
-        this.cart = new Cart();
         this.unitPosition = position;
+        this.cart = new Cart(this);
     }
 
     @Override

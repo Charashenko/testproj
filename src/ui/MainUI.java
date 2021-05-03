@@ -34,6 +34,7 @@ import view.ShelfView;
 import view.WarehouseView;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -44,7 +45,7 @@ import java.util.Date;
  */
 public class MainUI extends Application {
 
-    private static int clock = 1000;
+    private static int clock = 200;
     private static final Text informationText = new Text();
     private static WarehouseView warehouseView;
     public static void main(String[] args) {
@@ -100,8 +101,6 @@ public class MainUI extends Application {
         tabPane.getTabs().addAll(warehouseTab, ordersTab);
 
         VBox informationPanel = new VBox();
-        informationPanel.setAlignment(Pos.TOP_CENTER);
-        informationPanel.setSpacing(7);
 
         HBox clockBox = new HBox();
         clockBox.setSpacing(7);
@@ -130,6 +129,8 @@ public class MainUI extends Application {
         informationText.setTextAlignment(TextAlignment.CENTER);
         informationPanel.getChildren().addAll(clockBox, buttonBox, informationText);
         informationPanel.setMinWidth(350);
+        informationPanel.setAlignment(Pos.TOP_CENTER);
+        informationPanel.setSpacing(7);
 
         mainSection.getChildren().add(tabPane);
         mainSection.getChildren().add(informationPanel);
@@ -151,12 +152,11 @@ public class MainUI extends Application {
      * @return Main node of warehouse tab
      */
     public static Node setupWarehouseTab(Text informationText) {
-        Size warehouseSize = new Size(19, 20); //default
+        Size warehouseSize = new Size(22, 22); //default
         ZoomableScrollPane zoomablePane = new ZoomableScrollPane();
+        zoomablePane.setPrefSize(1920, 1080);
         warehouseView = new WarehouseView(warehouseSize, informationText);
         zoomablePane.addContent(warehouseView.getGuiWarehouse());
-
-        zoomablePane.autosize();
         return zoomablePane;
     }
 
@@ -191,17 +191,12 @@ public class MainUI extends Application {
     public static void systemUpdate(Label cl) {
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         Date date = new Date(System.currentTimeMillis());
-        cl.setText(formatter.format(date));
+        cl.setText(String.valueOf(clock));
         clock++;
-        for (int row = 0; row < warehouseView.getGuiWarehouse().getRowCount(); row++) {
-            for (int col = 0; col < warehouseView.getGuiWarehouse().getColumnCount(); col++) {
-                try{
-                    System.out.println(warehouseView.getWarehouse().getWarehouseLayout()[row][col].getType());
-                } catch (NullPointerException e){
-                    System.out.println("null");
-                }
-            }
+        for (CartView cv : warehouseView.getCartViews()){
+            cv.getCart().nextStep(warehouseView.getUnitViews());
         }
+        warehouseView.updateGuiWarehouse();
     }
 
 }

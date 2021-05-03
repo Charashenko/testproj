@@ -13,8 +13,8 @@ public class PathView implements UnitView {
 
     private final Pane guiPath = new Pane();
     private final Path path;
-    private final Color pathColor = Color.INDIANRED;
-    private final Color blockedPathColor = Color.WHITESMOKE;
+    private final Color pathColor = Color.WHITESMOKE;
+    private final Color blockedPathColor = Color.INDIANRED;
     private final Text informationText;
     private final UnitTypes unitType = UnitTypes.PATHVIEW;
     private Coords unitPosition;

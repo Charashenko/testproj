@@ -8,3 +8,10 @@
 - mapa skladu zo suboru
 - undo operacia
 - path finding
+
+#### Default things to be removed from code
+- layout
+- cart path
+- clock
+- shelf contents
+- cart contents

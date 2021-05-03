@@ -2,11 +2,12 @@ package model;
 
 import javafx.scene.text.Text;
 import model.areas.CartRouteArea;
+import model.areas.ParkingArea;
 import model.areas.ShelvingArea;
-import view.CartView;
-import view.PathView;
-import view.ShelfView;
-import view.UnitView;
+import view.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Warehouse {
 
@@ -23,11 +24,14 @@ public class Warehouse {
         Coords start = new Coords(0, 0);
         Coords end = new Coords(sizeOfWarehouse.getRowCount()-1, sizeOfWarehouse.getColumnCount()-1);
         addArea(new CartRouteArea(start, end));
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 7; i++) {
             start = new Coords(1, 1+3*i);
-            end = new Coords(sizeOfWarehouse.getRowCount()-2, 2+3*i);
+            end = new Coords(17, 2+3*i);
             addArea(new ShelvingArea(start, end));
         }
+        start = new Coords(sizeOfWarehouse.getRowCount()-1, sizeOfWarehouse.getColumnCount()-1);
+        end = start;
+        addArea(new ParkingArea(start, end));
         //end of default layout
     }
 
@@ -46,22 +50,7 @@ public class Warehouse {
             for (int col = 0; col < size.getColumnCount(); col++) {
                 if(getWarehouseLayout()[row][col] != null) {
                     switch (getWarehouseLayout()[row][col].getType()) {
-                        case SHELVING:
-                            ShelfView sv = new ShelfView(new Coords(row, col), informationText);
-                            sv.getShelf().addGoods(new Goods(GoodsType.GITARA, row, col));
-                            warehouseUnitViews[row][col] = sv;
-                            break;
-                        case PATH:
-                            PathView pv = new PathView(new Coords(row, col), informationText);
-                            warehouseUnitViews[row][col] = pv;
-                            break;
-                        case PARKING:
-                            CartView cv = new CartView(new Coords(row, col), informationText);
-                            cv.getCart().addTransportedGoods(new Goods(GoodsType.STETEC, row, col));
-                            warehouseUnitViews[row][col] = cv;
-                            break;
-                        case UNLOADING:
-                            break;
+
                     }
                 }
             }
@@ -74,6 +63,30 @@ public class Warehouse {
 
     public UnitView[][] getWarehouseUnitViews() {
         return this.warehouseUnitViews;
+    }
+
+    public List<CartView> getCartViews(){
+        List<CartView> carts = new ArrayList<>();
+        for (int row = 0; row < size.getRowCount(); row++) {
+            for (int col = 0; col < size.getColumnCount(); col++) {
+                if(warehouseUnitViews[row][col].getUnitType().equals(UnitTypes.CARTVIEW)){
+                    carts.add((CartView) warehouseUnitViews[row][col]);
+                }
+            }
+        }
+        return carts;
+    }
+
+    public List<ShelfView> getShelfViews(){
+        List<ShelfView> shelves = new ArrayList<>();
+        for (int row = 0; row < size.getRowCount(); row++) {
+            for (int col = 0; col < size.getColumnCount(); col++) {
+                if(warehouseUnitViews[row][col].getUnitType().equals(UnitTypes.SHELFVIEW)){
+                    shelves.add((ShelfView) warehouseUnitViews[row][col]);
+                }
+            }
+        }
+        return shelves;
     }
 
     public Size getSize(){

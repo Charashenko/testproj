@@ -5,6 +5,7 @@ package model;
  */
 public class Path {
 
+    private boolean hasCart = false;
     private Direction[] connectedPaths = new Direction[4];
     private boolean blocked = false;
 
@@ -26,5 +27,13 @@ public class Path {
 
     public void setBlockage(boolean toBeBlocked) {
         this.blocked = toBeBlocked;
+    }
+
+    public boolean hasCart() {
+        return hasCart;
+    }
+
+    public void setHasCart(boolean hasCart) {
+        this.hasCart = hasCart;
     }
 }

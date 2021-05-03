@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 /**
  * Object representing position inside warehouse, using ROW and COLUMN.
  */
@@ -48,5 +50,18 @@ public class Coords {
      */
     public void setColumn(int column) {
         this.column = column;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Coords coords = (Coords) o;
+        return row == coords.row && column == coords.column;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(row, column);
     }
 }

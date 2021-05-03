@@ -19,7 +19,6 @@ public class OnCartInteraction {
      * @param cv Cart that caused the event
      */
     public void handle(MouseEvent event, CartView cv){
-        event.consume();
         Rectangle r = (Rectangle) event.getTarget();
         if (event.getEventType().equals(MouseEvent.MOUSE_ENTERED)) {
             //TODO Nicer format
