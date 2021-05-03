@@ -2,8 +2,10 @@ package view;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import model.Coords;
 import model.Size;
 import model.Warehouse;
@@ -13,12 +15,12 @@ import model.areas.ShelvingArea;
 
 public class WarehouseView {
 
-    private final GridPane guiWarehouse;
-    private final Warehouse warehouse;
+    private GridPane guiWarehouse;
+    private Warehouse warehouse;
 
-    public WarehouseView(Size sizeOfWarehouse) {
+    public WarehouseView(Size sizeOfWarehouse, Text informationText) {
+        createWarehouse(sizeOfWarehouse, informationText);
         // set grid style
-        guiWarehouse = new GridPane();
         guiWarehouse.setGridLinesVisible(false);
         guiWarehouse.setHgap(2);
         guiWarehouse.setVgap(2);
@@ -28,24 +30,6 @@ public class WarehouseView {
             cc.setHalignment(HPos.CENTER);
             guiWarehouse.getColumnConstraints().add(cc);
         }
-
-        warehouse = new Warehouse(sizeOfWarehouse); //default
-        Coords start = new Coords(0, 1);
-        Coords end = new Coords(sizeOfWarehouse.getRowCount()-1, sizeOfWarehouse.getColumnCount()-1);
-        getWarehouse().addArea(new CartRouteArea(start, end));
-
-        start = new Coords(0, 1);
-        end = new Coords(sizeOfWarehouse.getRowCount()-1, 2);
-        getWarehouse().addArea(new ShelvingArea(start, end));
-
-        start = new Coords(0, 5);
-        end = new Coords(sizeOfWarehouse.getRowCount()-4, 7);
-        getWarehouse().addArea(new ShelvingArea(start, end));
-
-        start = new Coords(0, 9);
-        end = new Coords(0, 10);
-        getWarehouse().addArea(new ParkingArea(start, end));
-
     }
 
     public GridPane getGuiWarehouse() {
@@ -54,5 +38,34 @@ public class WarehouseView {
 
     public Warehouse getWarehouse() {
         return warehouse;
+    }
+
+    /**
+     * Creates representation of warehouse.
+     * Firstly creates warehouse and unit views of that warehouse layout, then creates gui representation of warehouse.
+     * @param informationText Information panel text field
+     * @param sizeOfWarehouse Size of warehouse
+     */
+    public void createWarehouse(Size sizeOfWarehouse, Text informationText){
+        warehouse = new Warehouse(sizeOfWarehouse);
+        warehouse.createWarehouseUnitViews(informationText);
+
+        guiWarehouse = new GridPane();
+        for (int row = 0; row < warehouse.getSize().getRowCount(); row++) {
+            for (int col = 0; col < warehouse.getSize().getColumnCount(); col++) {
+                UnitView unitView = getWarehouse().getWarehouseUnitViews()[row][col];
+                switch(unitView.getUnitType()){
+                    case CARTVIEW:
+                        guiWarehouse.add(((CartView) unitView).getGuiCart(), col, row);
+                        break;
+                    case SHELFVIEW:
+                        guiWarehouse.add(((ShelfView) unitView).getGuiShelf(), col, row);
+                        break;
+                    case PATHVIEW:
+                        guiWarehouse.add(((PathView) unitView).getGuiPath(), col, row);
+                        break;
+                }
+            }
+        }
     }
 }

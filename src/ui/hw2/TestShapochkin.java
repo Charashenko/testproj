@@ -48,8 +48,8 @@ public class TestShapochkin extends Application {
             }
         }
         CartView cartView = new CartView(new Coords(0, 2), informationtext);
-        gridPane.add(cartView.getGuiCart(), cartView.getCart().getPosition().getColumn(),
-                cartView.getCart().getPosition().getRow());
+        gridPane.add(cartView.getGuiCart(), cartView.getUnitPosition().getColumn(),
+                cartView.getUnitPosition().getRow());
 
         for (int i = 0; i < gridPane.getColumnCount(); i++) {
             gridPane.getColumnConstraints().add(cc);

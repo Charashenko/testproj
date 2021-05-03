@@ -6,21 +6,11 @@ import java.util.List;
 
 public class Cart {
 
-    private Coords position;
     private CartRoute plannedRoute;
     private List<Goods> transportedGoods;
 
-    public Cart(Coords position) {
-        this.position = position;
+    public Cart() {
         this.transportedGoods = new ArrayList<>();
-    }
-
-    public Coords getPosition() {
-        return position;
-    }
-
-    public void setPosition(Coords position) {
-        this.position = position;
     }
 
     public CartRoute getPlannedRoute(){

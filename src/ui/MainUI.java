@@ -151,51 +151,11 @@ public class MainUI extends Application {
      * @return Main node of warehouse tab
      */
     public static Node setupWarehouseTab(Text informationText) {
-        Size warehouseSize = new Size(20, 20); //default
+        Size warehouseSize = new Size(19, 20); //default
         ZoomableScrollPane zoomablePane = new ZoomableScrollPane();
-        warehouseView = new WarehouseView(warehouseSize);
+        warehouseView = new WarehouseView(warehouseSize, informationText);
         zoomablePane.addContent(warehouseView.getGuiWarehouse());
 
-        for (int row = 0; row < warehouseSize.getRowCount(); row++) {
-            for (int col = 0; col < warehouseSize.getColumnCount(); col++) {
-                try {
-                    switch (warehouseView.getWarehouse().getWarehouseLayout()[row][col].getType()) {
-                        case SHELVING:
-                            System.out.println("s");
-                            Pane svpane = new Pane();
-                            ShelfView sv = new ShelfView(new Coords(row, col), informationText);
-                            sv.getShelf().addGoods(new Goods(GoodsType.GITARA, row, col));
-                            svpane.getChildren().add(sv.getGuiShelf());
-                            svpane.setStyle("-fx-border-style: solid outside;" +
-                                    "-fx-border-width: 2;");
-                            warehouseView.getGuiWarehouse().add(svpane, col, row);
-                            break;
-                        case PATH:
-                            System.out.println("p");
-                            PathView pv = new PathView(new Coords(row, col), informationText);
-                            warehouseView.getGuiWarehouse().add(pv.getGuiPath(), col, row);
-                            break;
-                        case PARKING:
-                            System.out.println("c" + col + row);
-                            CartView cv = new CartView(new Coords(row, col), informationText);
-                            cv.getCart().addTransportedGoods(new Goods(GoodsType.STETEC, row, col));
-                            warehouseView.getGuiWarehouse().add(cv.getGuiCart(), col, row);
-                            System.out.println(col + row);
-                            break;
-                        case UNLOADING:
-                            break;
-//                        default:
-//                            Rectangle rectangle = new Rectangle(60, 60, Color.WHITESMOKE);
-//                            warehouseView.getGuiWarehouse().add(rectangle, col, row);
-                    }
-                } catch (NullPointerException e){
-                    Rectangle rectangle = new Rectangle(60, 60, Color.WHITESMOKE);
-                    warehouseView.getGuiWarehouse().add(rectangle, col, row);
-                }
-            }
-        }
-
-        warehouseView.getGuiWarehouse().autosize();
         zoomablePane.autosize();
         return zoomablePane;
     }
@@ -236,8 +196,7 @@ public class MainUI extends Application {
         for (int row = 0; row < warehouseView.getGuiWarehouse().getRowCount(); row++) {
             for (int col = 0; col < warehouseView.getGuiWarehouse().getColumnCount(); col++) {
                 try{
-                    if(warehouseView.getWarehouse().getWarehouseLayout()[row][col].getType().equals(AreaType.PARKING))
-                        System.out.println(warehouseView.getWarehouse().getWarehouseLayout()[row][col].getType());
+                    System.out.println(warehouseView.getWarehouse().getWarehouseLayout()[row][col].getType());
                 } catch (NullPointerException e){
                     System.out.println("null");
                 }

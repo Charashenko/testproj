@@ -19,7 +19,6 @@ public class OnShelfInteraction {
      * @param sv Shelf that caused the event
      */
     public void handle(MouseEvent event, ShelfView sv){
-        event.consume();
         Rectangle r = (Rectangle) event.getTarget();
 
         if (event.getEventType().equals(MouseEvent.MOUSE_ENTERED)) {
@@ -41,7 +40,7 @@ public class OnShelfInteraction {
             r.setFill(Color.GOLDENROD);
             sv.getInformationText().setText(output);
         } else if (event.getEventType().equals(MouseEvent.MOUSE_EXITED)) {
-            r.setFill(Color.DODGERBLUE);
+            r.setFill(sv.getShelfColor());
             sv.getInformationText().setText("");
         }
     }
