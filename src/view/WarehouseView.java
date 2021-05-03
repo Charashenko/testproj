@@ -43,7 +43,7 @@ public class WarehouseView {
         getWarehouse().addArea(new ShelvingArea(start, end));
 
         start = new Coords(0, 9);
-        end = new Coords(0, 9);
+        end = new Coords(0, 10);
         getWarehouse().addArea(new ParkingArea(start, end));
 
     }

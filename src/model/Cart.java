@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class Cart {
 
     public Cart(Coords position) {
         this.position = position;
+        this.transportedGoods = new ArrayList<>();
     }
 
     public Coords getPosition() {

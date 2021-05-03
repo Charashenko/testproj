@@ -26,6 +26,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.*;
+import model.areas.AreaType;
 import model.areas.ShelvingArea;
 import view.CartView;
 import view.PathView;
@@ -45,7 +46,7 @@ public class MainUI extends Application {
 
     private static int clock = 1000;
     private static final Text informationText = new Text();
-
+    private static WarehouseView warehouseView;
     public static void main(String[] args) {
         launch(args);
     }
@@ -152,7 +153,7 @@ public class MainUI extends Application {
     public static Node setupWarehouseTab(Text informationText) {
         Size warehouseSize = new Size(20, 20); //default
         ZoomableScrollPane zoomablePane = new ZoomableScrollPane();
-        WarehouseView warehouseView = new WarehouseView(warehouseSize);
+        warehouseView = new WarehouseView(warehouseSize);
         zoomablePane.addContent(warehouseView.getGuiWarehouse());
 
         for (int row = 0; row < warehouseSize.getRowCount(); row++) {
@@ -160,6 +161,7 @@ public class MainUI extends Application {
                 try {
                     switch (warehouseView.getWarehouse().getWarehouseLayout()[row][col].getType()) {
                         case SHELVING:
+                            System.out.println("s");
                             Pane svpane = new Pane();
                             ShelfView sv = new ShelfView(new Coords(row, col), informationText);
                             sv.getShelf().addGoods(new Goods(GoodsType.GITARA, row, col));
@@ -169,13 +171,16 @@ public class MainUI extends Application {
                             warehouseView.getGuiWarehouse().add(svpane, col, row);
                             break;
                         case PATH:
+                            System.out.println("p");
                             PathView pv = new PathView(new Coords(row, col), informationText);
                             warehouseView.getGuiWarehouse().add(pv.getGuiPath(), col, row);
                             break;
                         case PARKING:
+                            System.out.println("c" + col + row);
                             CartView cv = new CartView(new Coords(row, col), informationText);
                             cv.getCart().addTransportedGoods(new Goods(GoodsType.STETEC, row, col));
                             warehouseView.getGuiWarehouse().add(cv.getGuiCart(), col, row);
+                            System.out.println(col + row);
                             break;
                         case UNLOADING:
                             break;
@@ -191,6 +196,7 @@ public class MainUI extends Application {
         }
 
         warehouseView.getGuiWarehouse().autosize();
+        zoomablePane.autosize();
         return zoomablePane;
     }
 
@@ -227,6 +233,16 @@ public class MainUI extends Application {
         Date date = new Date(System.currentTimeMillis());
         cl.setText(formatter.format(date));
         clock++;
+        for (int row = 0; row < warehouseView.getGuiWarehouse().getRowCount(); row++) {
+            for (int col = 0; col < warehouseView.getGuiWarehouse().getColumnCount(); col++) {
+                try{
+                    if(warehouseView.getWarehouse().getWarehouseLayout()[row][col].getType().equals(AreaType.PARKING))
+                        System.out.println(warehouseView.getWarehouse().getWarehouseLayout()[row][col].getType());
+                } catch (NullPointerException e){
+                    System.out.println("null");
+                }
+            }
+        }
     }
 
 }
