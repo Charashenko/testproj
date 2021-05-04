@@ -1,5 +1,7 @@
 package model;
 
+import javafx.animation.TranslateTransition;
+import javafx.util.Duration;
 import view.CartView;
 import view.PathView;
 import view.UnitTypes;
@@ -9,7 +11,6 @@ import java.util.*;
 
 public class Cart {
 
-    private PathView occupiedPathView;
     private Coords homePosition;
     private CartView cartView;
     private CartRoute cartRoute;
@@ -56,53 +57,47 @@ public class Cart {
         return true;
     }
 
-    public void nextStep(UnitView[][] unitViews){
+    public void nextStep(int clock){
         try {
             Coords position = cartView.getUnitPosition();
+            TranslateTransition tt;
             if(hasAvaiableRoute()) {
                 switch (cartRoute.getPlannedPath().get(cartRoute.getStep())) {
                     case UP:
-                        if (occupiedPathView == null) {
-                            occupiedPathView = new PathView(position, cartView.getInformationText());
-                        }
-                        unitViews[position.getRow()][position.getColumn()] = occupiedPathView;
-                        occupiedPathView = (PathView) unitViews[position.getRow() - 1][position.getColumn()];
-                        unitViews[position.getRow() - 1][position.getColumn()] = cartView;
                         cartView.setUnitPosition(new Coords(position.getRow() - 1, position.getColumn()));
                         cartRoute.setStep(cartRoute.getStep() + 1);
+                        tt = new TranslateTransition(Duration.millis(clock), cartView.getGuiCart());
+                        tt.setByY(-60);
+                        tt.setCycleCount(0);
+                        tt.setAutoReverse(false);
+                        tt.play();
                         break;
                     case DOWN:
-                        if (occupiedPathView == null) {
-                            occupiedPathView = new PathView(position, cartView.getInformationText());
-                        }
-                        unitViews[position.getRow()][position.getColumn()] = occupiedPathView;
-                        occupiedPathView = (PathView) unitViews[position.getRow() + 1][position.getColumn()];
-                        unitViews[position.getRow() + 1][position.getColumn()] = cartView;
                         cartView.setUnitPosition(new Coords(position.getRow() + 1, position.getColumn()));
                         cartRoute.setStep(cartRoute.getStep() + 1);
+                        tt = new TranslateTransition(Duration.millis(clock), cartView.getGuiCart());
+                        tt.setByY(60);
+                        tt.setCycleCount(0);
+                        tt.setAutoReverse(false);
+                        tt.play();
                         break;
                     case LEFT:
-                        if (occupiedPathView == null) {
-                            occupiedPathView = new PathView(position, cartView.getInformationText());
-                        }
-                        unitViews[position.getRow()][position.getColumn()] = occupiedPathView;
-                        UnitView unitView = unitViews[position.getRow()][position.getColumn() - 1];
-                        if(unitView.getUnitType().equals(UnitTypes.PATHVIEW)) {
-                            occupiedPathView = (PathView) unitView;
-                        }
-                        unitViews[position.getRow()][position.getColumn() - 1] = cartView;
                         cartView.setUnitPosition(new Coords(position.getRow(), position.getColumn() - 1));
                         cartRoute.setStep(cartRoute.getStep() + 1);
+                        tt = new TranslateTransition(Duration.millis(clock), cartView.getGuiCart());
+                        tt.setByX(-60);
+                        tt.setCycleCount(0);
+                        tt.setAutoReverse(false);
+                        tt.play();
                         break;
                     case RIGHT:
-                        if (occupiedPathView == null) {
-                            occupiedPathView = new PathView(position, cartView.getInformationText());
-                        }
-                        unitViews[position.getRow()][position.getColumn()] = occupiedPathView;
-                        occupiedPathView = (PathView) unitViews[position.getRow()][position.getColumn() + 1];
-                        unitViews[position.getRow()][position.getColumn() + 1] = cartView;
                         cartView.setUnitPosition(new Coords(position.getRow(), position.getColumn() + 1));
                         cartRoute.setStep(cartRoute.getStep() + 1);
+                        tt = new TranslateTransition(Duration.millis(clock), cartView.getGuiCart());
+                        tt.setByX(60);
+                        tt.setCycleCount(0);
+                        tt.setAutoReverse(false);
+                        tt.play();
                         break;
                     default:
                         break;

@@ -23,6 +23,8 @@ public class ShelfView implements UnitView {
 
     public ShelfView(Coords position, Text informationText) {
         this.guiShelf = new Rectangle(60, 60, shelfColor);
+        this.guiShelf.setArcHeight(10);
+        this.guiShelf.setArcWidth(10);
         this.guiShelf.addEventHandler(MouseEvent.ANY, mouseEvent -> new OnShelfInteraction().handle(mouseEvent, this));
         this.shelf = new Shelf();
         this.informationText = informationText;

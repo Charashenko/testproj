@@ -11,7 +11,7 @@ import model.Path;
 
 public class PathView implements UnitView {
 
-    private final Pane guiPath = new Pane();
+    private final Rectangle guiPath;
     private final Path path;
     private final Color pathColor = Color.WHITESMOKE;
     private final Color blockedPathColor = Color.INDIANRED;
@@ -20,7 +20,7 @@ public class PathView implements UnitView {
     private Coords unitPosition;
 
     public PathView(Coords position, Text informationText) {
-        guiPath.getChildren().add(new Rectangle(60,60, pathColor));
+        this.guiPath = new Rectangle(60,60, pathColor);
         this.guiPath.addEventHandler(MouseEvent.ANY, event -> new OnPathInteraction().handle(event, this));
         this.path = new Path();
         this.informationText = informationText;
@@ -42,7 +42,7 @@ public class PathView implements UnitView {
         this.unitPosition = newPosition;
     }
 
-    public Pane getGuiPath() {
+    public Rectangle getGuiPath() {
         return guiPath;
     }
 
@@ -52,9 +52,9 @@ public class PathView implements UnitView {
 
     public void updatePathColor(){
         if(getPath().isBlocked()){
-            ((Rectangle) getGuiPath().getChildren().get(0)).setFill(blockedPathColor);
+            getGuiPath().setFill(blockedPathColor);
         } else {
-            ((Rectangle) getGuiPath().getChildren().get(0)).setFill(pathColor);
+            getGuiPath().setFill(pathColor);
         }
     }
 

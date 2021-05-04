@@ -45,7 +45,7 @@ import java.util.Date;
  */
 public class MainUI extends Application {
 
-    private static int clock = 200;
+    private static int clock = 500;
     private static final Text informationText = new Text();
     private static WarehouseView warehouseView;
     public static void main(String[] args) {
@@ -156,6 +156,7 @@ public class MainUI extends Application {
         ZoomableScrollPane zoomablePane = new ZoomableScrollPane();
         zoomablePane.setPrefSize(1920, 1080);
         warehouseView = new WarehouseView(warehouseSize, informationText);
+        //warehouseView.drawGui();
         zoomablePane.addContent(warehouseView.getGuiWarehouse());
         return zoomablePane;
     }
@@ -166,12 +167,7 @@ public class MainUI extends Application {
      * @return Main node of orders tab
      */
     public static Node setupOrdersTab() {
-        StackPane root = new StackPane();
-        root.setAlignment(Pos.TOP_LEFT);
-        Button b = new Button("Orders");
-        b.setPadding(new Insets(2, 10, 2, 10));
-        root.getChildren().addAll(b);
-        return root;
+        return new Button("Orders");
     }
 
     /**
@@ -192,11 +188,9 @@ public class MainUI extends Application {
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         Date date = new Date(System.currentTimeMillis());
         cl.setText(String.valueOf(clock));
-        clock++;
         for (CartView cv : warehouseView.getCartViews()){
-            cv.getCart().nextStep(warehouseView.getUnitViews());
+            cv.getCart().nextStep(clock-clock/10);
         }
-        warehouseView.updateGuiWarehouse();
     }
 
 }
