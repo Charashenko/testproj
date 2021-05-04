@@ -22,7 +22,8 @@ public class OnPathInteraction {
                 pv.updatePathColor();
             }
         } else if (event.getEventType().equals(MouseEvent.MOUSE_ENTERED)){
-            pv.getInformationText().setText(String.format("[Blocked path]\n%s", pv.getPath().isBlocked()));
+            pv.getInformationText().setText(String.format("[Blocked path]\n%s\n[Has cart]\n%s",
+                    pv.getPath().isBlocked(), pv.getPath().hasCart()));
         } else if (event.getEventType().equals(MouseEvent.MOUSE_EXITED)){
             pv.getInformationText().setText("");
         }
