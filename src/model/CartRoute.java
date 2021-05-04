@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CartRoute {
 
-    private HashMap<Integer, Direction> directions;
+    private HashMap<Integer, Direction> directions = new HashMap<>();
     private int step = 0;
 
     public HashMap<Integer, Direction> getPlannedPath() {

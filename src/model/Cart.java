@@ -2,10 +2,7 @@ package model;
 
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
-import view.CartView;
-import view.PathView;
-import view.UnitTypes;
-import view.UnitView;
+import view.*;
 
 import java.util.*;
 
@@ -23,7 +20,7 @@ public class Cart {
         this.cartRoute = new CartRoute();
     }
 
-    public CartRoute getPlannedRoute(){
+    public CartRoute getPlannedRoute() {
         return this.cartRoute;
     }
 
@@ -39,7 +36,7 @@ public class Cart {
         this.transportedGoods = transportedGoods;
     }
 
-    public void addTransportedGoods(Goods goods){
+    public void addTransportedGoods(Goods goods) {
         this.transportedGoods.add(goods);
     }
 
@@ -47,64 +44,65 @@ public class Cart {
         return homePosition;
     }
 
-    public boolean hasAvaiableRoute(){
-        if(getPlannedRoute() == null){
-            return false;
-        }
-        if(cartRoute.getStep() >= cartRoute.getPlannedPath().values().size()){
+    public boolean hasAvaiableRoute() {
+        if (cartRoute.getStep() >= cartRoute.getPlannedPath().values().size()) {
             return false;
         }
         return true;
     }
 
-    public void nextStep(int clock){
-        try {
-            Coords position = cartView.getUnitPosition();
-            TranslateTransition tt;
-            if(hasAvaiableRoute()) {
-                switch (cartRoute.getPlannedPath().get(cartRoute.getStep())) {
-                    case UP:
+    public void nextStep(int clock, WarehouseView warehouseView) {
+        Coords position = cartView.getUnitPosition();
+        if (hasAvaiableRoute()) {
+            TranslateTransition tt = new TranslateTransition();
+            PathView nextPathView;
+            switch (cartRoute.getPlannedPath().get(cartRoute.getStep())) {
+                case UP:
+                    nextPathView = warehouseView.getPathViewAtCoords(new Coords(position.getRow() - 1, position.getColumn()));
+                    if (!nextPathView.getPath().isBlocked() && !nextPathView.getPath().hasCart()) {
+                        nextPathView.getPath().setHasCart(true);
                         cartView.setUnitPosition(new Coords(position.getRow() - 1, position.getColumn()));
                         cartRoute.setStep(cartRoute.getStep() + 1);
                         tt = new TranslateTransition(Duration.millis(clock), cartView.getGuiCart());
                         tt.setByY(-60);
-                        tt.setCycleCount(0);
-                        tt.setAutoReverse(false);
-                        tt.play();
-                        break;
-                    case DOWN:
+                        warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
+                    }
+                    break;
+                case DOWN:
+                    nextPathView = warehouseView.getPathViewAtCoords(new Coords(position.getRow() + 1, position.getColumn()));
+                    if (!nextPathView.getPath().isBlocked() && !nextPathView.getPath().hasCart()) {
+                        nextPathView.getPath().setHasCart(true);
                         cartView.setUnitPosition(new Coords(position.getRow() + 1, position.getColumn()));
                         cartRoute.setStep(cartRoute.getStep() + 1);
                         tt = new TranslateTransition(Duration.millis(clock), cartView.getGuiCart());
                         tt.setByY(60);
-                        tt.setCycleCount(0);
-                        tt.setAutoReverse(false);
-                        tt.play();
-                        break;
-                    case LEFT:
+                        warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
+                    }
+                    break;
+                case LEFT:
+                    nextPathView = warehouseView.getPathViewAtCoords(new Coords(position.getRow(), position.getColumn() - 1));
+                    if (!nextPathView.getPath().isBlocked() && !nextPathView.getPath().hasCart()) {
+                        nextPathView.getPath().setHasCart(true);
                         cartView.setUnitPosition(new Coords(position.getRow(), position.getColumn() - 1));
                         cartRoute.setStep(cartRoute.getStep() + 1);
                         tt = new TranslateTransition(Duration.millis(clock), cartView.getGuiCart());
                         tt.setByX(-60);
-                        tt.setCycleCount(0);
-                        tt.setAutoReverse(false);
-                        tt.play();
-                        break;
-                    case RIGHT:
+                        warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
+                    }
+                    break;
+                case RIGHT:
+                    nextPathView = warehouseView.getPathViewAtCoords(new Coords(position.getRow(), position.getColumn() + 1));
+                    if (!nextPathView.getPath().isBlocked() && !nextPathView.getPath().hasCart()) {
+                        nextPathView.getPath().setHasCart(true);
                         cartView.setUnitPosition(new Coords(position.getRow(), position.getColumn() + 1));
                         cartRoute.setStep(cartRoute.getStep() + 1);
                         tt = new TranslateTransition(Duration.millis(clock), cartView.getGuiCart());
                         tt.setByX(60);
-                        tt.setCycleCount(0);
-                        tt.setAutoReverse(false);
-                        tt.play();
-                        break;
-                    default:
-                        break;
-                }
+                        warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
+                    }
+                    break;
             }
-        } catch (NullPointerException e){
-            System.out.println("help");
+            tt.play();
         }
     }
 }

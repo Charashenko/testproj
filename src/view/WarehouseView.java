@@ -4,12 +4,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import model.CartRoute;
-import model.Coords;
-import model.Direction;
-import model.Size;
+import model.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,6 +40,7 @@ public class WarehouseView {
 
     public void createDefaultUnitViews() { //default
         //add paths everywhere
+        guiWarehouse.getChildren().clear();
         for (int row = 0; row < sizeOfWarehouse.getRowCount(); row++) {
             for (int col = 0; col < sizeOfWarehouse.getColumnCount(); col++) {
                 PathView pathView = new PathView(new Coords(row, col), informationText);
@@ -103,6 +102,7 @@ public class WarehouseView {
         guiWarehouse.getChildren().add(cv.getGuiCart());
 
         cv = new CartView(new Coords(0, 0), informationText);
+        cv.getCart().setTransportedGoods(Collections.singletonList(new Goods(GoodsType.GITARA, 25, 1.8)));
         cr = new CartRoute();
         directions = new HashMap<>();
         for (int i = 0; i < 10; i++) {
@@ -127,16 +127,6 @@ public class WarehouseView {
         guiWarehouse.getChildren().add(cv.getGuiCart());
     }
 
-    public List<CartView> getCartViews() {
-        List<CartView> carts = new ArrayList<>();
-        for (UnitView unitView : unitViews) {
-            if (unitView instanceof CartView) {
-                carts.add((CartView) unitView);
-            }
-        }
-        return carts;
-    }
-
     /**
      * Updates gui of warehouse
      */
@@ -145,8 +135,8 @@ public class WarehouseView {
             switch (unitView.getUnitType()) {
                 case CARTVIEW:
                     Rectangle guiCart = ((CartView) unitView).getGuiCart();
-                    guiCart.setTranslateX(60 * unitView.getUnitPosition().getColumn() + 15);
-                    guiCart.setTranslateY(60 * unitView.getUnitPosition().getRow() + 15);
+                    guiCart.setTranslateX(60 * unitView.getUnitPosition().getColumn() + 7.5); //+7,5 because cart is slightly smaller
+                    guiCart.setTranslateY(60 * unitView.getUnitPosition().getRow() + 7.5); //+7,5 because cart is slightly smaller
                     break;
                 case SHELFVIEW:
                     Rectangle guiShelf = ((ShelfView) unitView).getGuiShelf();
@@ -160,5 +150,46 @@ public class WarehouseView {
                     break;
             }
         }
+    }
+
+    public List<UnitView> getUnitViews() {
+        return unitViews;
+    }
+
+    public void setUnitViews(List<UnitView> unitViews) {
+        this.unitViews = unitViews;
+    }
+
+    public List<CartView> getCartViews() {
+        List<CartView> carts = new ArrayList<>();
+        for (UnitView unitView : unitViews) {
+            if (unitView instanceof CartView) {
+                carts.add((CartView) unitView);
+            }
+        }
+        return carts;
+    }
+
+    /**
+     * Gets UnitView at specified coordinates
+     * @param coords Coords
+     * @return UnitView
+     */
+    public UnitView getUnitViewAtCoords(Coords coords){
+        for(UnitView unitView : unitViews){
+            if(unitView.getUnitPosition().equals(coords)){
+                return unitView;
+            }
+        }
+        return null;
+    }
+
+    public PathView getPathViewAtCoords(Coords coords){
+        for(UnitView unitView : unitViews){
+            if(unitView.getUnitPosition().equals(coords) && unitView instanceof PathView){
+                return (PathView) unitView;
+            }
+        }
+        return null;
     }
 }

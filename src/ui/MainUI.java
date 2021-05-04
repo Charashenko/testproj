@@ -9,6 +9,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -34,6 +35,7 @@ import view.ShelfView;
 import view.WarehouseView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
@@ -45,9 +47,11 @@ import java.util.Date;
  */
 public class MainUI extends Application {
 
-    private static int clock = 500;
+    private static Clock clock = new Clock(1000);
     private static final Text informationText = new Text();
     private static WarehouseView warehouseView;
+    private static StartPoint startPoint;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -77,6 +81,7 @@ public class MainUI extends Application {
                 "-fx-border-width: 2;" +
                 "-fx-border-insets: 2;" +
                 "-fx-border-color: black;";
+
         MenuBar menuBar = new MenuBar();
         Menu fileMenu = new Menu("File");
         MenuItem importOrderItem = new MenuItem("Import order file");
@@ -119,11 +124,34 @@ public class MainUI extends Application {
         buttonBox.setAlignment(Pos.CENTER);
         Button run = new Button("Run");
         Button stop = new Button("Stop");
+        stop.setDisable(true);
+        Button reset = new Button("Reset");
+        reset.setDisable(true);
         Button configure = new Button("Configure");
-        run.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> simulationIndicator.setVisible(true));
-        stop.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> simulationIndicator.setVisible(false));
-        configure.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> new OnConfigureButtonClick().handle(mouseEvent, clockLabel));
-        buttonBox.getChildren().addAll(run, configure, stop);
+        //Thread clockThread = new Thread(() -> systemUpdate(clockLabel));
+
+        run.setOnAction(actionEvent -> {
+            simulationIndicator.setVisible(true);
+            run.setDisable(true);
+            stop.setDisable(false);
+            reset.setDisable(false);
+            //clockThread.start();
+        });
+        stop.setOnAction( mouseEvent -> {
+            simulationIndicator.setVisible(false);
+            stop.setDisable(true);
+            run.setDisable(false);
+            //clockThread.interrupt();
+        });
+        configure.setOnAction(
+                mouseEvent -> new OnConfigureButtonClick().handle(mouseEvent, clockLabel, clock));
+        reset.setOnAction(mouseEvent -> {
+            reset.setDisable(true);
+//            warehouseView.setUnitViews(new ArrayList<>(startPoint.getUnitViews()));
+            warehouseView.createDefaultUnitViews();
+            warehouseView.drawGui();
+        });
+        buttonBox.getChildren().addAll(run, stop, configure, reset);
 
         informationText.setFont(new Font("", 18));
         informationText.setTextAlignment(TextAlignment.CENTER);
@@ -135,10 +163,13 @@ public class MainUI extends Application {
         mainSection.getChildren().add(tabPane);
         mainSection.getChildren().add(informationPanel);
 
-        Timeline timeline = new Timeline(new KeyFrame(
-                Duration.millis(clock), ae -> {
-                    if (simulationIndicator.isVisible()) systemUpdate(clockLabel);
-                }));
+        Timeline timeline = new Timeline();
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(clock.getClock()), ae -> {
+            if (simulationIndicator.isVisible()){
+                systemUpdate(clockLabel);
+            }
+        });
+        timeline.getKeyFrames().add(keyFrame);
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
@@ -156,7 +187,7 @@ public class MainUI extends Application {
         ZoomableScrollPane zoomablePane = new ZoomableScrollPane();
         zoomablePane.setPrefSize(1920, 1080);
         warehouseView = new WarehouseView(warehouseSize, informationText);
-        //warehouseView.drawGui();
+        startPoint = new StartPoint(new ArrayList<>(warehouseView.getUnitViews()));
         zoomablePane.addContent(warehouseView.getGuiWarehouse());
         return zoomablePane;
     }
@@ -184,13 +215,19 @@ public class MainUI extends Application {
      *
      * @param cl Label to be updated
      */
-    public static void systemUpdate(Label cl) {
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        Date date = new Date(System.currentTimeMillis());
-        cl.setText(String.valueOf(clock));
-        for (CartView cv : warehouseView.getCartViews()){
-            cv.getCart().nextStep(clock-clock/10);
+    public static void systemUpdate(Label cl){
+        cl.setText(String.valueOf(clock.getClock()));
+        for (CartView cv : warehouseView.getCartViews()) {
+            cv.getCart().nextStep(clock.getClock() - clock.getClock() / 10, warehouseView);
         }
+//        try {
+//            while (!Thread.currentThread().isInterrupted()) {
+//
+//                Thread.sleep(clock.getClock());
+//            }
+//        } catch (InterruptedException e){
+//            e.printStackTrace();
+//        }
     }
 
 }
