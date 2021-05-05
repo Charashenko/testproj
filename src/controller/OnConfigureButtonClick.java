@@ -2,17 +2,11 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Clock;
 
@@ -27,11 +21,11 @@ public class OnConfigureButtonClick {
      * Handle mouse click event
      * @param event Mouse click event
      */
-    public void handle(ActionEvent event, Label hboxClock, Clock clock){
+    public void handle(ActionEvent event, Clock clock){
         event.consume();
         VBox root = new VBox();
 
-        Label currentClock = new Label(hboxClock.getText());
+        Label currentClock = new Label(String.valueOf(clock.getClock()));
         Button confirm = new Button("Confirm");
         TextField newClock = new TextField();
         confirm.setOnAction(actionEvent -> {

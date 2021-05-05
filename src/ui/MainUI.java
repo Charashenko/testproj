@@ -48,9 +48,11 @@ import java.util.Date;
 public class MainUI extends Application {
 
     private static Clock clock = new Clock(1000);
+    private static int counter = 0;
     private static final Text informationText = new Text();
     private static WarehouseView warehouseView;
     private static StartPoint startPoint;
+    private static Label label = new Label();
 
     public static void main(String[] args) {
         launch(args);
@@ -107,21 +109,12 @@ public class MainUI extends Application {
 
         VBox informationPanel = new VBox();
 
-        HBox clockBox = new HBox();
-        clockBox.setSpacing(7);
-        clockBox.setAlignment(Pos.CENTER);
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        Date date = new Date(System.currentTimeMillis());
-        Label clockLabel = new Label(formatter.format(date));
-        clockLabel.setFont(new Font("", 20));
-        ProgressIndicator simulationIndicator = new ProgressIndicator(-1);
-        simulationIndicator.setPrefSize(20, 20);
-        simulationIndicator.setVisible(false);
-        clockBox.getChildren().addAll(clockLabel, simulationIndicator);
-
         HBox buttonBox = new HBox();
         buttonBox.setSpacing(7);
         buttonBox.setAlignment(Pos.CENTER);
+        ProgressIndicator simulationIndicator = new ProgressIndicator(-1);
+        simulationIndicator.setPrefSize(20, 20);
+        simulationIndicator.setVisible(false);
         Button run = new Button("Run");
         Button stop = new Button("Stop");
         stop.setDisable(true);
@@ -135,7 +128,7 @@ public class MainUI extends Application {
             stop.setDisable(false);
             reset.setDisable(false);
             clock.setRunning(true);
-            systemUpdate(clockLabel);
+            systemUpdate();
         });
 
         stop.setOnAction(mouseEvent -> {
@@ -146,7 +139,7 @@ public class MainUI extends Application {
         });
 
         configure.setOnAction(
-                mouseEvent -> new OnConfigureButtonClick().handle(mouseEvent, clockLabel, clock));
+                mouseEvent -> new OnConfigureButtonClick().handle(mouseEvent, clock));
 
         reset.setOnAction(mouseEvent -> {
             simulationIndicator.setVisible(false);
@@ -158,12 +151,13 @@ public class MainUI extends Application {
             warehouseView.drawGui();
         });
 
-        buttonBox.getChildren().addAll(run, stop, configure, reset);
+        buttonBox.getChildren().addAll(run, stop, configure, reset, simulationIndicator);
 
         informationText.setFont(new Font("", 18));
         informationText.setTextAlignment(TextAlignment.CENTER);
-        informationPanel.getChildren().addAll(clockBox, buttonBox, informationText);
+        informationPanel.getChildren().addAll(buttonBox, informationText);
         informationPanel.setMinWidth(350);
+        informationPanel.setPadding(new Insets(20,2,2,2));
         informationPanel.setAlignment(Pos.TOP_CENTER);
         informationPanel.setSpacing(7);
 
@@ -209,14 +203,11 @@ public class MainUI extends Application {
 
     /**
      * Updates system on passed time. For testing purposes updates label every second with current time
-     *
-     * @param cl Label to be updated
      */
-    public static void systemUpdate(Label cl) {
+    public static void systemUpdate() {
         new Thread(() -> {
             try {
                 while (true) {
-                    cl.setText(String.valueOf(clock.getClock()));
                     for (CartView cv : warehouseView.getCartViews()) {
                         cv.getCart().nextStep(clock.getClock() - clock.getClock() / 10, warehouseView);
                     }
