@@ -4,40 +4,26 @@ import controller.OnConfigureButtonClick;
 import controller.OnExitApp;
 import controller.OnImportOrderFile;
 import controller.OnShowAppAbout;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import model.*;
-import model.areas.AreaType;
-import model.areas.ShelvingArea;
+import model.Clock;
+import model.Size;
+import model.StartPoint;
 import view.CartView;
-import view.PathView;
-import view.ShelfView;
 import view.WarehouseView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 
 /**
  * Main MainUI class
@@ -48,11 +34,9 @@ import java.util.Date;
 public class MainUI extends Application {
 
     private static Clock clock = new Clock(1000);
-    private static int counter = 0;
     private static final Text informationText = new Text();
     private static WarehouseView warehouseView;
     private static StartPoint startPoint;
-    private static Label label = new Label();
 
     public static void main(String[] args) {
         launch(args);
@@ -148,6 +132,7 @@ public class MainUI extends Application {
             stop.setDisable(true);
             clock.setRunning(false);
             warehouseView.createDefaultUnitViews();
+            //warehouseView.setUnitViews(new ArrayList<>(startPoint.getUnitViews())); //TODO Opravit do buducna... (kappa)
             warehouseView.drawGui();
         });
 

@@ -31,6 +31,7 @@ public class WarehouseView {
         guiWarehouse = new Pane();
 
         createDefaultUnitViews();
+
         drawGui();
     }
 
@@ -39,8 +40,8 @@ public class WarehouseView {
     }
 
     public void createDefaultUnitViews() { //default
-        //add paths everywhere
         guiWarehouse.getChildren().clear();
+        //add paths everywhere
         for (int row = 0; row < sizeOfWarehouse.getRowCount(); row++) {
             for (int col = 0; col < sizeOfWarehouse.getColumnCount(); col++) {
                 PathView pathView = new PathView(new Coords(row, col), informationText);
@@ -158,6 +159,23 @@ public class WarehouseView {
 
     public void setUnitViews(List<UnitView> unitViews) {
         this.unitViews = unitViews;
+        guiWarehouse.getChildren().clear();
+        for(UnitView unitView : unitViews){
+            switch (unitView.getUnitType()) {
+                case CARTVIEW:
+                    Rectangle guiCart = ((CartView) unitView).getGuiCart();
+                    guiWarehouse.getChildren().add(guiCart);
+                    break;
+                case SHELFVIEW:
+                    Rectangle guiShelf = ((ShelfView) unitView).getGuiShelf();
+                    guiWarehouse.getChildren().add(guiShelf);
+                    break;
+                case PATHVIEW:
+                    Rectangle guiPath = ((PathView) unitView).getGuiPath();
+                    guiWarehouse.getChildren().add(guiPath);
+                    break;
+            }
+        }
     }
 
     public List<CartView> getCartViews() {
