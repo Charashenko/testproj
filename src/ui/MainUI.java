@@ -128,29 +128,36 @@ public class MainUI extends Application {
         Button reset = new Button("Reset");
         reset.setDisable(true);
         Button configure = new Button("Configure");
-        //Thread clockThread = new Thread(() -> systemUpdate(clockLabel));
 
         run.setOnAction(actionEvent -> {
             simulationIndicator.setVisible(true);
             run.setDisable(true);
             stop.setDisable(false);
             reset.setDisable(false);
-            //clockThread.start();
+            clock.setRunning(true);
+            systemUpdate(clockLabel);
         });
-        stop.setOnAction( mouseEvent -> {
+
+        stop.setOnAction(mouseEvent -> {
             simulationIndicator.setVisible(false);
             stop.setDisable(true);
             run.setDisable(false);
-            //clockThread.interrupt();
+            clock.setRunning(false);
         });
+
         configure.setOnAction(
                 mouseEvent -> new OnConfigureButtonClick().handle(mouseEvent, clockLabel, clock));
+
         reset.setOnAction(mouseEvent -> {
+            simulationIndicator.setVisible(false);
             reset.setDisable(true);
-//            warehouseView.setUnitViews(new ArrayList<>(startPoint.getUnitViews()));
+            run.setDisable(false);
+            stop.setDisable(true);
+            clock.setRunning(false);
             warehouseView.createDefaultUnitViews();
             warehouseView.drawGui();
         });
+
         buttonBox.getChildren().addAll(run, stop, configure, reset);
 
         informationText.setFont(new Font("", 18));
@@ -162,16 +169,6 @@ public class MainUI extends Application {
 
         mainSection.getChildren().add(tabPane);
         mainSection.getChildren().add(informationPanel);
-
-        Timeline timeline = new Timeline();
-        KeyFrame keyFrame = new KeyFrame(Duration.millis(clock.getClock()), ae -> {
-            if (simulationIndicator.isVisible()){
-                systemUpdate(clockLabel);
-            }
-        });
-        timeline.getKeyFrames().add(keyFrame);
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
 
         root.getChildren().addAll(menuBar, mainSection);
     }
@@ -215,19 +212,21 @@ public class MainUI extends Application {
      *
      * @param cl Label to be updated
      */
-    public static void systemUpdate(Label cl){
-        cl.setText(String.valueOf(clock.getClock()));
-        for (CartView cv : warehouseView.getCartViews()) {
-            cv.getCart().nextStep(clock.getClock() - clock.getClock() / 10, warehouseView);
-        }
-//        try {
-//            while (!Thread.currentThread().isInterrupted()) {
-//
-//                Thread.sleep(clock.getClock());
-//            }
-//        } catch (InterruptedException e){
-//            e.printStackTrace();
-//        }
+    public static void systemUpdate(Label cl) {
+        new Thread(() -> {
+            try {
+                while (true) {
+                    cl.setText(String.valueOf(clock.getClock()));
+                    for (CartView cv : warehouseView.getCartViews()) {
+                        cv.getCart().nextStep(clock.getClock() - clock.getClock() / 10, warehouseView);
+                    }
+                    Thread.sleep(clock.getClock());
+                    if(!clock.isRunning()) break;
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
 }
