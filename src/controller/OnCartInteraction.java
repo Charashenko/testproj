@@ -1,10 +1,16 @@
 package controller;
 
+import javafx.animation.TranslateTransition;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
+import model.Coords;
+import model.Direction;
 import model.Goods;
+import ui.MainUI;
 import view.CartView;
+import view.PathView;
 
 import java.util.HashMap;
 
@@ -40,9 +46,49 @@ public class OnCartInteraction {
             }
             r.setFill(Color.GOLDENROD);
             cv.getInformationText().setText(output);
+            Coords currentCoords = cv.getCart().getHomePosition();
+            for(Direction d: cv.getCart().getPlannedRoute().getPlannedPath().values()) {
+                switch (d) {
+                    case UP:
+                        currentCoords.setRow(currentCoords.getRow()-1);
+                        break;
+                    case DOWN:
+                        currentCoords.setRow(currentCoords.getRow()+1);
+                        break;
+                    case LEFT:
+                        currentCoords.setColumn(currentCoords.getColumn()-1);
+                        break;
+                    case RIGHT:
+                        currentCoords.setColumn(currentCoords.getColumn()+1);
+                        break;
+                }
+                PathView pathView = MainUI.getWarehouseView().getPathViewAtCoords(currentCoords);
+                pathView.setShowingCartRoute(true);
+                pathView.updatePathColor();
+            }
         } else if (event.getEventType().equals(MouseEvent.MOUSE_EXITED)) {
             r.setFill(cv.getCartColor());
             cv.getInformationText().setText("");
+            Coords currentCoords = cv.getCart().getHomePosition();
+            for(Direction d: cv.getCart().getPlannedRoute().getPlannedPath().values()) {
+                switch (d) {
+                    case UP:
+                        currentCoords.setRow(currentCoords.getRow()-1);
+                        break;
+                    case DOWN:
+                        currentCoords.setRow(currentCoords.getRow()+1);
+                        break;
+                    case LEFT:
+                        currentCoords.setColumn(currentCoords.getColumn()-1);
+                        break;
+                    case RIGHT:
+                        currentCoords.setColumn(currentCoords.getColumn()+1);
+                        break;
+                }
+                PathView pathView = MainUI.getWarehouseView().getPathViewAtCoords(currentCoords);
+                pathView.setShowingCartRoute(false);
+                pathView.updatePathColor();
+            }
         }
     }
 

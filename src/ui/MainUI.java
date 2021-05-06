@@ -205,4 +205,7 @@ public class MainUI extends Application {
         }).start();
     }
 
+    public static WarehouseView getWarehouseView() {
+        return warehouseView;
+    }
 }

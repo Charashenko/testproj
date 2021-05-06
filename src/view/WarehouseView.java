@@ -1,6 +1,5 @@
 package view;
 
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -31,7 +30,6 @@ public class WarehouseView {
         guiWarehouse = new Pane();
 
         createDefaultUnitViews();
-
         drawGui();
     }
 
