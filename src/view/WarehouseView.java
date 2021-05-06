@@ -23,8 +23,8 @@ public class WarehouseView {
      *
      * @param informationText Information panel text field
      */
-    public WarehouseView(Size sizeOfWarehouse, Text informationText) {
-        this.sizeOfWarehouse = sizeOfWarehouse;
+    public WarehouseView(Text informationText) {
+        this.sizeOfWarehouse = new Size(22, 22);
         this.informationText = informationText;
         unitViews = new ArrayList<>();
         guiWarehouse = new Pane();
@@ -118,10 +118,6 @@ public class WarehouseView {
         }
         cr.setPlannedPath(directions);
         cv.getCart().setPlannedRoute(cr);
-        unitViews.add(cv);
-        guiWarehouse.getChildren().add(cv.getGuiCart());
-
-        cv = new CartView(new Coords(sizeOfWarehouse.getRowCount() - 1, 6), informationText);
         unitViews.add(cv);
         guiWarehouse.getChildren().add(cv.getGuiCart());
     }

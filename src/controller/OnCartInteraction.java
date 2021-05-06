@@ -11,6 +11,7 @@ import model.Goods;
 import ui.MainUI;
 import view.CartView;
 import view.PathView;
+import view.WarehouseView;
 
 import java.util.HashMap;
 

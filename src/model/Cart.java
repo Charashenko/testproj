@@ -2,6 +2,7 @@ package model;
 
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
+import ui.MainUI;
 import view.*;
 
 import java.util.*;
