@@ -1,20 +1,16 @@
 package ui;
 
-import controller.OnConfigureButtonClick;
 import controller.OnExitApp;
 import controller.OnImportOrderFile;
 import controller.OnShowAppAbout;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -154,13 +150,13 @@ public class MainUI extends Application {
         configureBox.getChildren().addAll(currentBox, newBox);
 
         configureButton.setOnAction(mouseEvent -> {
-                    try {
-                        clock.setClock(Integer.parseInt(newClock.getText()));
-                        currentClock.setText(newClock.getText());
-                    } catch (NumberFormatException e){
-                        mouseEvent.consume();
-                    }
-                });
+            try {
+                clock.setClock(Integer.parseInt(newClock.getText()));
+                currentClock.setText(newClock.getText());
+            } catch (NumberFormatException e){
+                mouseEvent.consume();
+            }
+        });
 
         informationText.setFont(new Font("", 18));
         informationText.setTextAlignment(TextAlignment.CENTER);
@@ -297,15 +293,6 @@ public class MainUI extends Application {
     }
 
     /**
-     * Initial fill up of warehouse shelves
-     *
-     * @param warehouseView Warehouse view object
-     */
-    public static void initialFillUp(WarehouseView warehouseView) {
-
-    }
-
-    /**
      * Updates system every specified time and calculates routes of carts
      */
     public static void systemUpdate() {
@@ -323,20 +310,20 @@ public class MainUI extends Application {
             }
         }).start();
 
-        new Thread(() -> { //pathfinding
-            try {
-                Pathfinder pathfinder = new Pathfinder(warehouseView);
-                while (true) {
-                    for (CartView cv : warehouseView.getCartViews()) {
-
-                    }
-                    Thread.sleep(clock.getClock());
-                    if(!clock.isRunning()) break;
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
+//        new Thread(() -> { //pathfinding
+//            try {
+//                Pathfinder pathfinder = new Pathfinder(warehouseView);
+//                while (true) {
+//                    for (CartView cv : warehouseView.getCartViews()) {
+//
+//                    }
+//                    Thread.sleep(clock.getClock());
+//                    if(!clock.isRunning()) break;
+//                }
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }).start();
     }
 
     public static WarehouseView getWarehouseView() {

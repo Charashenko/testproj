@@ -41,8 +41,8 @@ public class OnCartInteraction {
                     }
                 }
                 for (Goods g : numberOfSameGoods.keySet()) {
-                    output = String.format("%s%dx %s [Price] %s [Weight] %s%n", output, numberOfSameGoods.get(g),
-                            g.getGoodsType().name(), g.getPrice(), g.getWeight());
+                    output = String.format("%s%dx %s [Price] %s%n", output, numberOfSameGoods.get(g),
+                            g.getGoodsType().name(), g.getPrice());
                 }
             }
             r.setFill(Color.GOLDENROD);

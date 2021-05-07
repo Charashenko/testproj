@@ -4,11 +4,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import model.*;
+import org.yaml.snakeyaml.Yaml;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class WarehouseView {
 
@@ -37,8 +39,9 @@ public class WarehouseView {
         return guiWarehouse;
     }
 
-    public void createDefaultUnitViews() { //default
+    public void createDefaultUnitViews() {
         guiWarehouse.getChildren().clear();
+
         //add paths everywhere
         for (int row = 0; row < sizeOfWarehouse.getRowCount(); row++) {
             for (int col = 0; col < sizeOfWarehouse.getColumnCount(); col++) {
@@ -47,16 +50,12 @@ public class WarehouseView {
                 guiWarehouse.getChildren().add(pathView.getGuiPath());
             }
         }
+
         //add shelves
-        for (int i = 0; i < 7; i++) {
-            for (int row = 1; row < 17; row++) {
-                for (int col = 1 + 3 * i; col < 3 + 3 * i; col++) {
-                    ShelfView shelfView = new ShelfView(new Coords(row, col), informationText);
-                    unitViews.add(shelfView);
-                    guiWarehouse.getChildren().add(shelfView.getGuiShelf());
-                }
-            }
-        }
+        List<ShelfView> shelfViews = parseYaml();
+        unitViews.addAll(shelfViews);
+        guiWarehouse.getChildren().addAll(shelfViews.stream().map(ShelfView::getGuiShelf).collect(Collectors.toList()));
+
         //add carts
         CartView cv = new CartView(new Coords(sizeOfWarehouse.getRowCount() - 1, 0), informationText);
 
@@ -101,7 +100,7 @@ public class WarehouseView {
         guiWarehouse.getChildren().add(cv.getGuiCart());
 
         cv = new CartView(new Coords(0, 0), informationText);
-        cv.getCart().setTransportedGoods(Collections.singletonList(new Goods(GoodsType.GITARA, 25, 1.8)));
+        cv.getCart().setTransportedGoods(Collections.singletonList(new Goods(GoodsType.GITARA, 25)));
         cr = new CartRoute();
         directions = new HashMap<>();
         for (int i = 0; i < 10; i++) {
@@ -154,7 +153,7 @@ public class WarehouseView {
     public void setUnitViews(List<UnitView> unitViews) {
         this.unitViews = unitViews;
         guiWarehouse.getChildren().clear();
-        for(UnitView unitView : unitViews){
+        for (UnitView unitView : unitViews) {
             switch (unitView.getUnitType()) {
                 case CARTVIEW:
                     Rectangle guiCart = ((CartView) unitView).getGuiCart();
@@ -184,24 +183,71 @@ public class WarehouseView {
 
     /**
      * Gets UnitView at specified coordinates
-     * @param coords Coords
+     *
+     * @param coords Coordinates
      * @return UnitView
      */
-    public UnitView getUnitViewAtCoords(Coords coords){
-        for(UnitView unitView : unitViews){
-            if(unitView.getUnitPosition().equals(coords)){
+    public UnitView getUnitViewAtCoords(Coords coords) {
+        for (UnitView unitView : unitViews) {
+            if (unitView.getUnitPosition().equals(coords)) {
                 return unitView;
             }
         }
         return null;
     }
 
-    public PathView getPathViewAtCoords(Coords coords){
-        for(UnitView unitView : unitViews){
-            if(unitView.getUnitPosition().equals(coords) && unitView instanceof PathView){
+    /**
+     * Gets PathView at specified coordinates
+     * @param coords Coordinates
+     * @return PathView
+     */
+    public PathView getPathViewAtCoords(Coords coords) {
+        for (UnitView unitView : unitViews) {
+            if (unitView.getUnitPosition().equals(coords) && unitView instanceof PathView) {
                 return (PathView) unitView;
             }
         }
         return null;
+    }
+
+    /**
+     * Initialization of warehouse from file
+     */
+    public List<ShelfView> parseYaml() {
+        List<ShelfView> shelfViews = new ArrayList<>();
+        try {
+            InputStream inputStream = new FileInputStream("data/test.yaml");
+            Yaml yaml = new Yaml();
+            Map<String, Object> data = yaml.load(inputStream);
+            for (String s : data.keySet()) {
+                ShelfView shelfView;
+                int row = 0, col = 0;
+                LinkedHashMap<String, Object> unit = (LinkedHashMap<String, Object>) data.get(s);
+                LinkedHashMap<String, Object> content = new LinkedHashMap<>();
+                for (String s1 : unit.keySet()) {
+                    switch (s1) {
+                        case "col":
+                            col = (int) unit.get(s1);
+                            break;
+                        case "row":
+                            row = (int) unit.get(s1);
+                            break;
+                        case "content":
+                            content = (LinkedHashMap<String, Object>) unit.get(s1);
+                            break;
+                    }
+                }
+                shelfView = new ShelfView(new Coords(row, col), informationText);
+                for (String s2 : content.keySet()) {
+                    for (int i = 0; i < (int) content.get(s2); i++) {
+                        shelfView.getShelf().addGoods(new Goods(GoodsType.valueOf(s2), 10));
+                    }
+                }
+                shelfViews.add(shelfView);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return shelfViews;
     }
 }

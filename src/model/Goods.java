@@ -9,17 +9,14 @@ public class Goods {
 
     private final GoodsType goodsType;
     private double price;
-    private double weight;
 
     /**
      * @param goodsType Type of goods from enum GoodsType.
      * @param price Price of goods.
-     * @param weight Weight of goods.
      */
-    public Goods(GoodsType goodsType, double price, double weight) {
+    public Goods(GoodsType goodsType, double price) {
         this.goodsType = goodsType;
         this.price = price;
-        this.weight = weight;
     }
 
     /**
@@ -47,22 +44,6 @@ public class Goods {
     }
 
     /**
-     * Returns weight of goods.
-     * @return Weight
-     */
-    public double getWeight() {
-        return weight;
-    }
-
-    /**
-     * Sets weight of goods item.
-     * @param weight Weight to be set.
-     */
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
-    /**
      * Compare goods items based on GoodsType, weight and price.
      * @param o Goods item to be compared.
      * @return True, if equal.
@@ -72,7 +53,7 @@ public class Goods {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Goods goods = (Goods) o;
-        return Double.compare(goods.price, price) == 0 && Double.compare(goods.weight, weight) == 0 && goodsType == goods.goodsType;
+        return goodsType == goods.goodsType;
     }
 
     /**
@@ -81,6 +62,6 @@ public class Goods {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(goodsType, price, weight);
+        return Objects.hash(goodsType, price);
     }
 }

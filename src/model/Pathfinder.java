@@ -13,5 +13,6 @@ public class Pathfinder {
 
     public void calcPathForCart(CartView cartView){
         Coords homePosition = cartView.getCart().getHomePosition();
+
     }
 }
