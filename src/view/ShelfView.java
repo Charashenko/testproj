@@ -22,9 +22,9 @@ public class ShelfView implements UnitView {
     private Coords unitPosition;
 
     public ShelfView(Coords position, Text informationText) {
-        this.guiShelf = new Rectangle(60, 60, shelfColor);
-        this.guiShelf.setArcHeight(10);
-        this.guiShelf.setArcWidth(10);
+        this.guiShelf = new Rectangle(30, 30, shelfColor);
+        this.guiShelf.setArcHeight(5);
+        this.guiShelf.setArcWidth(5);
         this.guiShelf.addEventHandler(MouseEvent.ANY, mouseEvent -> new OnShelfInteraction().handle(mouseEvent, this));
         this.shelf = new Shelf();
         this.informationText = informationText;

@@ -22,7 +22,7 @@ public class PathView implements UnitView {
     private boolean showingCartRoute = false;
 
     public PathView(Coords position, Text informationText) {
-        this.guiPath = new Rectangle(60, 60, pathColor);
+        this.guiPath = new Rectangle(30, 30, pathColor);
         this.guiPath.addEventHandler(MouseEvent.ANY, event -> new OnPathInteraction().handle(event, this));
         this.path = new Path();
         this.informationText = informationText;
@@ -55,20 +55,20 @@ public class PathView implements UnitView {
     public void updatePathColor(){
         if(getPath().isBlocked()){
             getGuiPath().setFill(blockedPathColor);
-            this.guiPath.setArcHeight(5);
-            this.guiPath.setArcWidth(5);
+            this.guiPath.setArcHeight(2.5);
+            this.guiPath.setArcWidth(2.5);
             this.guiPath.setScaleX(1);
             this.guiPath.setScaleY(1);
         } else if (showingCartRoute){
             getGuiPath().setFill(cartRouteColor);
-            this.guiPath.setArcHeight(60);
-            this.guiPath.setArcWidth(60);
+            this.guiPath.setArcHeight(30);
+            this.guiPath.setArcWidth(30);
             this.guiPath.setScaleX(0.5);
             this.guiPath.setScaleY(0.5);
         } else {
             getGuiPath().setFill(pathColor);
-            this.guiPath.setArcHeight(5);
-            this.guiPath.setArcWidth(5);
+            this.guiPath.setArcHeight(2.5);
+            this.guiPath.setArcWidth(2.5);
             this.guiPath.setScaleX(1);
             this.guiPath.setScaleY(1);
         }

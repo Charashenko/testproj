@@ -7,7 +7,6 @@ import model.*;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,7 +39,7 @@ public class WarehouseView {
     }
 
     public void createDefaultUnitViews() {
-        guiWarehouse.getChildren().clear();
+        guiWarehouse = new Pane();
 
         //add paths everywhere
         for (int row = 0; row < sizeOfWarehouse.getRowCount(); row++) {
@@ -129,18 +128,18 @@ public class WarehouseView {
             switch (unitView.getUnitType()) {
                 case CARTVIEW:
                     Rectangle guiCart = ((CartView) unitView).getGuiCart();
-                    guiCart.setTranslateX(60 * unitView.getUnitPosition().getColumn() + 7.5); //+7,5 because cart is slightly smaller
-                    guiCart.setTranslateY(60 * unitView.getUnitPosition().getRow() + 7.5); //+7,5 because cart is slightly smaller
+                    guiCart.setTranslateX(30 * unitView.getUnitPosition().getColumn() + 3.25); //+7,5 because cart is slightly smaller
+                    guiCart.setTranslateY(30 * unitView.getUnitPosition().getRow() + 3.25); //+7,5 because cart is slightly smaller
                     break;
                 case SHELFVIEW:
                     Rectangle guiShelf = ((ShelfView) unitView).getGuiShelf();
-                    guiShelf.setTranslateX(60 * unitView.getUnitPosition().getColumn());
-                    guiShelf.setTranslateY(60 * unitView.getUnitPosition().getRow());
+                    guiShelf.setTranslateX(30 * unitView.getUnitPosition().getColumn());
+                    guiShelf.setTranslateY(30 * unitView.getUnitPosition().getRow());
                     break;
                 case PATHVIEW:
                     Rectangle guiPath = ((PathView) unitView).getGuiPath();
-                    guiPath.setTranslateX(60 * unitView.getUnitPosition().getColumn());
-                    guiPath.setTranslateY(60 * unitView.getUnitPosition().getRow());
+                    guiPath.setTranslateX(30 * unitView.getUnitPosition().getColumn());
+                    guiPath.setTranslateY(30 * unitView.getUnitPosition().getRow());
                     break;
             }
         }

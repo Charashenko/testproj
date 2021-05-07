@@ -18,9 +18,9 @@ public class CartView implements UnitView {
     private Coords unitPosition;
 
     public CartView(Coords position, Text informationText) {
-        this.guiCart = new Rectangle(45,45, cartColor);
-        this.guiCart.setArcHeight(10);
-        this.guiCart.setArcWidth(10);
+        this.guiCart = new Rectangle(22.5,22.5, cartColor);
+        this.guiCart.setArcHeight(5);
+        this.guiCart.setArcWidth(5);
         this.guiCart.addEventHandler(MouseEvent.ANY, mouseEvent -> new OnCartInteraction().handle(mouseEvent, this));
         this.informationText = informationText;
         this.unitPosition = position;

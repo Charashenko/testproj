@@ -102,12 +102,16 @@ public class MainUI extends Application {
         stopButton.setDisable(true);
         Button resetButton = new Button("Reset");
         Button configureButton = new Button("Configure");
+        Button jumpButton = new Button("Jump");
+        TextField jumpValue = new TextField("3");
+        jumpValue.setPrefWidth(30);
 
         runButton.setOnAction(actionEvent -> {
             simulationIndicator.setVisible(true);
             runButton.setDisable(true);
             stopButton.setDisable(false);
             resetButton.setDisable(false);
+            jumpButton.setDisable(true);
             clock.setRunning(true);
             systemUpdate();
         });
@@ -116,6 +120,7 @@ public class MainUI extends Application {
             simulationIndicator.setVisible(false);
             stopButton.setDisable(true);
             runButton.setDisable(false);
+            jumpButton.setDisable(false);
             clock.setRunning(false);
         });
 
@@ -125,12 +130,16 @@ public class MainUI extends Application {
             runButton.setDisable(false);
             stopButton.setDisable(true);
             clock.setRunning(false);
-            warehouseView.createDefaultUnitViews();
-            //warehouseView.setUnitViews(new ArrayList<>(startPoint.getUnitViews())); //TODO Opravit do buducna... ()
-            warehouseView.drawGui();
+            warehouseTab.setContent(setupWarehouseTab(informationText));
+            warehouseTab.getContent().setStyle(borderStyle);
         });
 
-        buttonBox.getChildren().addAll(runButton, stopButton, configureButton, resetButton, simulationIndicator);
+        jumpButton.setOnAction(actionEvent -> {
+            resetButton.setDisable(false);
+            jumpNumberOfPoints(Integer.parseInt(jumpValue.getText()));
+        });
+
+        buttonBox.getChildren().addAll(runButton, stopButton, configureButton, resetButton, jumpButton, jumpValue, simulationIndicator);
 
         VBox configureBox = new VBox();
         HBox currentBox = new HBox();
@@ -161,7 +170,7 @@ public class MainUI extends Application {
         informationText.setFont(new Font("", 18));
         informationText.setTextAlignment(TextAlignment.CENTER);
         informationPanel.getChildren().addAll(buttonBox, configureBox, informationText);
-        informationPanel.setMinWidth(350);
+        informationPanel.setMinWidth(400);
         informationPanel.setPadding(new Insets(20,2,2,2));
         informationPanel.setAlignment(Pos.TOP_CENTER);
         informationPanel.setSpacing(7);
@@ -303,7 +312,7 @@ public class MainUI extends Application {
                         cv.getCart().nextStep(clock.getClock() - clock.getClock() / 10, warehouseView);
                     }
                     Thread.sleep(clock.getClock());
-                    if(!clock.isRunning()) break;
+                    if (!clock.isRunning()) break;
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -324,6 +333,17 @@ public class MainUI extends Application {
 //                e.printStackTrace();
 //            }
 //        }).start();
+    }
+
+    public static void jumpNumberOfPoints(int jumpValue){
+        new Thread(() -> {
+            for (int i = 0; i < jumpValue; i++) {
+                for (CartView cv : warehouseView.getCartViews()) {
+                    cv.getCart().nextStepWithoutAnimation(warehouseView);
+                }
+            }
+            warehouseView.drawGui();
+        }).start();
     }
 
     public static WarehouseView getWarehouseView() {

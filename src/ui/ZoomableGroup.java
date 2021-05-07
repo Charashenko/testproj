@@ -25,12 +25,12 @@ public class ZoomableGroup extends Group {
     public void onScroll(ScrollEvent event){
         Node node = this.getChildren().get(0);
         if(event.getDeltaY()>0){ // zoom in
-            if(node.getScaleX() < 1.7) {
+            if(node.getScaleX() < 2.5) { // maximum zoom in
                 node.setScaleX(node.getScaleX() * scale * scale);
                 node.setScaleY(node.getScaleY() * scale * scale);
             }
         } else if(event.getDeltaY()<0) { // zoom out
-            if(node.getScaleX() > 0.3) {
+            if(node.getScaleX() > 0.8) { // maximum zoom out
                 node.setScaleX(node.getScaleX() * 1 / scale);
                 node.setScaleY(node.getScaleY() * 1 / scale);
             }
