@@ -48,6 +48,9 @@ public class Order {
         return resultString;
     }
 
+    /**
+     * Clears all goods from current order
+     */
     public void clearOrder(){
         order.clear();
     }

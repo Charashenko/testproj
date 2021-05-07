@@ -20,10 +20,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import model.Clock;
-import model.GoodsType;
-import model.Order;
-import model.StartPoint;
+import model.*;
 import view.CartView;
 import view.WarehouseView;
 
@@ -309,14 +306,29 @@ public class MainUI extends Application {
     }
 
     /**
-     * Updates system on passed time. For testing purposes updates label every second with current time
+     * Updates system every specified time and calculates routes of carts
      */
     public static void systemUpdate() {
-        new Thread(() -> {
+        new Thread(() -> { //cart movement thread
             try {
                 while (true) {
                     for (CartView cv : warehouseView.getCartViews()) {
                         cv.getCart().nextStep(clock.getClock() - clock.getClock() / 10, warehouseView);
+                    }
+                    Thread.sleep(clock.getClock());
+                    if(!clock.isRunning()) break;
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        new Thread(() -> { //pathfinding
+            try {
+                Pathfinder pathfinder = new Pathfinder(warehouseView);
+                while (true) {
+                    for (CartView cv : warehouseView.getCartViews()) {
+
                     }
                     Thread.sleep(clock.getClock());
                     if(!clock.isRunning()) break;
