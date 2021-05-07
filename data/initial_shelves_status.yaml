@@ -1,0 +1,1192 @@
+shelf1:
+  col: 1
+  content:
+    GITARA: 1
+    MOBIL: 1
+    STOL: 3
+  row: 1
+
+shelf2:
+  col: 1
+  content:
+    HADICA: 1
+    SUDOK: 3
+    TALIR: 3
+  row: 2
+
+shelf3:
+  col: 1
+  content:
+    GAUC: 0
+    KALHOTY: 3
+    STETEC: 4
+  row: 3
+
+shelf4:
+  col: 1
+  content:
+    GAUC: 3
+    KOLO: 2
+    KOMODA: 2
+    LOPTA: 4
+  row: 4
+
+shelf5:
+  col: 1
+  content:
+    HADICA: 1
+  row: 5
+
+shelf6:
+  col: 1
+  content:
+    MYS: 2
+  row: 6
+
+shelf7:
+  col: 1
+  content:
+    CEPICE: 4
+    KABEL: 1
+  row: 7
+
+shelf8:
+  col: 1
+  content:
+    MOBIL: 3
+    SUDOK: 0
+    TALIR: 4
+  row: 8
+
+shelf9:
+  col: 1
+  content:
+    CEPICE: 4
+  row: 9
+
+shelf10:
+  col: 1
+  content:
+    KRATASY: 2
+    MOBIL3: 4
+    MYS: 3
+  row: 10
+
+shelf11:
+  col: 2
+  content:
+    GITARA: 3
+    NOTEBOOK: 3
+    TABLET: 4
+  row: 1
+
+shelf12:
+  col: 2
+  content:
+    CEPICE: 3
+    KABEL: 4
+    KOLO: 1
+    ZIAROVKA: 4
+  row: 2
+
+shelf13:
+  col: 2
+  content:
+    SKRIN: 1
+  row: 3
+
+shelf14:
+  col: 2
+  content:
+    REPRODUKTOR: 4
+    TABLET: 1
+    TRICKO: 2
+  row: 4
+
+shelf15:
+  col: 2
+  content:
+    ZIAROVKA: 1
+  row: 5
+
+shelf16:
+  col: 2
+  content:
+    LOPTA: 3
+    REPRODUKTOR: 3
+  row: 6
+
+shelf17:
+  col: 2
+  content:
+    SKRIN: 1
+  row: 7
+
+shelf18:
+  col: 2
+  content:
+    BOTY: 1
+    ROBOT: 0
+  row: 8
+
+shelf19:
+  col: 2
+  content:
+    SRUBOVAK: 1
+  row: 9
+
+shelf20:
+  col: 2
+  content:
+    GAUC: 1
+  row: 10
+
+shelf21:
+  col: 4
+  content:
+    BRYLE: 4
+    HADICA: 0
+    KOBEREC: 3
+  row: 1
+
+shelf22:
+  col: 4
+  content:
+    KOLO: 4
+    MOBIL: 1
+    MOBIL4: 1
+    SUDOK: 3
+  row: 2
+
+shelf23:
+  col: 4
+  content:
+    BATERKA: 3
+    STOL: 2
+  row: 3
+
+shelf24:
+  col: 4
+  content:
+    HODINKY: 4
+    LAMPA: 4
+    TABLET: 4
+  row: 4
+
+shelf25:
+  col: 4
+  content:
+    BOTNIK: 4
+    POLICKA: 0
+    TALIR: 3
+  row: 5
+
+shelf26:
+  col: 4
+  content:
+    BOTNIK: 3
+    NOTEBOOK: 4
+    PILKA: 4
+    SUDOK: 3
+  row: 6
+
+shelf27:
+  col: 4
+  content:
+    KOMODA: 2
+    SLUCHATKA: 2
+    SRUBOVAK: 3
+    STOLICKA: 3
+  row: 7
+
+shelf28:
+  col: 4
+  content:
+    KLADIVO: 4
+  row: 8
+
+shelf29:
+  col: 4
+  content:
+    BOTY: 3
+    MOBIL3: 4
+    PILKA: 3
+  row: 9
+
+shelf30:
+  col: 4
+  content:
+    STOLICKA: 3
+  row: 10
+
+shelf31:
+  col: 5
+  content:
+    TABLET: 3
+  row: 1
+
+shelf32:
+  col: 5
+  content:
+    NABIECKA: 4
+  row: 2
+
+shelf33:
+  col: 5
+  content:
+    KLAVESNICE: 2
+    KOMODA: 0
+    NABIECKA: 3
+    ZRCADLO: 3
+  row: 3
+
+shelf34:
+  col: 5
+  content:
+    MOBIL4: 4
+  row: 4
+
+shelf35:
+  col: 5
+  content:
+    KABEL: 2
+    MONITOR: 0
+    POSTEL: 3
+    TABLET: 3
+  row: 5
+
+shelf36:
+  col: 5
+  content:
+    HADICA: 1
+    HODINKY: 3
+    KLAVESNICE: 3
+    SUDOK: 3
+  row: 6
+
+shelf37:
+  col: 5
+  content:
+    KOLO: 2
+    NABIECKA: 1
+  row: 7
+
+shelf38:
+  col: 5
+  content:
+    ROBOT: 0
+  row: 8
+
+shelf39:
+  col: 5
+  content:
+    KOMODA: 0
+    VIDLICKA: 1
+  row: 9
+
+shelf40:
+  col: 5
+  content:
+    HRNEK: 3
+    KLINEC: 4
+    MOBIL2: 3
+    PILKA: 2
+  row: 10
+
+shelf41:
+  col: 7
+  content:
+    KRATASY: 0
+  row: 1
+
+shelf42:
+  col: 7
+  content:
+    GAUC: 2
+    GITARA: 2
+    POLICKA: 3
+    SKRIN: 4
+  row: 2
+
+shelf43:
+  col: 7
+  content:
+    BRYLE: 4
+    MOBIL4: 2
+    POLICKA: 1
+  row: 3
+
+shelf44:
+  col: 7
+  content:
+    SKRIN: 3
+    SUDOK: 4
+  row: 4
+
+shelf45:
+  col: 7
+  content:
+    KABEL: 0
+  row: 5
+
+shelf46:
+  col: 7
+  content:
+    PAPIR: 0
+  row: 6
+
+shelf47:
+  col: 7
+  content:
+    MONITOR: 1
+  row: 7
+
+shelf48:
+  col: 7
+  content:
+    KOBEREC: 2
+    STETEC: 4
+  row: 8
+
+shelf49:
+  col: 7
+  content:
+    KLAVESNICE: 4
+  row: 9
+
+shelf50:
+  col: 7
+  content:
+    BUNDA: 2
+    NOTEBOOK: 4
+    REPRODUKTOR: 3
+    VIDLICKA: 3
+  row: 10
+
+shelf51:
+  col: 8
+  content:
+    KOBEREC: 4
+    ZIAROVKA: 4
+  row: 1
+
+shelf52:
+  col: 8
+  content:
+    HRNEK: 1
+    KOBEREC: 3
+    KOMODA: 4
+    METLA: 4
+  row: 2
+
+shelf53:
+  col: 8
+  content:
+    BUNDA: 2
+    LOPTA: 1
+    STETEC: 3
+    STOL: 4
+  row: 3
+
+shelf54:
+  col: 8
+  content:
+    MOBIL: 3
+    NABIECKA: 2
+  row: 4
+
+shelf55:
+  col: 8
+  content:
+    BRYLE: 3
+    REPRODUKTOR: 3
+  row: 5
+
+shelf56:
+  col: 8
+  content:
+    LOPTA: 3
+    MOBIL: 4
+  row: 6
+
+shelf57:
+  col: 8
+  content:
+    SUDOK: 2
+  row: 7
+
+shelf58:
+  col: 8
+  content:
+    BOTY: 0
+  row: 8
+
+shelf59:
+  col: 8
+  content:
+    GAUC: 2
+    METLA: 1
+    STETEC: 3
+  row: 9
+
+shelf60:
+  col: 8
+  content:
+    BOTY: 3
+    KALHOTY: 1
+    POSTEL: 3
+    SRUBOVAK: 1
+  row: 10
+
+shelf61:
+  col: 10
+  content:
+    GITARA: 0
+    LAMPA: 1
+  row: 1
+
+shelf62:
+  col: 10
+  content:
+    MOBIL: 3
+    MOBIL2: 3
+    REPRODUKTOR: 1
+  row: 2
+
+shelf63:
+  col: 10
+  content:
+    BATERKA: 4
+    HADICA: 3
+    KALHOTY: 1
+    TABLET: 2
+  row: 3
+
+shelf64:
+  col: 10
+  content:
+    NABIECKA: 4
+    STOL: 2
+  row: 4
+
+shelf65:
+  col: 10
+  content:
+    BOTNIK: 3
+    BOTY: 3
+    REPRODUKTOR: 3
+    SKRIN: 4
+  row: 5
+
+shelf66:
+  col: 10
+  content:
+    BOTY: 2
+    KOMODA: 2
+    MONITOR: 2
+  row: 6
+
+shelf67:
+  col: 10
+  content:
+    GITARA: 4
+    STOL: 2
+  row: 7
+
+shelf68:
+  col: 10
+  content:
+    REPRODUKTOR: 0
+  row: 8
+
+shelf69:
+  col: 10
+  content:
+    BOTY: 3
+    KABEL: 3
+  row: 9
+
+shelf70:
+  col: 10
+  content:
+    GITARA: 3
+    HRNEK: 1
+    POLICKA: 3
+    SKRIN: 4
+  row: 10
+
+shelf71:
+  col: 11
+  content:
+    NABIECKA: 1
+    SLUCHATKA: 4
+  row: 1
+
+shelf72:
+  col: 11
+  content:
+    POLICKA: 4
+    STOL: 4
+    SUDOK: 4
+  row: 2
+
+shelf73:
+  col: 11
+  content:
+    BUNDA: 4
+    PAPIR: 2
+    TABLET: 4
+  row: 3
+
+shelf74:
+  col: 11
+  content:
+    HODINKY: 2
+    REPRODUKTOR: 4
+  row: 4
+
+shelf75:
+  col: 11
+  content:
+    KALHOTY: 3
+    MOBIL: 4
+    MOBIL2: 3
+    MOBIL4: 4
+  row: 5
+
+shelf76:
+  col: 11
+  content:
+    BUNDA: 2
+    GAUC: 3
+    KOLO: 3
+  row: 6
+
+shelf77:
+  col: 11
+  content:
+    BRYLE: 2
+    NABIECKA: 4
+    STETEC: 2
+    VIDLICKA: 3
+  row: 7
+
+shelf78:
+  col: 11
+  content:
+    KRATASY: 0
+    NABIECKA: 3
+  row: 8
+
+shelf79:
+  col: 11
+  content:
+    SKRIN: 1
+  row: 9
+
+shelf80:
+  col: 11
+  content:
+    GAUC: 4
+    KRATASY: 1
+    LOPTA: 2
+    VIDLICKA: 0
+  row: 10
+
+shelf81:
+  col: 13
+  content:
+    KOLO: 3
+    MOBIL: 3
+    SKRIN: 4
+  row: 1
+
+shelf82:
+  col: 13
+  content:
+    HODINKY: 1
+    STETEC: 3
+  row: 2
+
+shelf83:
+  col: 13
+  content:
+    BRYLE: 4
+  row: 3
+
+shelf84:
+  col: 13
+  content:
+    KOLO: 3
+    MOBIL3: 4
+    STOLICKA: 3
+  row: 4
+
+shelf85:
+  col: 13
+  content:
+    NOTEBOOK: 3
+    TRICKO: 4
+  row: 5
+
+shelf86:
+  col: 13
+  content:
+    BRYLE: 3
+    GITARA: 2
+    TALIR: 3
+  row: 6
+
+shelf87:
+  col: 13
+  content:
+    BUNDA: 2
+    STETEC: 1
+  row: 7
+
+shelf88:
+  col: 13
+  content:
+    KLAVESNICE: 3
+    KOLO: 3
+    VIDLICKA: 4
+  row: 8
+
+shelf89:
+  col: 13
+  content:
+    LOPTA: 1
+    STOLICKA: 3
+    VEDRO: 2
+    ZIAROVKA: 3
+  row: 9
+
+shelf90:
+  col: 13
+  content:
+    BUNDA: 0
+  row: 10
+
+shelf91:
+  col: 14
+  content:
+    HADICA: 4
+    LOPTA: 2
+    SKRIN: 3
+    VIDLICKA: 2
+  row: 1
+
+shelf92:
+  col: 14
+  content:
+    KLAVESNICE: 2
+    SLUCHATKA: 3
+  row: 2
+
+shelf93:
+  col: 14
+  content:
+    MOBIL4: 4
+    MYS: 3
+    STETEC: 4
+  row: 3
+
+shelf94:
+  col: 14
+  content:
+    STOL: 1
+  row: 4
+
+shelf95:
+  col: 14
+  content:
+    MONITOR: 4
+    TRICKO: 3
+  row: 5
+
+shelf96:
+  col: 14
+  content:
+    MOBIL: 2
+  row: 6
+
+shelf97:
+  col: 14
+  content:
+    TABLET: 2
+    ZIAROVKA: 3
+  row: 7
+
+shelf98:
+  col: 14
+  content:
+    KOMODA: 3
+    PILKA: 4
+    POSTEL: 3
+  row: 8
+
+shelf99:
+  col: 14
+  content:
+    KOBEREC: 3
+    MYS: 4
+    POLICKA: 4
+    REPRODUKTOR: 4
+  row: 9
+
+shelf100:
+  col: 14
+  content:
+    KOBEREC: 4
+    MOBIL3: 3
+    SUDOK: 0
+  row: 10
+
+shelf101:
+  col: 16
+  content:
+    CEPICE: 3
+  row: 1
+
+shelf102:
+  col: 16
+  content:
+    BATERKA: 4
+    POLICKA: 4
+    SLUCHATKA: 2
+    VIDLICKA: 4
+  row: 2
+
+shelf103:
+  col: 16
+  content:
+    KOLO: 0
+  row: 3
+
+shelf104:
+  col: 16
+  content:
+    MOBIL4: 2
+    SKRIN: 4
+  row: 4
+
+shelf105:
+  col: 16
+  content:
+    LAMPA: 3
+    PAPIR: 2
+  row: 5
+
+shelf106:
+  col: 16
+  content:
+    BOTY: 3
+    GAUC: 2
+    SKRIN: 3
+    TRICKO: 3
+  row: 6
+
+shelf107:
+  col: 16
+  content:
+    HRNEK: 4
+    SKRIN: 2
+  row: 7
+
+shelf108:
+  col: 16
+  content:
+    NABIECKA: 3
+  row: 8
+
+shelf109:
+  col: 16
+  content:
+    BOTNIK: 2
+  row: 9
+
+shelf110:
+  col: 16
+  content:
+    HRNEK: 4
+    NOTEBOOK: 1
+  row: 10
+
+shelf111:
+  col: 17
+  content:
+    NABIECKA: 4
+    POLICKA: 2
+  row: 1
+
+shelf112:
+  col: 17
+  content:
+    ROBOT: 2
+  row: 2
+
+shelf113:
+  col: 17
+  content:
+    HODINKY: 2
+    MOBIL4: 1
+    PILKA: 3
+    ZRCADLO: 2
+  row: 3
+
+shelf114:
+  col: 17
+  content:
+    KOLO: 3
+    REPRODUKTOR: 4
+    TABLET: 3
+  row: 4
+
+shelf115:
+  col: 17
+  content:
+    KALHOTY: 0
+  row: 5
+
+shelf116:
+  col: 17
+  content:
+    POLICKA: 0
+  row: 6
+
+shelf117:
+  col: 17
+  content:
+    MOBIL2: 1
+  row: 7
+
+shelf118:
+  col: 17
+  content:
+    BOTY: 3
+    GITARA: 2
+    HODINKY: 4
+    POSTEL: 4
+  row: 8
+
+shelf119:
+  col: 17
+  content:
+    CEPICE: 2
+    VIDLICKA: 1
+  row: 9
+
+shelf120:
+  col: 17
+  content:
+    MOBIL3: 4
+  row: 10
+
+shelf121:
+  col: 19
+  content:
+    GITARA: 4
+    HODINKY: 4
+    KOMODA: 3
+    POLICKA: 2
+  row: 1
+
+shelf122:
+  col: 19
+  content:
+    POSTEL: 3
+  row: 2
+
+shelf123:
+  col: 19
+  content:
+    REPRODUKTOR: 0
+    ROBOT: 1
+  row: 3
+
+shelf124:
+  col: 19
+  content:
+    GITARA: 2
+    HRNEK: 2
+    MYS: 2
+  row: 4
+
+shelf125:
+  col: 19
+  content:
+    BOTNIK: 1
+    CEPICE: 3
+    KALHOTY: 4
+    TRICKO: 3
+  row: 5
+
+shelf126:
+  col: 19
+  content:
+    HADICA: 4
+    MONITOR: 3
+  row: 6
+
+shelf127:
+  col: 19
+  content:
+    CEPICE: 4
+    GAUC: 4
+    HRNEK: 3
+    MOBIL: 4
+  row: 7
+
+shelf128:
+  col: 19
+  content:
+    HADICA: 1
+    MOBIL2: 3
+    POLICKA: 3
+  row: 8
+
+shelf129:
+  col: 19
+  content:
+    BOTNIK: 4
+    BRYLE: 3
+    MOBIL3: 4
+    MONITOR: 4
+  row: 9
+
+shelf130:
+  col: 19
+  content:
+    BATERKA: 4
+    TRICKO: 4
+  row: 10
+
+shelf131:
+  col: 20
+  content:
+    BRYLE: 1
+    CEPICE: 4
+  row: 1
+
+shelf132:
+  col: 20
+  content:
+    KLINEC: 2
+    MOBIL2: 3
+    STOL: 0
+  row: 2
+
+shelf133:
+  col: 20
+  content:
+    CEPICE: 2
+    LOPTA: 2
+  row: 3
+
+shelf134:
+  col: 20
+  content:
+    KABEL: 2
+    MONITOR: 4
+    STOLICKA: 2
+  row: 4
+
+shelf135:
+  col: 20
+  content:
+    CEPICE: 4
+    GAUC: 3
+    MOBIL2: 1
+    SLUCHATKA: 2
+  row: 5
+
+shelf136:
+  col: 20
+  content:
+    LAMPA: 4
+    MOBIL2: 2
+    MOBIL3: 3
+    VEDRO: 4
+  row: 6
+
+shelf137:
+  col: 20
+  content:
+    BOTNIK: 2
+    MYS: 4
+    SKRIN: 4
+  row: 7
+
+shelf138:
+  col: 20
+  content:
+    KLAVESNICE: 0
+    LOPTA: 2
+  row: 8
+
+shelf139:
+  col: 20
+  content:
+    ROBOT: 4
+  row: 9
+
+shelf140:
+  col: 20
+  content:
+    BATERKA: 4
+    HADICA: 4
+    MOBIL: 2
+    VEDRO: 1
+  row: 10
+
+shelf141:
+  col: 22
+  content:
+    KOBEREC: 3
+    MOBIL2: 4
+  row: 1
+
+shelf142:
+  col: 22
+  content:
+    BRYLE: 4
+    MYS: 1
+  row: 2
+
+shelf143:
+  col: 22
+  content:
+    NABIECKA: 3
+    SUDOK: 0
+  row: 3
+
+shelf144:
+  col: 22
+  content:
+    MOBIL: 2
+    VEDRO: 1
+  row: 4
+
+shelf145:
+  col: 22
+  content:
+    PAPIR: 1
+  row: 5
+
+shelf146:
+  col: 22
+  content:
+    BOTNIK: 0
+    POLICKA: 3
+    SKRIN: 4
+    SRUBOVAK: 2
+  row: 6
+
+shelf147:
+  col: 22
+  content:
+    CEPICE: 4
+    POLICKA: 0
+    STOLICKA: 2
+  row: 7
+
+shelf148:
+  col: 22
+  content:
+    HODINKY: 4
+    MYS: 2
+    TABLET: 4
+  row: 8
+
+shelf149:
+  col: 22
+  content:
+    BRYLE: 0
+  row: 9
+
+shelf150:
+  col: 22
+  content:
+    BUNDA: 2
+    GAUC: 3
+    SRUBOVAK: 3
+    STOLICKA: 2
+  row: 10
+
+shelf151:
+  col: 23
+  content:
+    HRNEK: 3
+    MOBIL2: 4
+    SKRIN: 2
+  row: 1
+
+shelf152:
+  col: 23
+  content:
+    METLA: 1
+    MOBIL2: 4
+  row: 2
+
+shelf153:
+  col: 23
+  content:
+    ROBOT: 4
+  row: 3
+
+shelf154:
+  col: 23
+  content:
+    BOTNIK: 1
+    MOBIL4: 1
+    STETEC: 2
+  row: 4
+
+shelf155:
+  col: 23
+  content:
+    BOTY: 4
+    POSTEL: 4
+    STOL: 3
+    SUDOK: 1
+  row: 5
+
+shelf156:
+  col: 23
+  content:
+    PAPIR: 3
+    REPRODUKTOR: 2
+    TRICKO: 0
+  row: 6
+
+shelf157:
+  col: 23
+  content:
+    MONITOR: 3
+    ROBOT: 3
+    TALIR: 1
+  row: 7
+
+shelf158:
+  col: 23
+  content:
+    KOBEREC: 4
+    MONITOR: 2
+    SLUCHATKA: 3
+  row: 8
+
+shelf159:
+  col: 23
+  content:
+    LAMPA: 2
+    POLICKA: 1
+    SKRIN: 4
+  row: 9
+
+shelf160:
+  col: 23
+  content:
+    KLAVESNICE: 2
+    MOBIL4: 0
+    ZIAROVKA: 3
+  row: 10

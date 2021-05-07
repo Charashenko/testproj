@@ -318,21 +318,6 @@ public class MainUI extends Application {
                 e.printStackTrace();
             }
         }).start();
-
-//        new Thread(() -> { //pathfinding
-//            try {
-//                Pathfinder pathfinder = new Pathfinder(warehouseView);
-//                while (true) {
-//                    for (CartView cv : warehouseView.getCartViews()) {
-//
-//                    }
-//                    Thread.sleep(clock.getClock());
-//                    if(!clock.isRunning()) break;
-//                }
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }).start();
     }
 
     public static void jumpNumberOfPoints(int jumpValue){

@@ -4,6 +4,7 @@ public enum UnitTypes {
 
     CARTVIEW,
     PATHVIEW,
-    SHELFVIEW
+    SHELFVIEW,
+    UNLOADINGVIEW
 
 }

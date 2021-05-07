@@ -25,7 +25,7 @@ public class WarehouseView {
      * @param informationText Information panel text field
      */
     public WarehouseView(Text informationText) {
-        this.sizeOfWarehouse = new Size(22, 22);
+        this.sizeOfWarehouse = new Size(14, 22);
         this.informationText = informationText;
         unitViews = new ArrayList<>();
         guiWarehouse = new Pane();
@@ -51,7 +51,7 @@ public class WarehouseView {
         }
 
         //add shelves
-        List<ShelfView> shelfViews = parseYaml();
+        List<ShelfView> shelfViews = parseShelfYaml();
         unitViews.addAll(shelfViews);
         guiWarehouse.getChildren().addAll(shelfViews.stream().map(ShelfView::getGuiShelf).collect(Collectors.toList()));
 
@@ -118,6 +118,12 @@ public class WarehouseView {
         cv.getCart().setPlannedRoute(cr);
         unitViews.add(cv);
         guiWarehouse.getChildren().add(cv.getGuiCart());
+
+        UnloadingView unloadingView = new UnloadingView(
+                new Coords(sizeOfWarehouse.getRowCount()-1, sizeOfWarehouse.getColumnCount()-3), informationText);
+
+        unitViews.add(unloadingView);
+        guiWarehouse.getChildren().add(unloadingView.getGuiUnloading());
     }
 
     /**
@@ -128,8 +134,8 @@ public class WarehouseView {
             switch (unitView.getUnitType()) {
                 case CARTVIEW:
                     Rectangle guiCart = ((CartView) unitView).getGuiCart();
-                    guiCart.setTranslateX(30 * unitView.getUnitPosition().getColumn() + 3.25); //+7,5 because cart is slightly smaller
-                    guiCart.setTranslateY(30 * unitView.getUnitPosition().getRow() + 3.25); //+7,5 because cart is slightly smaller
+                    guiCart.setTranslateX(30 * unitView.getUnitPosition().getColumn() + 3.75); // +3.75 because cart is slightly smaller
+                    guiCart.setTranslateY(30 * unitView.getUnitPosition().getRow() + 3.75); // +3.75 because cart is slightly smaller
                     break;
                 case SHELFVIEW:
                     Rectangle guiShelf = ((ShelfView) unitView).getGuiShelf();
@@ -140,6 +146,11 @@ public class WarehouseView {
                     Rectangle guiPath = ((PathView) unitView).getGuiPath();
                     guiPath.setTranslateX(30 * unitView.getUnitPosition().getColumn());
                     guiPath.setTranslateY(30 * unitView.getUnitPosition().getRow());
+                    break;
+                case UNLOADINGVIEW:
+                    Rectangle guiUnloading = ((UnloadingView) unitView).getGuiUnloading();
+                    guiUnloading.setTranslateX(30 * unitView.getUnitPosition().getColumn());
+                    guiUnloading.setTranslateY(30 * unitView.getUnitPosition().getRow());
                     break;
             }
         }
@@ -165,6 +176,10 @@ public class WarehouseView {
                 case PATHVIEW:
                     Rectangle guiPath = ((PathView) unitView).getGuiPath();
                     guiWarehouse.getChildren().add(guiPath);
+                    break;
+                case UNLOADINGVIEW:
+                    Rectangle guiUnloading = ((UnloadingView) unitView).getGuiUnloading();
+                    guiWarehouse.getChildren().add(guiUnloading);
                     break;
             }
         }
@@ -212,10 +227,10 @@ public class WarehouseView {
     /**
      * Initialization of warehouse from file
      */
-    public List<ShelfView> parseYaml() {
+    public List<ShelfView> parseShelfYaml() {
         List<ShelfView> shelfViews = new ArrayList<>();
         try {
-            InputStream inputStream = new FileInputStream("data/test.yaml");
+            InputStream inputStream = new FileInputStream("data/initial_shelves_status.yaml");
             Yaml yaml = new Yaml();
             Map<String, Object> data = yaml.load(inputStream);
             for (String s : data.keySet()) {
@@ -248,5 +263,44 @@ public class WarehouseView {
             e.printStackTrace();
         }
         return shelfViews;
+    }
+
+    public List<UnitView> parseUnitsYaml(){
+        List<UnitView> unitViews = new ArrayList<>();
+        try {
+            InputStream inputStream = new FileInputStream("data/units.yaml");
+            Yaml yaml = new Yaml();
+            Map<String, Object> data = yaml.load(inputStream);
+            for (String s : data.keySet()) {
+                UnitView unitView = null;
+                int row = 0, col = 0;
+                LinkedHashMap<String, Object> unit = (LinkedHashMap<String, Object>) data.get(s);
+                String type = null;
+                for (String s1 : unit.keySet()) {
+                    switch (s1) {
+                        case "col":
+                            col = (int) unit.get(s1);
+                            break;
+                        case "row":
+                            row = (int) unit.get(s1);
+                            break;
+                        default:
+                            type = String.valueOf(unit.get(s1));
+                            break;
+                    }
+                    switch(type){
+                        case "CART":
+                            unitView = new CartView(new Coords(row,col),informationText);
+                            break;
+                        case "UNLOADING":
+                            unitView = new UnloadingView(new Coords(row, col), informationText);
+                    }
+                }
+                unitViews.add(unitView);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return unitViews;
     }
 }
