@@ -35,6 +35,7 @@ public class MainUI extends Application {
     private static final Text informationText = new Text();
     private static WarehouseView warehouseView;
     private static StartPoint startPoint;
+    private static Order order;
 
     public static void main(String[] args) {
         launch(args);
@@ -160,8 +161,13 @@ public class MainUI extends Application {
 
         configureButton.setOnAction(mouseEvent -> {
             try {
-                clock.setClock(Integer.parseInt(newClock.getText()));
-                currentClock.setText(newClock.getText());
+                if(Integer.parseInt(newClock.getText()) >= 100) {
+                    clock.setClock(Integer.parseInt(newClock.getText()));
+                    currentClock.setText(newClock.getText());
+                } else {
+                    clock.setClock(100);
+                    currentClock.setText("100");
+                }
             } catch (NumberFormatException e){
                 mouseEvent.consume();
             }
@@ -279,21 +285,21 @@ public class MainUI extends Application {
         Text currentOrder = new Text();
         currentOrder.setFont(new Font(16));
 
-        Order order = new Order();
+        order = warehouseView.parseOrdersYaml().get(0);
         addButton.setOnAction(actionEvent -> {
             order.addGoodsToOrder(choiceBox.getValue(), Integer.parseInt(countLabel.getText()));
-            currentOrder.setText(order.getOrderItems());
+            currentOrder.setText(order.getOrderItemsAsString());
         });
         removeButton.setOnAction(actionEvent -> {
             order.removeGoodsFromOrder(choiceBox.getValue(), Integer.parseInt(countLabel.getText()));
-            currentOrder.setText(order.getOrderItems());
+            currentOrder.setText(order.getOrderItemsAsString());
         });
         confirmButton.setOnAction(actionEvent -> {
             System.out.println("order confirmed");
         });
         deleteButton.setOnAction(actionEvent -> {
             order.clearOrder();
-            currentOrder.setText(order.getOrderItems());
+            currentOrder.setText(order.getOrderItemsAsString());
         });
 
         currentOrderTextBox.getChildren().addAll(currentOrderLabel, currentOrder);
@@ -307,8 +313,10 @@ public class MainUI extends Application {
     public static void systemUpdate() {
         new Thread(() -> { //cart movement thread
             try {
+                Pathfinder pathfinder = new Pathfinder(warehouseView, order);
                 while (true) {
                     for (CartView cv : warehouseView.getCartViews()) {
+                        pathfinder.calcPathForCart(cv);
                         cv.getCart().nextStep(clock.getClock() - clock.getClock() / 10, warehouseView);
                     }
                     Thread.sleep(clock.getClock());
@@ -322,8 +330,10 @@ public class MainUI extends Application {
 
     public static void jumpNumberOfPoints(int jumpValue){
         new Thread(() -> {
+            Pathfinder pathfinder = new Pathfinder(warehouseView, order);
             for (int i = 0; i < jumpValue; i++) {
                 for (CartView cv : warehouseView.getCartViews()) {
+                    pathfinder.calcPathForCart(cv);
                     cv.getCart().nextStepWithoutAnimation(warehouseView);
                 }
             }

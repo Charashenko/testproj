@@ -5,6 +5,7 @@ import java.util.HashMap;
 public class Order {
 
     private HashMap<GoodsType, Integer> order = new HashMap<>();
+    private int ID;
 
     /**
      * Adds goods to order
@@ -39,7 +40,7 @@ public class Order {
      * Returns formatted string for Text field to be displayed
      * @return Formatted string
      */
-    public String getOrderItems(){
+    public String getOrderItemsAsString(){
         String resultString = "";
         for(GoodsType goodsType : order.keySet()){
             int count = order.get(goodsType);
@@ -53,5 +54,21 @@ public class Order {
      */
     public void clearOrder(){
         order.clear();
+    }
+
+    /**
+     * Gets all order items and their count
+     * @return Hashmap of goods type and count
+     */
+    public HashMap<GoodsType, Integer> getOrderItems() {
+        return order;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 }

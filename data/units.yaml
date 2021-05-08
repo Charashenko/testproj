@@ -8,7 +8,6 @@ unit162:
   row: 14
   type: CART
 
-
 unit163:
   col: 4
   row: 14
@@ -18,7 +17,6 @@ unit164:
   col: 6
   row: 14
   type: CART
-
 
 unit165:
   col: 8
