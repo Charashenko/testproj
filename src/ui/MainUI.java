@@ -31,11 +31,12 @@ import java.util.Arrays;
  */
 public class MainUI extends Application {
 
-    private static Clock clock = new Clock(1000);
+    private static Clock clock = new Clock(300);
     private static final Text informationText = new Text();
     private static WarehouseView warehouseView;
     private static StartPoint startPoint;
     private static Order order;
+    private static Pathfinder pathfinder;
 
     public static void main(String[] args) {
         launch(args);
@@ -51,7 +52,10 @@ public class MainUI extends Application {
         primaryStage.setScene(scene);
         primaryStage.minWidthProperty().setValue(1000);
         primaryStage.minHeightProperty().setValue(600);
-        primaryStage.setOnCloseRequest(windowEvent -> Platform.exit());
+        primaryStage.setOnCloseRequest(windowEvent -> {
+            Platform.exit();
+            System.exit(0);
+        });
         primaryStage.show();
     }
 
@@ -104,7 +108,7 @@ public class MainUI extends Application {
         Button resetButton = new Button("Reset");
         Button configureButton = new Button("Configure");
         Button jumpButton = new Button("Jump");
-        TextField jumpValue = new TextField("3");
+        TextField jumpValue = new TextField("1");
         jumpValue.setPrefWidth(30);
 
         runButton.setOnAction(actionEvent -> {
@@ -133,6 +137,7 @@ public class MainUI extends Application {
             clock.setRunning(false);
             warehouseTab.setContent(setupWarehouseTab(informationText));
             warehouseTab.getContent().setStyle(borderStyle);
+            order = warehouseView.parseOrdersYaml().get(0);
         });
 
         jumpButton.setOnAction(actionEvent -> {
@@ -187,6 +192,8 @@ public class MainUI extends Application {
             configureButton.setVisible(!configureButton.isVisible());
             resetButton.setVisible(!resetButton.isVisible());
             configureBox.setVisible(!configureBox.isVisible());
+            jumpButton.setVisible(!jumpButton.isVisible());
+            jumpValue.setVisible(!jumpValue.isVisible());
         });
 
         mainSection.getChildren().add(tabPane);
@@ -274,6 +281,7 @@ public class MainUI extends Application {
             confirmButton.setDisable(false);
             deleteButton.setDisable(false);
             slider.setDisable(false);
+
         });
 
         orderManipulationButtons.getChildren().addAll(addButton, removeButton, confirmButton, deleteButton);
@@ -286,6 +294,8 @@ public class MainUI extends Application {
         currentOrder.setFont(new Font(16));
 
         order = warehouseView.parseOrdersYaml().get(0);
+        currentOrder.setText(order.getOrderItemsAsString());
+
         addButton.setOnAction(actionEvent -> {
             order.addGoodsToOrder(choiceBox.getValue(), Integer.parseInt(countLabel.getText()));
             currentOrder.setText(order.getOrderItemsAsString());
@@ -313,10 +323,10 @@ public class MainUI extends Application {
     public static void systemUpdate() {
         new Thread(() -> { //cart movement thread
             try {
-                Pathfinder pathfinder = new Pathfinder(warehouseView, order);
+                order.divideCurrentOrder(warehouseView);
                 while (true) {
                     for (CartView cv : warehouseView.getCartViews()) {
-                        pathfinder.calcPathForCart(cv);
+                        cv.getCart().getPathfinder().computePath();
                         cv.getCart().nextStep(clock.getClock() - clock.getClock() / 10, warehouseView);
                     }
                     Thread.sleep(clock.getClock());
@@ -330,10 +340,12 @@ public class MainUI extends Application {
 
     public static void jumpNumberOfPoints(int jumpValue){
         new Thread(() -> {
-            Pathfinder pathfinder = new Pathfinder(warehouseView, order);
+            order.divideCurrentOrder(warehouseView);
+            for (CartView cv : warehouseView.getCartViews()) {
+                cv.getCart().getPathfinder().computePath();
+            }
             for (int i = 0; i < jumpValue; i++) {
                 for (CartView cv : warehouseView.getCartViews()) {
-                    pathfinder.calcPathForCart(cv);
                     cv.getCart().nextStepWithoutAnimation(warehouseView);
                 }
             }

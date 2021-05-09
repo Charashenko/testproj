@@ -64,4 +64,36 @@ public class Coords {
     public int hashCode() {
         return Objects.hash(row, column);
     }
+
+    public void incrementRow(){
+        row++;
+    }
+
+    public void incrementColumn(){
+        column++;
+    }
+
+    public void decrementRow(){
+        row--;
+    }
+
+    public void decrementColumn(){
+        column--;
+    }
+
+    public Coords oneUp(){
+        return new Coords(row-1, column);
+    }
+
+    public Coords oneDown(){
+        return new Coords(row+1, column);
+    }
+
+    public Coords oneLeft(){
+        return new Coords(row, column-1);
+    }
+
+    public Coords oneRight(){
+        return new Coords(row, column+1);
+    }
 }

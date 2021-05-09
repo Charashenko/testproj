@@ -19,7 +19,14 @@ public class Shelf {
         this.goods.add(goods);
     }
 
-    public List<Goods> takeOutGoods(List<Goods> wantedGoods) {
+
+    public Goods takeOutGoods(GoodsType wantedGoods) {
+        for(Goods goodsItem : goods){
+            if(goodsItem.getGoodsType().equals(wantedGoods)){
+                goods.remove(goodsItem);
+                return goodsItem;
+            }
+        }
         return null;
     }
 }

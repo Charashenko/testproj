@@ -1,6 +1,10 @@
 package model;
 
+import view.*;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Order {
 
@@ -70,5 +74,41 @@ public class Order {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    /**
+     * Divides current order between carts
+     */
+    public void divideCurrentOrder(WarehouseView warehouseView){
+        int goodsCount;
+        List<ShelfView> shelfViewsContainingGoods;
+        List<GoodsType> goodsTypes;
+        for(CartView cartView : warehouseView.getCartViews()) {
+            goodsCount = 0;
+            shelfViewsContainingGoods = new ArrayList<>();
+            goodsTypes = new ArrayList<>();
+            for (UnitView unitView : warehouseView.getUnitViews()) {
+                if (unitView.getUnitType().equals(UnitTypes.SHELFVIEW)) {
+                    ShelfView shelfView = (ShelfView) unitView;
+                    for (Goods goods : shelfView.getShelfContents()) {
+                        if (order.containsKey(goods.getGoodsType())) {
+                            shelfViewsContainingGoods.add(shelfView);
+                            goodsTypes.add(goods.getGoodsType());
+                            removeGoodsFromOrder(goods.getGoodsType(), 1);
+                            goodsCount++;
+                            if (goodsCount == 5) {
+                                break;
+                            }
+                        }
+                    }
+                    if (goodsCount == 5) {
+                        break;
+                    }
+                }
+            }
+            System.out.println(goodsTypes);
+            cartView.getCart().getPathfinder().setShelfViewsContainingGoods(shelfViewsContainingGoods);
+            cartView.getCart().getPathfinder().setGoodsTypes(goodsTypes);
+        }
     }
 }

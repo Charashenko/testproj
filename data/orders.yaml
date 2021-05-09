@@ -1,21 +1,16 @@
 order1:
   id: 1
   content:
-    NABIECKA: 4
-    POLICKA: 2
+    NABIECKA: 3
+    POLICKA: 3
     STOL: 3
+    ZRCADLO: 3
+    ROBOT: 3
+    MYS: 3
+    MONITOR: 3
+    VEDRO: 3
 
 order2:
   id: 2
   content:
-    KOBEREC: 4
     SRUBOVAK: 1
-    VEDRO: 2
-
-order3:
-  id: 3
-  content:
-    MONITOR: 2
-    ZRCADLO: 1
-    ROBOT: 1
-    MYS: 3

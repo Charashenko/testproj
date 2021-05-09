@@ -1,17 +1,14 @@
 package controller;
 
-import javafx.animation.TranslateTransition;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
 import model.Coords;
 import model.Direction;
 import model.Goods;
 import ui.MainUI;
 import view.CartView;
 import view.PathView;
-import view.WarehouseView;
 
 import java.util.HashMap;
 
@@ -51,21 +48,25 @@ public class OnCartInteraction {
             for(Direction d: cv.getCart().getPlannedRoute().getPlannedPath().values()) {
                 switch (d) {
                     case UP:
-                        currentCoords.setRow(currentCoords.getRow()-1);
+                        currentCoords.decrementRow();
                         break;
                     case DOWN:
-                        currentCoords.setRow(currentCoords.getRow()+1);
+                        currentCoords.incrementRow();
                         break;
                     case LEFT:
-                        currentCoords.setColumn(currentCoords.getColumn()-1);
+                        currentCoords.decrementColumn();
                         break;
                     case RIGHT:
-                        currentCoords.setColumn(currentCoords.getColumn()+1);
+                        currentCoords.incrementColumn();
+                        break;
+                    case TAKEOUT:
                         break;
                 }
                 PathView pathView = MainUI.getWarehouseView().getPathViewAtCoords(currentCoords);
-                pathView.setShowingCartRoute(true);
-                pathView.updatePathColor();
+                if (pathView != null) {
+                    pathView.setShowingCartRoute(true);
+                    pathView.updatePathColor();
+                }
             }
         } else if (event.getEventType().equals(MouseEvent.MOUSE_EXITED)) {
             r.setFill(cv.getCartColor());
@@ -74,21 +75,25 @@ public class OnCartInteraction {
             for(Direction d: cv.getCart().getPlannedRoute().getPlannedPath().values()) {
                 switch (d) {
                     case UP:
-                        currentCoords.setRow(currentCoords.getRow()-1);
+                        currentCoords.decrementRow();
                         break;
                     case DOWN:
-                        currentCoords.setRow(currentCoords.getRow()+1);
+                        currentCoords.incrementRow();
                         break;
                     case LEFT:
-                        currentCoords.setColumn(currentCoords.getColumn()-1);
+                        currentCoords.decrementColumn();
                         break;
                     case RIGHT:
-                        currentCoords.setColumn(currentCoords.getColumn()+1);
+                        currentCoords.incrementColumn();
+                        break;
+                    case TAKEOUT:
                         break;
                 }
                 PathView pathView = MainUI.getWarehouseView().getPathViewAtCoords(currentCoords);
-                pathView.setShowingCartRoute(false);
-                pathView.updatePathColor();
+                if (pathView != null) {
+                    pathView.setShowingCartRoute(false);
+                    pathView.updatePathColor();
+                }
             }
         }
     }

@@ -41,100 +41,32 @@ public class WarehouseView {
     public void createDefaults() {
         guiWarehouse = new Pane();
 
-        //add paths everywhere
-        for (int row = 0; row < sizeOfWarehouse.getRowCount(); row++) {
-            for (int col = 0; col < sizeOfWarehouse.getColumnCount(); col++) {
-                PathView pathView = new PathView(new Coords(row, col), informationText);
-                unitViews.add(pathView);
-                guiWarehouse.getChildren().add(pathView.getGuiPath());
-            }
-        }
-
         //add shelves
         List<ShelfView> shelfViews = parseShelfYaml();
         unitViews.addAll(shelfViews);
         guiWarehouse.getChildren().addAll(shelfViews.stream().map(ShelfView::getGuiShelf).collect(Collectors.toList()));
 
+        //add paths in empty space
+        for (int row = 0; row < sizeOfWarehouse.getRowCount(); row++) {
+            for (int col = 0; col < sizeOfWarehouse.getColumnCount(); col++) {
+                if (getShelfViewAtCoords(new Coords(row, col)) == null) {
+                    PathView pathView = new PathView(new Coords(row, col), informationText);
+                    unitViews.add(pathView);
+                    guiWarehouse.getChildren().add(pathView.getGuiPath());
+                }
+            }
+        }
+
         //add carts and unloading areas
         List<UnitView> cartsAndUnloadingViews = parseUnitsYaml();
         unitViews.addAll(cartsAndUnloadingViews);
         guiWarehouse.getChildren().addAll(cartsAndUnloadingViews.stream().map(o -> {
-            if(o.getUnitType().equals(UnitTypes.CARTVIEW)){
+            if (o.getUnitType().equals(UnitTypes.CARTVIEW)) {
                 return ((CartView) o).getGuiCart();
             } else {
                 return ((UnloadingView) o).getGuiUnloading();
             }
         }).collect(Collectors.toList()));
-
-//        CartView cartView = (CartView) unitViews.get(unitViews.size()-6);
-//        CartView cv = new CartView(new Coords(sizeOfWarehouse.getRowCount() - 1, 0), informationText);
-//
-        //default
-//        CartRoute cr = new CartRoute();
-//        HashMap<Integer, Direction> directions = new HashMap<>();
-//        for (int i = 0; i < 10; i++) {
-//            directions.put(i, Direction.UP);
-//        }
-//        for (int i = 10; i < 20; i++) {
-//            directions.put(i, Direction.DOWN);
-//        }
-//        for (int i = 20; i < 30; i++) {
-//            directions.put(i, Direction.RIGHT);
-//        }
-//        for (int i = 30; i < 40; i++) {
-//            directions.put(i, Direction.LEFT);
-//        }
-//        cr.setPlannedPath(directions);
-//        cartView.getCart().setPlannedRoute(cr);
-//        unitViews.add(cv);
-//        guiWarehouse.getChildren().add(cv.getGuiCart());
-//
-//        cv = new CartView(new Coords(sizeOfWarehouse.getRowCount() - 1, sizeOfWarehouse.getColumnCount() - 1), informationText);
-//        cr = new CartRoute();
-//        directions = new HashMap<>();
-//        for (int i = 0; i < 10; i++) {
-//            directions.put(i, Direction.UP);
-//        }
-//        for (int i = 10; i < 20; i++) {
-//            directions.put(i, Direction.DOWN);
-//        }
-//        for (int i = 20; i < 40; i++) {
-//            directions.put(i, Direction.LEFT);
-//        }
-//        for (int i = 40; i < 60; i++) {
-//            directions.put(i, Direction.RIGHT);
-//        }
-//        cr.setPlannedPath(directions);
-//        cv.getCart().setPlannedRoute(cr);
-//        unitViews.add(cv);
-//        guiWarehouse.getChildren().add(cv.getGuiCart());
-//
-//        cv = new CartView(new Coords(0, 0), informationText);
-//        cv.getCart().setTransportedGoods(Collections.singletonList(new Goods(GoodsType.GITARA, 25)));
-//        cr = new CartRoute();
-//        directions = new HashMap<>();
-//        for (int i = 0; i < 10; i++) {
-//            directions.put(i, Direction.DOWN);
-//        }
-//        for (int i = 10; i < 20; i++) {
-//            directions.put(i, Direction.UP);
-//        }
-//        for (int i = 20; i < 40; i++) {
-//            directions.put(i, Direction.RIGHT);
-//        }
-//        for (int i = 40; i < 60; i++) {
-//            directions.put(i, Direction.LEFT);
-//        }
-//        cr.setPlannedPath(directions);
-//        cv.getCart().setPlannedRoute(cr);
-//        unitViews.add(cv);
-//        guiWarehouse.getChildren().add(cv.getGuiCart());
-//
-//        UnloadingView unloadingView = new UnloadingView(
-//                new Coords(sizeOfWarehouse.getRowCount()-1, sizeOfWarehouse.getColumnCount()-3), informationText);
-//
-//        unitViews.add(unloadingView);
-//        guiWarehouse.getChildren().add(unloadingView.getGuiUnloading());
     }
 
     /**
@@ -171,31 +103,6 @@ public class WarehouseView {
         return unitViews;
     }
 
-    public void setUnitViews(List<UnitView> unitViews) {
-        this.unitViews = unitViews;
-        guiWarehouse.getChildren().clear();
-        for (UnitView unitView : unitViews) {
-            switch (unitView.getUnitType()) {
-                case CARTVIEW:
-                    Rectangle guiCart = ((CartView) unitView).getGuiCart();
-                    guiWarehouse.getChildren().add(guiCart);
-                    break;
-                case SHELFVIEW:
-                    Rectangle guiShelf = ((ShelfView) unitView).getGuiShelf();
-                    guiWarehouse.getChildren().add(guiShelf);
-                    break;
-                case PATHVIEW:
-                    Rectangle guiPath = ((PathView) unitView).getGuiPath();
-                    guiWarehouse.getChildren().add(guiPath);
-                    break;
-                case UNLOADINGVIEW:
-                    Rectangle guiUnloading = ((UnloadingView) unitView).getGuiUnloading();
-                    guiWarehouse.getChildren().add(guiUnloading);
-                    break;
-            }
-        }
-    }
-
     public List<CartView> getCartViews() {
         List<CartView> carts = new ArrayList<>();
         for (UnitView unitView : unitViews) {
@@ -223,6 +130,7 @@ public class WarehouseView {
 
     /**
      * Gets PathView at specified coordinates
+     *
      * @param coords Coordinates
      * @return PathView
      */
@@ -236,7 +144,24 @@ public class WarehouseView {
     }
 
     /**
-     * Initialization of warehouse from file
+     * Gets ShelfView at specified coordinates
+     *
+     * @param coords Coordinates
+     * @return ShelfView
+     */
+    public ShelfView getShelfViewAtCoords(Coords coords) {
+        for (UnitView unitView : unitViews) {
+            if (unitView.getUnitPosition().equals(coords) && unitView instanceof ShelfView) {
+                return (ShelfView) unitView;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Parse initial_shelves_status.yaml file to list of shelf views
+     *
+     * @return List of shelf views present in that file
      */
     public List<ShelfView> parseShelfYaml() {
         List<ShelfView> shelfViews = new ArrayList<>();
@@ -276,7 +201,12 @@ public class WarehouseView {
         return shelfViews;
     }
 
-    public List<UnitView> parseUnitsYaml(){
+    /**
+     * Parse units.yaml file to list of unit views
+     *
+     * @return List of unit views present in that file
+     */
+    public List<UnitView> parseUnitsYaml() {
         List<UnitView> unitViews = new ArrayList<>();
         try {
             InputStream inputStream = new FileInputStream("data/units.yaml");
@@ -297,9 +227,9 @@ public class WarehouseView {
                             break;
                         default:
                             type = (String) unit.get(s1);
-                            switch(type){
+                            switch (type) {
                                 case "CART":
-                                    unitView = new CartView(new Coords(row,col),informationText);
+                                    unitView = new CartView(new Coords(row, col), informationText, this);
                                     break;
                                 case "UNLOADING":
                                     unitView = new UnloadingView(new Coords(row, col), informationText);
@@ -314,7 +244,12 @@ public class WarehouseView {
         return unitViews;
     }
 
-    public List<Order> parseOrdersYaml(){
+    /**
+     * Parse orders.yaml file
+     *
+     * @return List of orders present in that file
+     */
+    public List<Order> parseOrdersYaml() {
         List<Order> orders = new ArrayList<>();
         try {
             InputStream inputStream = new FileInputStream("data/orders.yaml");
@@ -333,7 +268,7 @@ public class WarehouseView {
                             break;
                         case "content":
                             content = (LinkedHashMap<String, Object>) unit.get(s1);
-                            for(String s2 : content.keySet()){
+                            for (String s2 : content.keySet()) {
                                 order.addGoodsToOrder(GoodsType.valueOf(s2), (Integer) content.get(s2));
                             }
                             break;
