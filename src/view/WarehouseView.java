@@ -113,6 +113,26 @@ public class WarehouseView {
         return carts;
     }
 
+    public List<PathView> getPathViews() {
+        List<PathView> paths = new ArrayList<>();
+        for (UnitView unitView : unitViews) {
+            if (unitView instanceof PathView) {
+                paths.add((PathView) unitView);
+            }
+        }
+        return paths;
+    }
+
+    public List<UnloadingView> getUnloadingViews(){
+        List<UnloadingView> unloadingViews = new ArrayList<>();
+        for (UnitView unitView : unitViews) {
+            if (unitView instanceof UnloadingView) {
+                unloadingViews.add((UnloadingView) unitView);
+            }
+        }
+        return unloadingViews;
+    }
+
     /**
      * Gets UnitView at specified coordinates
      *

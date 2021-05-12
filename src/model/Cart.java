@@ -68,6 +68,11 @@ public class Cart {
                         tt = new TranslateTransition(Duration.millis(clock), cartView.getGuiCart());
                         tt.setByY(-30);
                         warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
+                        System.out.println("u");
+                    } else {
+                        new Thread(() -> {
+                            this.getPathfinder().computePath();
+                        });
                     }
                     break;
                 case DOWN:
@@ -79,6 +84,11 @@ public class Cart {
                         tt = new TranslateTransition(Duration.millis(clock), cartView.getGuiCart());
                         tt.setByY(30);
                         warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
+                        System.out.println("d");
+                    } else {
+                        new Thread(() -> {
+                            this.getPathfinder().computePath();
+                        });
                     }
                     break;
                 case LEFT:
@@ -90,6 +100,11 @@ public class Cart {
                         tt = new TranslateTransition(Duration.millis(clock), cartView.getGuiCart());
                         tt.setByX(-30);
                         warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
+                        System.out.println("l");
+                    } else {
+                        new Thread(() -> {
+                            this.getPathfinder().computePath();
+                        });
                     }
                     break;
                 case RIGHT:
@@ -101,6 +116,11 @@ public class Cart {
                         tt = new TranslateTransition(Duration.millis(clock), cartView.getGuiCart());
                         tt.setByX(30);
                         warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
+                        System.out.println("r");
+                    } else {
+                        new Thread(() -> {
+                            this.getPathfinder().computePath();
+                        });
                     }
                     break;
                 case TAKEOUT:
@@ -124,7 +144,12 @@ public class Cart {
                                 shelfView.getShelf().takeOutGoods(goods.getGoodsType());
                             }
                         }
+                    } else {
+                        getTransportedGoods().clear();
                     }
+                    cartRoute.setStep(cartRoute.getStep()+1);
+                    getPathfinder().achievedStop();
+                    System.out.println("t");
                     break;
             }
             tt.play();
@@ -143,6 +168,9 @@ public class Cart {
                         cartView.setUnitPosition(new Coords(position.getRow() - 1, position.getColumn()));
                         cartRoute.setStep(cartRoute.getStep() + 1);
                         warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
+                        System.out.println("moved up");
+                    } else {
+                        this.getPathfinder().computePath();
                     }
                     break;
                 case DOWN:
@@ -152,6 +180,8 @@ public class Cart {
                         cartView.setUnitPosition(new Coords(position.getRow() + 1, position.getColumn()));
                         cartRoute.setStep(cartRoute.getStep() + 1);
                         warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
+                    } else {
+                        this.getPathfinder().computePath();
                     }
                     break;
                 case LEFT:
@@ -161,6 +191,8 @@ public class Cart {
                         cartView.setUnitPosition(new Coords(position.getRow(), position.getColumn() - 1));
                         cartRoute.setStep(cartRoute.getStep() + 1);
                         warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
+                    } else {
+                        this.getPathfinder().computePath();
                     }
                     break;
                 case RIGHT:
@@ -170,9 +202,36 @@ public class Cart {
                         cartView.setUnitPosition(new Coords(position.getRow(), position.getColumn() + 1));
                         cartRoute.setStep(cartRoute.getStep() + 1);
                         warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
+                    } else {
+                        this.getPathfinder().computePath();
                     }
                     break;
                 case TAKEOUT:
+                    if(warehouseView.getShelfViewAtCoords(position.oneLeft()) != null){
+                        ShelfView shelfView = warehouseView.getShelfViewAtCoords(position.oneLeft());
+                        for(Goods goods : new ArrayList<>(shelfView.getShelfContents())){
+                            if(cartView.getCart().getPathfinder().getGoodsTypes().contains(goods.getGoodsType())){
+                                this.addTransportedGoods(goods);
+                                this.getPathfinder().removeGoodsType(goods.getGoodsType());
+                                this.getPathfinder().removeShelfViewContainingGoods(shelfView);
+                                shelfView.getShelf().takeOutGoods(goods.getGoodsType());
+                            }
+                        }
+                    } else if(warehouseView.getShelfViewAtCoords(position.oneRight()) != null) {
+                        ShelfView shelfView = warehouseView.getShelfViewAtCoords(position.oneRight());
+                        for (Goods goods : new ArrayList<>(shelfView.getShelfContents())) {
+                            if (cartView.getCart().getPathfinder().getGoodsTypes().contains(goods.getGoodsType())) {
+                                this.addTransportedGoods(goods);
+                                this.getPathfinder().removeGoodsType(goods.getGoodsType());
+                                this.getPathfinder().removeShelfViewContainingGoods(shelfView);
+                                shelfView.getShelf().takeOutGoods(goods.getGoodsType());
+                            }
+                        }
+                    } else {
+                        getTransportedGoods().clear();
+                    }
+                    cartRoute.setStep(cartRoute.getStep()+1);
+                    System.out.println("t");
                     break;
             }
         }

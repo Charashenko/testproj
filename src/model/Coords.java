@@ -96,4 +96,12 @@ public class Coords {
     public Coords oneRight(){
         return new Coords(row, column+1);
     }
+
+    @Override
+    public String toString() {
+        return "Coords{" +
+                "row=" + row +
+                ", column=" + column +
+                '}';
+    }
 }

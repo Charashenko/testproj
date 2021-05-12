@@ -22,6 +22,8 @@ import view.WarehouseView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Main MainUI class
@@ -109,6 +111,7 @@ public class MainUI extends Application {
         Button configureButton = new Button("Configure");
         Button jumpButton = new Button("Jump");
         TextField jumpValue = new TextField("1");
+        Text currentOrder = new Text("[Current order]\n" + order.getOrderItemsAsString());
         jumpValue.setPrefWidth(30);
 
         runButton.setOnAction(actionEvent -> {
@@ -138,6 +141,7 @@ public class MainUI extends Application {
             warehouseTab.setContent(setupWarehouseTab(informationText));
             warehouseTab.getContent().setStyle(borderStyle);
             order = warehouseView.parseOrdersYaml().get(0);
+            currentOrder.setText("[Current order]\n" + order.getOrderItemsAsString());
         });
 
         jumpButton.setOnAction(actionEvent -> {
@@ -180,12 +184,15 @@ public class MainUI extends Application {
 
         informationText.setFont(new Font("", 18));
         informationText.setTextAlignment(TextAlignment.CENTER);
-        informationPanel.getChildren().addAll(buttonBox, configureBox, informationText);
+
+        currentOrder.setFont(new Font("", 18));
+        informationPanel.getChildren().addAll(buttonBox, configureBox, currentOrder, informationText);
         informationPanel.setMinWidth(400);
         informationPanel.setPadding(new Insets(20,2,2,2));
         informationPanel.setAlignment(Pos.TOP_CENTER);
         informationPanel.setSpacing(7);
 
+        AtomicBoolean selectedWarehouse = new AtomicBoolean(true);
         ordersTab.setOnSelectionChanged(event -> {
             runButton.setVisible(!runButton.isVisible());
             stopButton.setVisible(!stopButton.isVisible());
@@ -194,6 +201,13 @@ public class MainUI extends Application {
             configureBox.setVisible(!configureBox.isVisible());
             jumpButton.setVisible(!jumpButton.isVisible());
             jumpValue.setVisible(!jumpValue.isVisible());
+            currentOrder.setVisible(!currentOrder.isVisible());
+            selectedWarehouse.set(!selectedWarehouse.get());
+            currentOrder.setText("[Current order]\n" + order.getOrderItemsAsString());
+            if(!selectedWarehouse.get()) {
+                clock.setRunning(!clock.isRunning());
+                warehouseTab.setContent(setupWarehouseTab(informationText));
+            }
         });
 
         mainSection.getChildren().add(tabPane);
@@ -281,7 +295,6 @@ public class MainUI extends Application {
             confirmButton.setDisable(false);
             deleteButton.setDisable(false);
             slider.setDisable(false);
-
         });
 
         orderManipulationButtons.getChildren().addAll(addButton, removeButton, confirmButton, deleteButton);
@@ -304,9 +317,10 @@ public class MainUI extends Application {
             order.removeGoodsFromOrder(choiceBox.getValue(), Integer.parseInt(countLabel.getText()));
             currentOrder.setText(order.getOrderItemsAsString());
         });
-        confirmButton.setOnAction(actionEvent -> {
-            System.out.println("order confirmed");
-        });
+//        confirmButton.setOnAction(actionEvent -> {
+//            order.divideCurrentOrder(warehouseView);
+//            System.out.println("order confirmed");
+//        });
         deleteButton.setOnAction(actionEvent -> {
             order.clearOrder();
             currentOrder.setText(order.getOrderItemsAsString());
@@ -324,14 +338,16 @@ public class MainUI extends Application {
         new Thread(() -> { //cart movement thread
             try {
                 order.divideCurrentOrder(warehouseView);
-                while (true) {
+                for (CartView cv : warehouseView.getCartViews()) {
+                    cv.getCart().getPathfinder().computePath();
+                }
+                do {
                     for (CartView cv : warehouseView.getCartViews()) {
                         cv.getCart().getPathfinder().computePath();
                         cv.getCart().nextStep(clock.getClock() - clock.getClock() / 10, warehouseView);
                     }
                     Thread.sleep(clock.getClock());
-                    if (!clock.isRunning()) break;
-                }
+                } while (clock.isRunning());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

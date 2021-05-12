@@ -9,6 +9,7 @@ public class Node {
     private Node parentNode;
     private PathView currentNode;
     private Direction directionFromParent;
+    private boolean visited = false;
 
     public Node(PathView currentNode) {
         this.currentNode = currentNode;
@@ -53,5 +54,13 @@ public class Node {
 
     public void setDirectionFromParent(Direction directionFromParent) {
         this.directionFromParent = directionFromParent;
+    }
+
+    public boolean visited() {
+        return visited;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
     }
 }

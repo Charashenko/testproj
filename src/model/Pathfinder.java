@@ -2,10 +2,7 @@ package model;
 
 import view.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Pathfinder {
 
@@ -13,6 +10,8 @@ public class Pathfinder {
     private final CartView cartView;
     private List<ShelfView> shelfViewsContainingGoods = new ArrayList<>();
     private List<GoodsType> goodsTypes = new ArrayList<>();
+    private List<Coords> stops = new ArrayList<>();
+    private Coords nextStop;
 
     public Pathfinder(WarehouseView warehouseView, CartView cartView) {
         this.warehouseView = warehouseView;
@@ -24,245 +23,196 @@ public class Pathfinder {
         CartRoute cartRoute = cartView.getCart().getPlannedRoute();
         HashMap<Integer, Direction> directionHashMap = new HashMap<>();
         int count = 0;
-        Coords lastPos = cartView.getUnitPosition();
-        for (ShelfView shelfView : shelfViewsContainingGoods) {
-            if (warehouseView.getUnitViewAtCoords(
-                    new Coords(shelfView.getUnitPosition().getRow(), shelfView.getUnitPosition().getColumn() - 1))
-                    .getUnitType().equals(UnitTypes.PATHVIEW)) {
-                System.out.println(shelfView.getUnitPosition().getRow() + " " + (shelfView.getUnitPosition().getColumn() - 1));
-                for (Direction direction :
-                        computeRoute(lastPos, new Coords(shelfView.getUnitPosition().getRow(),
-                                shelfView.getUnitPosition().getColumn() - 1))) {
-                    directionHashMap.put(count++, direction);
-                }
-                System.out.println(computeRoute(lastPos, new Coords(shelfView.getUnitPosition().getRow(),
-                        shelfView.getUnitPosition().getColumn() - 1)));
-                lastPos = new Coords(shelfView.getUnitPosition().getRow(), shelfView.getUnitPosition().getColumn() - 1);
-            } else if (warehouseView.getUnitViewAtCoords(
-                    new Coords(shelfView.getUnitPosition().getRow(), shelfView.getUnitPosition().getColumn() + 1))
-                    .getUnitType().equals(UnitTypes.PATHVIEW)) {
-                System.out.println(shelfView.getUnitPosition().getRow() + " " + (shelfView.getUnitPosition().getColumn() + 1));
-                for (Direction direction :
-                        computeRoute(lastPos, new Coords(shelfView.getUnitPosition().getRow(),
-                                shelfView.getUnitPosition().getColumn() + 1))) {
-                    directionHashMap.put(count++, direction);
-                }
-                System.out.println(computeRoute(lastPos, new Coords(shelfView.getUnitPosition().getRow(),
-                        shelfView.getUnitPosition().getColumn() + 1)));
-                lastPos = new Coords(shelfView.getUnitPosition().getRow(), shelfView.getUnitPosition().getColumn() + 1);
+//        Coords lastPos = cartView.getUnitPosition();
+//        for (ShelfView shelfView : shelfViewsContainingGoods) {
+//            if (warehouseView.getUnitViewAtCoords(
+//                    new Coords(shelfView.getUnitPosition().getRow(), shelfView.getUnitPosition().getColumn() - 1))
+//                    .getUnitType().equals(UnitTypes.PATHVIEW)) {
+//                System.out.println(shelfView.getUnitPosition().getRow() + " " + (shelfView.getUnitPosition().getColumn() - 1));
+//                for (Direction direction :
+//                        computeRoute(lastPos, new Coords(shelfView.getUnitPosition().getRow(),
+//                                shelfView.getUnitPosition().getColumn() - 1))) {
+//                    directionHashMap.put(count++, direction);
+//                }
+//                lastPos = new Coords(shelfView.getUnitPosition().getRow(), shelfView.getUnitPosition().getColumn() - 1);
+//            } else if (warehouseView.getUnitViewAtCoords(
+//                    new Coords(shelfView.getUnitPosition().getRow(), shelfView.getUnitPosition().getColumn() + 1))
+//                    .getUnitType().equals(UnitTypes.PATHVIEW)) {
+//                System.out.println(shelfView.getUnitPosition().getRow() + " " + (shelfView.getUnitPosition().getColumn() + 1));
+//                for (Direction direction :
+//                        computeRoute(lastPos, new Coords(shelfView.getUnitPosition().getRow(),
+//                                shelfView.getUnitPosition().getColumn() + 1))) {
+//                    directionHashMap.put(count++, direction);
+//                }
+//                lastPos = new Coords(shelfView.getUnitPosition().getRow(), shelfView.getUnitPosition().getColumn() + 1);
+//            }
+//        }
+//        UnloadingView unloadingView = warehouseView.getUnloadingViews().get(new Random().nextInt(warehouseView.getUnloadingViews().size()-1));
+//        for (Direction direction :
+//                computeRoute(lastPos, unloadingView.getUnitPosition())) {
+//            directionHashMap.put(count++, direction);
+//        }
+//        System.out.println(cartView.getUnitPosition() + " " + homePosition);
+//        for (Direction direction :
+//                computeRoute(cartView.getUnitPosition(), homePosition)) {
+//            directionHashMap.put(count++, direction);
+//        }
+
+        Coords lastCoords = cartView.getUnitPosition();
+        for (Coords coords : stops){
+            for(Direction direction : computeRoute(lastCoords, coords)) {
+                directionHashMap.put(count++, direction);
             }
+            lastCoords = coords;
         }
         System.out.println(directionHashMap);
         cartRoute.setStep(0);
         cartRoute.setPlannedPath(directionHashMap);
         cartView.getCart().setPlannedRoute(cartRoute);
+
     }
 
     /**
-     * @param start
-     * @param end
+     * A* pathfinding algorithm
+     * @param start Starting coordinates
+     * @param end Ending coordinates
      */
     private List<Direction> computeRoute(Coords start, Coords end) {
         List<Direction> directions = new ArrayList<>();
-//        List<PathView> visitedPaths = new ArrayList<>();
-//        visitedPaths.add(warehouseView.getPathViewAtCoords(start));
-//        if(!isEnd(end, start, directions, visitedPaths)){
-//            directions.add(Direction.TAKEOUT);
-//        }
-//        Collections.reverse(directions);
-//        return directions;
+
         List<Node> openNodes = new ArrayList<>();
-        List<Node> closedNodes = new ArrayList<>();
-        Node startNode = new Node(warehouseView.getPathViewAtCoords(start));
-        startNode.setCoords(warehouseView.getPathViewAtCoords(start).getUnitPosition());
-        openNodes.add(startNode);
-        Node goalNode = new Node(warehouseView.getPathViewAtCoords(end));
+        List<Node> nodes = new ArrayList<>();
+
+        for (PathView pathView : warehouseView.getPathViews()) {
+            Node node = new Node(pathView);
+            nodes.add(node);
+        }
+
+        Node currentNode = null;
+        for (Node node : nodes) {
+            if (node.getCoords().equals(start)) {
+                currentNode = node;
+                currentNode.setF(Integer.MAX_VALUE-1);
+                currentNode.setVisited(true);
+                System.out.println("found matching start");
+                break;
+            }
+        }
+        boolean startOfAlg = true;
+        openNodes.add(currentNode);
         while (!openNodes.isEmpty()) {
             int lowestF = Integer.MAX_VALUE;
-            Node parentNode = new Node(startNode.getCurrentNode());
-            for (Node lowestNode : new ArrayList<>(openNodes)) {
-                if (lowestNode.getF() < lowestF) {
-                    lowestF = lowestNode.getF();
-                    parentNode = lowestNode;
+            for (Node node : openNodes) {
+                if (node.getF() <= lowestF) {
+                    lowestF = node.getF();
+                    currentNode = node;
                 }
             }
-
-            openNodes.remove(parentNode);
-            Coords parentPos = parentNode.getCoords();
-
-            if(warehouseView.getPathViewAtCoords(parentPos.oneUp()) != null){
-                Node upNode = new Node(warehouseView.getPathViewAtCoords(parentPos.oneUp()));
-                if (checkValidity(upNode, parentNode)) {
-                    upNode.setParentNode(parentNode);
-                    upNode.setDirectionFromParent(Direction.UP);
-                    if (upNode.getCoords().equals(end)) {
-                        while (upNode.getParentNode() != null) {
-                            directions.add(upNode.getDirectionFromParent());
-                            upNode = upNode.getParentNode();
+            if(startOfAlg){
+                startOfAlg = false;
+                openNodes.remove(currentNode);
+            }
+            Coords currentNodePosition = currentNode.getCoords();
+            if(currentNodePosition.equals(end)){
+                directions.add(Direction.TAKEOUT);
+                System.out.println(directions);
+                return directions;
+            }
+            if (getNodeAtPos(currentNodePosition.oneUp(), nodes) != null) {
+                if (!getNodeAtPos(currentNodePosition.oneUp(), nodes).visited()
+                        && !getNodeAtPos(currentNodePosition.oneUp(), nodes).getCurrentNode().getPath().isBlocked()) {
+                    Node northNode = getNodeAtPos(currentNodePosition.oneUp(), nodes);
+                    northNode.setF(computeG(northNode) + computeH(northNode.getCoords(), end));
+                    northNode.setParentNode(currentNode);
+                    northNode.setDirectionFromParent(Direction.UP);
+                    openNodes.add(northNode);
+                    northNode.setVisited(true);
+                    System.out.println(northNode.getCoords() + " " + end);
+                    if (northNode.getCoords().equals(end)) {
+                        directions.add(Direction.TAKEOUT);
+                        while (northNode.getParentNode() != null) {
+                            directions.add(northNode.getDirectionFromParent());
+                            northNode = northNode.getParentNode();
                         }
+                        Collections.reverse(directions);
+                        System.out.println(directions);
                         return directions;
-                    } else {
-                        upNode.setF(computeG(upNode) + computeH(upNode.getCoords(), end));
-                        for (Node node : new ArrayList<>(openNodes)) {
-                            if (node.getCoords().equals(upNode.getCoords())) {
-                                if(node.getF() < upNode.getF()){
-                                    break;
-                                }
-                            }
-                        }
-                        for (Node node : new ArrayList<>(closedNodes)) {
-                            if (node.getCoords().equals(upNode.getCoords())) {
-                                if(node.getF() > upNode.getF()){
-                                    openNodes.add(upNode);
-                                }
-                            }
-                        }
                     }
                 }
             }
-
-            if(warehouseView.getPathViewAtCoords(parentPos.oneDown()) != null){
-                Node downNode = new Node(warehouseView.getPathViewAtCoords(parentPos.oneDown()));
-                if (checkValidity(downNode, parentNode)) {
-                    downNode.setParentNode(parentNode);
-                    downNode.setDirectionFromParent(Direction.DOWN);
-                    if (downNode.getCoords().equals(end)) {
-                        while (downNode.getParentNode() != null) {
-                            directions.add(downNode.getDirectionFromParent());
-                            downNode = downNode.getParentNode();
+            if (getNodeAtPos(currentNodePosition.oneDown(), nodes) != null) {
+                if (!getNodeAtPos(currentNodePosition.oneDown(), nodes).visited()
+                        && !getNodeAtPos(currentNodePosition.oneDown(), nodes).getCurrentNode().getPath().isBlocked()) {
+                    Node southNode = getNodeAtPos(currentNodePosition.oneDown(), nodes);
+                    southNode.setF(computeG(southNode) + computeH(southNode.getCoords(), end));
+                    southNode.setParentNode(currentNode);
+                    southNode.setDirectionFromParent(Direction.DOWN);
+                    openNodes.add(southNode);
+                    southNode.setVisited(true);
+                    System.out.println(southNode.getCoords() + " " + end);
+                    if (southNode.getCoords().equals(end)) {
+                        directions.add(Direction.TAKEOUT);
+                        while (southNode.getParentNode() != null) {
+                            directions.add(southNode.getDirectionFromParent());
+                            southNode = southNode.getParentNode();
                         }
+                        Collections.reverse(directions);
+                        System.out.println(directions);
                         return directions;
-                    } else {
-                        downNode.setF(computeG(downNode) + computeH(downNode.getCoords(), end));
-                        for (Node node : new ArrayList<>(openNodes)) {
-                            if (node.getCoords().equals(downNode.getCoords())) {
-                                if(node.getF() < downNode.getF()){
-                                    break;
-                                }
-                            }
-                        }
-                        for (Node node : new ArrayList<>(closedNodes)) {
-                            if (node.getCoords().equals(downNode.getCoords())) {
-                                if(node.getF() > downNode.getF()){
-                                    openNodes.add(downNode);
-                                }
-                            }
-                        }
                     }
                 }
             }
-
-            if(warehouseView.getPathViewAtCoords(parentPos.oneLeft()) != null){
-                Node leftNode = new Node(warehouseView.getPathViewAtCoords(parentPos.oneLeft()));
-                if (checkValidity(leftNode, parentNode)) {
-                    leftNode.setParentNode(parentNode);
-                    leftNode.setDirectionFromParent(Direction.LEFT);
-                    if (leftNode.getCoords().equals(end)) {
-                        while (leftNode.getParentNode() != null) {
-                            directions.add(leftNode.getDirectionFromParent());
-                            leftNode = leftNode.getParentNode();
+            if (getNodeAtPos(currentNodePosition.oneLeft(), nodes) != null) {
+                if (!getNodeAtPos(currentNodePosition.oneLeft(), nodes).visited()
+                        && !getNodeAtPos(currentNodePosition.oneLeft(), nodes).getCurrentNode().getPath().isBlocked()) {
+                    Node westNode = getNodeAtPos(currentNodePosition.oneLeft(), nodes);
+                    westNode.setF(computeG(westNode) + computeH(westNode.getCoords(), end));
+                    westNode.setParentNode(currentNode);
+                    westNode.setDirectionFromParent(Direction.LEFT);
+                    openNodes.add(westNode);
+                    westNode.setVisited(true);
+                    System.out.println(westNode.getCoords() + " " + end);
+                    if (westNode.getCoords().equals(end)) {
+                        directions.add(Direction.TAKEOUT);
+                        while (westNode.getParentNode() != null) {
+                            directions.add(westNode.getDirectionFromParent());
+                            westNode = westNode.getParentNode();
                         }
+                        Collections.reverse(directions);
+                        System.out.println(directions);
                         return directions;
-                    } else {
-                        leftNode.setF(computeG(leftNode) + computeH(leftNode.getCoords(), end));
-                        for (Node node : new ArrayList<>(openNodes)) {
-                            if (node.getCoords().equals(leftNode.getCoords())) {
-                                if(node.getF() < leftNode.getF()){
-                                    break;
-                                }
-                            }
-                        }
-                        for (Node node : new ArrayList<>(closedNodes)) {
-                            if (node.getCoords().equals(leftNode.getCoords())) {
-                                if(node.getF() > leftNode.getF()){
-                                    openNodes.add(leftNode);
-                                }
-                            }
-                        }
                     }
                 }
             }
-
-            if(warehouseView.getPathViewAtCoords(parentPos.oneRight()) != null){
-                Node rightNode = new Node(warehouseView.getPathViewAtCoords(parentPos.oneRight()));
-                if (checkValidity(rightNode, parentNode)) {
-                    rightNode.setParentNode(parentNode);
-                    rightNode.setDirectionFromParent(Direction.RIGHT);
-                    if (rightNode.getCoords().equals(end)) {
-                        while (rightNode.getParentNode() != null) {
-                            directions.add(rightNode.getDirectionFromParent());
-                            rightNode = rightNode.getParentNode();
+            if (getNodeAtPos(currentNodePosition.oneRight(), nodes) != null) {
+                if (!getNodeAtPos(currentNodePosition.oneRight(), nodes).visited()
+                        && !getNodeAtPos(currentNodePosition.oneRight(), nodes).getCurrentNode().getPath().isBlocked()) {
+                    Node eastNode = getNodeAtPos(currentNodePosition.oneRight(), nodes);
+                    eastNode.setF(computeG(eastNode) + computeH(eastNode.getCoords(), end));
+                    eastNode.setParentNode(currentNode);
+                    eastNode.setDirectionFromParent(Direction.RIGHT);
+                    openNodes.add(eastNode);
+                    eastNode.setVisited(true);
+                    System.out.println(eastNode.getCoords() + " " + end);
+                    if (eastNode.getCoords().equals(end)) {
+                        directions.add(Direction.TAKEOUT);
+                        while (eastNode.getParentNode() != null) {
+                            directions.add(eastNode.getDirectionFromParent());
+                            eastNode = eastNode.getParentNode();
                         }
+                        Collections.reverse(directions);
+                        System.out.println(directions);
                         return directions;
-                    } else {
-                        rightNode.setF(computeG(rightNode) + computeH(rightNode.getCoords(), end));
-                        for (Node node : new ArrayList<>(openNodes)) {
-                            if (node.getCoords().equals(rightNode.getCoords())) {
-                                if(node.getF() < rightNode.getF()){
-                                    break;
-                                }
-                            }
-                        }
-                        for (Node node : new ArrayList<>(closedNodes)) {
-                            if (node.getCoords().equals(rightNode.getCoords())) {
-                                if(node.getF() > rightNode.getF()){
-                                    openNodes.add(rightNode);
-                                }
-                            }
-                        }
                     }
                 }
+            } else {
+                openNodes.remove(currentNode);
             }
-
-            openNodes.remove(parentNode);
-            closedNodes.add(parentNode);
         }
-        return null;
-    }
 
-    private boolean isEnd(Coords end, Coords currentCoords, List<Direction> directions, List<PathView> visitedPaths) {
-        if (end.equals(currentCoords)) {
-            directions.add(Direction.TAKEOUT);
-            return true;
-        } else {
-            if (warehouseView.getPathViewAtCoords(currentCoords.oneUp()) != null
-                    && !visitedPaths.contains(warehouseView.getPathViewAtCoords(currentCoords.oneUp()))
-                    && !warehouseView.getPathViewAtCoords(currentCoords.oneUp()).getPath().isBlocked()) {
-                visitedPaths.add(warehouseView.getPathViewAtCoords(currentCoords.oneUp()));
-                if (isEnd(end, currentCoords.oneUp(), directions, visitedPaths)) {
-                    directions.add(Direction.UP);
-                    return true;
-                }
-            }
-            if (warehouseView.getPathViewAtCoords(currentCoords.oneLeft()) != null
-                    && !visitedPaths.contains(warehouseView.getPathViewAtCoords(currentCoords.oneLeft()))
-                    && !warehouseView.getPathViewAtCoords(currentCoords.oneLeft()).getPath().isBlocked()) {
-                visitedPaths.add(warehouseView.getPathViewAtCoords(currentCoords.oneLeft()));
-                if (isEnd(end, currentCoords.oneLeft(), directions, visitedPaths)) {
-                    directions.add(Direction.LEFT);
-                    return true;
-                }
-            }
-            if (warehouseView.getPathViewAtCoords(currentCoords.oneDown()) != null
-                    && !visitedPaths.contains(warehouseView.getPathViewAtCoords(currentCoords.oneDown()))
-                    && !warehouseView.getPathViewAtCoords(currentCoords.oneDown()).getPath().isBlocked()) {
-                visitedPaths.add(warehouseView.getPathViewAtCoords(currentCoords.oneDown()));
-                if (isEnd(end, currentCoords.oneDown(), directions, visitedPaths)) {
-                    directions.add(Direction.DOWN);
-                    return true;
-                }
-            }
-            if (warehouseView.getPathViewAtCoords(currentCoords.oneRight()) != null
-                    && !visitedPaths.contains(warehouseView.getPathViewAtCoords(currentCoords.oneRight()))
-                    && !warehouseView.getPathViewAtCoords(currentCoords.oneRight()).getPath().isBlocked()) {
-                visitedPaths.add(warehouseView.getPathViewAtCoords(currentCoords.oneRight()));
-                if (isEnd(end, currentCoords.oneRight(), directions, visitedPaths)) {
-                    directions.add(Direction.RIGHT);
-                    return true;
-                }
-            }
-            return false;
-        }
+        Collections.reverse(directions);
+        System.out.println(directions);
+        return directions;
     }
 
     public void setShelfViewsContainingGoods(List<ShelfView> shelfViewsContainingGoods) {
@@ -308,5 +258,22 @@ public class Pathfinder {
         } else {
             return !node.getCurrentNode().getPath().isBlocked();
         }
+    }
+
+    public Node getNodeAtPos(Coords coords, List<Node> nodes) {
+        for (Node node : nodes) {
+            if (node.getCoords().equals(coords)) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+    public void setStops(List<Coords> stops){
+        this.stops = stops;
+    }
+
+    public void achievedStop(){
+        stops.remove(0);
     }
 }

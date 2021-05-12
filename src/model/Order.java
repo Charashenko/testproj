@@ -5,6 +5,7 @@ import view.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class Order {
 
@@ -107,8 +108,34 @@ public class Order {
                 }
             }
             System.out.println(goodsTypes);
-            cartView.getCart().getPathfinder().setShelfViewsContainingGoods(shelfViewsContainingGoods);
-            cartView.getCart().getPathfinder().setGoodsTypes(goodsTypes);
+
+            System.out.println(shelfViewsContainingGoods);
+            Coords homePosition = cartView.getCart().getHomePosition();
+
+            List<Coords> stops = new ArrayList<>();
+            for (ShelfView shelfView : shelfViewsContainingGoods) {
+                if (warehouseView.getUnitViewAtCoords(
+                        new Coords(shelfView.getUnitPosition().getRow(), shelfView.getUnitPosition().getColumn() - 1))
+                        .getUnitType().equals(UnitTypes.PATHVIEW)) {
+                    System.out.println(shelfView.getUnitPosition().getRow() + " " + (shelfView.getUnitPosition().getColumn() - 1));
+                    stops.add(shelfView.getUnitPosition().oneLeft());
+                } else if (warehouseView.getUnitViewAtCoords(
+                        new Coords(shelfView.getUnitPosition().getRow(), shelfView.getUnitPosition().getColumn() + 1))
+                        .getUnitType().equals(UnitTypes.PATHVIEW)) {
+                    System.out.println(shelfView.getUnitPosition().getRow() + " " + (shelfView.getUnitPosition().getColumn() + 1));
+                    stops.add(shelfView.getUnitPosition().oneRight());
+                }
+            }
+            if(!stops.isEmpty()) {
+                UnloadingView unloadingView = warehouseView.getUnloadingViews().get(new Random().nextInt(warehouseView.getUnloadingViews().size() - 1));
+                stops.add(unloadingView.getUnitPosition());
+                System.out.println(unloadingView.getUnitPosition() + " " + homePosition);
+                stops.add(cartView.getCart().getHomePosition());
+                System.out.println(stops);
+                cartView.getCart().getPathfinder().setStops(stops);
+                cartView.getCart().getPathfinder().setShelfViewsContainingGoods(shelfViewsContainingGoods);
+                cartView.getCart().getPathfinder().setGoodsTypes(goodsTypes);
+            }
         }
     }
 }

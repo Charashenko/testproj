@@ -11,6 +11,7 @@ import view.CartView;
 import view.PathView;
 
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 /**
  * Cart interaction event handler
@@ -44,8 +45,8 @@ public class OnCartInteraction {
             }
             r.setFill(Color.GOLDENROD);
             cv.getInformationText().setText(output);
-            Coords currentCoords = cv.getCart().getHomePosition();
-            for(Direction d: cv.getCart().getPlannedRoute().getPlannedPath().values()) {
+            Coords currentCoords = new Coords(cv.getUnitPosition().getRow(), cv.getUnitPosition().getColumn());
+            for(Direction d: cv.getCart().getPlannedRoute().getPlannedPath().values().stream().skip(1).collect(Collectors.toList())) {
                 switch (d) {
                     case UP:
                         currentCoords.decrementRow();
@@ -71,8 +72,8 @@ public class OnCartInteraction {
         } else if (event.getEventType().equals(MouseEvent.MOUSE_EXITED)) {
             r.setFill(cv.getCartColor());
             cv.getInformationText().setText("");
-            Coords currentCoords = cv.getCart().getHomePosition();
-            for(Direction d: cv.getCart().getPlannedRoute().getPlannedPath().values()) {
+            Coords currentCoords = new Coords(cv.getUnitPosition().getRow(), cv.getUnitPosition().getColumn());
+            for(Direction d: cv.getCart().getPlannedRoute().getPlannedPath().values().stream().skip(1).collect(Collectors.toList())) {
                 switch (d) {
                     case UP:
                         currentCoords.decrementRow();
