@@ -12,6 +12,7 @@ public class Cart {
     private CartView cartView;
     private CartRoute cartRoute;
     private List<Goods> transportedGoods;
+    private List<Direction> traveledPath = new ArrayList<>();
     private Pathfinder pathfinder;
 
     public Cart(CartView cv, WarehouseView warehouseView) {
@@ -67,7 +68,9 @@ public class Cart {
                         cartRoute.setStep(cartRoute.getStep() + 1);
                         tt = new TranslateTransition(Duration.millis(clock), cartView.getGuiCart());
                         tt.setByY(-30);
+                        traveledPath.add(Direction.UP);
                         warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
+                        warehouseView.getPathViewAtCoords(position).updatePathColor();
                         System.out.println("u");
                     } else {
                         new Thread(() -> {
@@ -83,8 +86,11 @@ public class Cart {
                         cartRoute.setStep(cartRoute.getStep() + 1);
                         tt = new TranslateTransition(Duration.millis(clock), cartView.getGuiCart());
                         tt.setByY(30);
+                        traveledPath.add(Direction.DOWN);
                         warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
+                        warehouseView.getPathViewAtCoords(position).updatePathColor();
                         System.out.println("d");
+
                     } else {
                         new Thread(() -> {
                             this.getPathfinder().computePath();
@@ -99,7 +105,9 @@ public class Cart {
                         cartRoute.setStep(cartRoute.getStep() + 1);
                         tt = new TranslateTransition(Duration.millis(clock), cartView.getGuiCart());
                         tt.setByX(-30);
+                        traveledPath.add(Direction.LEFT);
                         warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
+                        warehouseView.getPathViewAtCoords(position).updatePathColor();
                         System.out.println("l");
                     } else {
                         new Thread(() -> {
@@ -115,7 +123,9 @@ public class Cart {
                         cartRoute.setStep(cartRoute.getStep() + 1);
                         tt = new TranslateTransition(Duration.millis(clock), cartView.getGuiCart());
                         tt.setByX(30);
+                        traveledPath.add(Direction.RIGHT);
                         warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
+                        warehouseView.getPathViewAtCoords(position).updatePathColor();
                         System.out.println("r");
                     } else {
                         new Thread(() -> {
@@ -168,7 +178,6 @@ public class Cart {
                         cartView.setUnitPosition(new Coords(position.getRow() - 1, position.getColumn()));
                         cartRoute.setStep(cartRoute.getStep() + 1);
                         warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
-                        System.out.println("moved up");
                     } else {
                         this.getPathfinder().computePath();
                     }
@@ -231,7 +240,6 @@ public class Cart {
                         getTransportedGoods().clear();
                     }
                     cartRoute.setStep(cartRoute.getStep()+1);
-                    System.out.println("t");
                     break;
             }
         }
@@ -239,5 +247,9 @@ public class Cart {
 
     public Pathfinder getPathfinder() {
         return pathfinder;
+    }
+
+    public List<Direction> getTraveledPath(){
+        return traveledPath;
     }
 }

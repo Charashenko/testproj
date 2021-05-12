@@ -52,6 +52,7 @@ public enum GoodsType {
     BOTNIK,
     MOBIL2,
     MOBIL3,
-    MOBIL4
+    MOBIL4,
+    ROUTER
 
 }

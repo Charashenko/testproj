@@ -91,19 +91,21 @@ public class Order {
             for (UnitView unitView : warehouseView.getUnitViews()) {
                 if (unitView.getUnitType().equals(UnitTypes.SHELFVIEW)) {
                     ShelfView shelfView = (ShelfView) unitView;
-                    for (Goods goods : shelfView.getShelfContents()) {
-                        if (order.containsKey(goods.getGoodsType())) {
-                            shelfViewsContainingGoods.add(shelfView);
-                            goodsTypes.add(goods.getGoodsType());
-                            removeGoodsFromOrder(goods.getGoodsType(), 1);
-                            goodsCount++;
-                            if (goodsCount == 5) {
-                                break;
+                    if(!shelfViewsContainingGoods.contains(shelfView)){
+                        for (Goods goods : shelfView.getShelfContents()) {
+                            if (order.containsKey(goods.getGoodsType())) {
+                                shelfViewsContainingGoods.add(shelfView);
+                                goodsTypes.add(goods.getGoodsType());
+                                removeGoodsFromOrder(goods.getGoodsType(), 1);
+                                goodsCount++;
+                                if (goodsCount == 5) {
+                                    break;
+                                }
                             }
                         }
-                    }
-                    if (goodsCount == 5) {
-                        break;
+                        if (goodsCount == 5) {
+                            break;
+                        }
                     }
                 }
             }

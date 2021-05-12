@@ -96,6 +96,30 @@ public class OnCartInteraction {
                     pathView.updatePathColor();
                 }
             }
+            currentCoords = new Coords(cv.getCart().getHomePosition().getRow(), cv.getCart().getHomePosition().getColumn());
+            for(Direction d : cv.getCart().getTraveledPath()){
+                switch (d) {
+                    case UP:
+                        currentCoords.decrementRow();
+                        break;
+                    case DOWN:
+                        currentCoords.incrementRow();
+                        break;
+                    case LEFT:
+                        currentCoords.decrementColumn();
+                        break;
+                    case RIGHT:
+                        currentCoords.incrementColumn();
+                        break;
+                    case TAKEOUT:
+                        break;
+                }
+                PathView pathView = MainUI.getWarehouseView().getPathViewAtCoords(currentCoords);
+                if (pathView != null) {
+                    pathView.setShowingCartRoute(false);
+                    pathView.updatePathColor();
+                }
+            }
         }
     }
 

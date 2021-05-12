@@ -205,8 +205,13 @@ public class MainUI extends Application {
             selectedWarehouse.set(!selectedWarehouse.get());
             currentOrder.setText("[Current order]\n" + order.getOrderItemsAsString());
             if(!selectedWarehouse.get()) {
+                simulationIndicator.setVisible(false);
+                resetButton.setDisable(true);
+                runButton.setDisable(false);
+                stopButton.setDisable(true);
                 clock.setRunning(!clock.isRunning());
                 warehouseTab.setContent(setupWarehouseTab(informationText));
+                warehouseTab.getContent().setStyle(borderStyle);
             }
         });
 
@@ -268,36 +273,34 @@ public class MainUI extends Application {
             countLabel.setText(String.valueOf(Integer.parseInt(countLabel.getText())+1));
             slider.setValue(Integer.parseInt(countLabel.getText()));
         });
+
         minus.setOnAction(actionEvent -> {
             if(Integer.parseInt(countLabel.getText())-1 >= 1){
                 countLabel.setText(String.valueOf(Integer.parseInt(countLabel.getText())-1));
                 slider.setValue(Integer.parseInt(countLabel.getText()));
             }
         });
+
         ordersControl.getChildren().addAll(choiceBox, plus, minus, slider, countLabel);
         HBox orderManipulationButtons = new HBox();
         orderManipulationButtons.setSpacing(10);
         orderManipulationButtons.setPadding(new Insets(0,0,10,20));
         Button addButton = new Button("Add to order");
         Button removeButton = new Button("Remove from order");
-        Button confirmButton = new Button("Confirm current order");
         Button deleteButton = new Button("Delete current order");
         addButton.setDisable(true);
         removeButton.setDisable(true);
-        confirmButton.setDisable(true);
-        deleteButton.setDisable(true);
 
         choiceBox.setOnAction(actionEvent -> {
             plus.setDisable(false);
             minus.setDisable(false);
             addButton.setDisable(false);
             removeButton.setDisable(false);
-            confirmButton.setDisable(false);
             deleteButton.setDisable(false);
             slider.setDisable(false);
         });
 
-        orderManipulationButtons.getChildren().addAll(addButton, removeButton, confirmButton, deleteButton);
+        orderManipulationButtons.getChildren().addAll(addButton, removeButton, deleteButton);
 
         VBox currentOrderTextBox = new VBox();
         currentOrderTextBox.setPadding(new Insets(0,0,10,20));
@@ -317,10 +320,7 @@ public class MainUI extends Application {
             order.removeGoodsFromOrder(choiceBox.getValue(), Integer.parseInt(countLabel.getText()));
             currentOrder.setText(order.getOrderItemsAsString());
         });
-//        confirmButton.setOnAction(actionEvent -> {
-//            order.divideCurrentOrder(warehouseView);
-//            System.out.println("order confirmed");
-//        });
+
         deleteButton.setOnAction(actionEvent -> {
             order.clearOrder();
             currentOrder.setText(order.getOrderItemsAsString());
