@@ -76,7 +76,9 @@ public class MainUI extends Application {
         MenuBar menuBar = new MenuBar();
         Menu fileMenu = new Menu("File");
         MenuItem importOrderItem = new MenuItem("Import order file");
-        importOrderItem.setOnAction(actionEvent -> new OnImportOrderFile().handle(actionEvent));
+        importOrderItem.setOnAction(actionEvent -> {
+            new OnImportOrderFile().handle(actionEvent);
+        });
         MenuItem showAppAboutItem = new MenuItem("About");
         showAppAboutItem.setOnAction(actionEvent -> new OnShowAppAbout().handle(actionEvent));
         MenuItem exitItem = new MenuItem("Exit");
@@ -338,9 +340,6 @@ public class MainUI extends Application {
         new Thread(() -> { //cart movement thread
             try {
                 order.divideCurrentOrder(warehouseView);
-                for (CartView cv : warehouseView.getCartViews()) {
-                    cv.getCart().getPathfinder().computePath();
-                }
                 do {
                     for (CartView cv : warehouseView.getCartViews()) {
                         cv.getCart().getPathfinder().computePath();
@@ -354,6 +353,10 @@ public class MainUI extends Application {
         }).start();
     }
 
+    /**
+     * Jumps forward in time based on specified number
+     * @param jumpValue Number of times to jump
+     */
     public static void jumpNumberOfPoints(int jumpValue){
         new Thread(() -> {
             order.divideCurrentOrder(warehouseView);
@@ -369,6 +372,10 @@ public class MainUI extends Application {
         }).start();
     }
 
+    /**
+     * Gets warehouse view
+     * @return WarehouseView object
+     */
     public static WarehouseView getWarehouseView() {
         return warehouseView;
     }

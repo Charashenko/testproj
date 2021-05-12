@@ -11,7 +11,6 @@ public class Pathfinder {
     private List<ShelfView> shelfViewsContainingGoods = new ArrayList<>();
     private List<GoodsType> goodsTypes = new ArrayList<>();
     private List<Coords> stops = new ArrayList<>();
-    private Coords nextStop;
 
     public Pathfinder(WarehouseView warehouseView, CartView cartView) {
         this.warehouseView = warehouseView;
@@ -19,44 +18,9 @@ public class Pathfinder {
     }
 
     public void computePath() {
-        Coords homePosition = cartView.getCart().getHomePosition();
         CartRoute cartRoute = cartView.getCart().getPlannedRoute();
         HashMap<Integer, Direction> directionHashMap = new HashMap<>();
         int count = 0;
-//        Coords lastPos = cartView.getUnitPosition();
-//        for (ShelfView shelfView : shelfViewsContainingGoods) {
-//            if (warehouseView.getUnitViewAtCoords(
-//                    new Coords(shelfView.getUnitPosition().getRow(), shelfView.getUnitPosition().getColumn() - 1))
-//                    .getUnitType().equals(UnitTypes.PATHVIEW)) {
-//                System.out.println(shelfView.getUnitPosition().getRow() + " " + (shelfView.getUnitPosition().getColumn() - 1));
-//                for (Direction direction :
-//                        computeRoute(lastPos, new Coords(shelfView.getUnitPosition().getRow(),
-//                                shelfView.getUnitPosition().getColumn() - 1))) {
-//                    directionHashMap.put(count++, direction);
-//                }
-//                lastPos = new Coords(shelfView.getUnitPosition().getRow(), shelfView.getUnitPosition().getColumn() - 1);
-//            } else if (warehouseView.getUnitViewAtCoords(
-//                    new Coords(shelfView.getUnitPosition().getRow(), shelfView.getUnitPosition().getColumn() + 1))
-//                    .getUnitType().equals(UnitTypes.PATHVIEW)) {
-//                System.out.println(shelfView.getUnitPosition().getRow() + " " + (shelfView.getUnitPosition().getColumn() + 1));
-//                for (Direction direction :
-//                        computeRoute(lastPos, new Coords(shelfView.getUnitPosition().getRow(),
-//                                shelfView.getUnitPosition().getColumn() + 1))) {
-//                    directionHashMap.put(count++, direction);
-//                }
-//                lastPos = new Coords(shelfView.getUnitPosition().getRow(), shelfView.getUnitPosition().getColumn() + 1);
-//            }
-//        }
-//        UnloadingView unloadingView = warehouseView.getUnloadingViews().get(new Random().nextInt(warehouseView.getUnloadingViews().size()-1));
-//        for (Direction direction :
-//                computeRoute(lastPos, unloadingView.getUnitPosition())) {
-//            directionHashMap.put(count++, direction);
-//        }
-//        System.out.println(cartView.getUnitPosition() + " " + homePosition);
-//        for (Direction direction :
-//                computeRoute(cartView.getUnitPosition(), homePosition)) {
-//            directionHashMap.put(count++, direction);
-//        }
 
         Coords lastCoords = cartView.getUnitPosition();
         for (Coords coords : stops){
@@ -65,11 +29,9 @@ public class Pathfinder {
             }
             lastCoords = coords;
         }
-        System.out.println(directionHashMap);
         cartRoute.setStep(0);
         cartRoute.setPlannedPath(directionHashMap);
         cartView.getCart().setPlannedRoute(cartRoute);
-
     }
 
     /**
@@ -94,7 +56,6 @@ public class Pathfinder {
                 currentNode = node;
                 currentNode.setF(Integer.MAX_VALUE-1);
                 currentNode.setVisited(true);
-                System.out.println("found matching start");
                 break;
             }
         }
@@ -103,7 +64,7 @@ public class Pathfinder {
         while (!openNodes.isEmpty()) {
             int lowestF = Integer.MAX_VALUE;
             for (Node node : openNodes) {
-                if (node.getF() <= lowestF) {
+                if (node.getF() < lowestF) {
                     lowestF = node.getF();
                     currentNode = node;
                 }
@@ -115,7 +76,6 @@ public class Pathfinder {
             Coords currentNodePosition = currentNode.getCoords();
             if(currentNodePosition.equals(end)){
                 directions.add(Direction.TAKEOUT);
-                System.out.println(directions);
                 return directions;
             }
             if (getNodeAtPos(currentNodePosition.oneUp(), nodes) != null) {
@@ -127,7 +87,6 @@ public class Pathfinder {
                     northNode.setDirectionFromParent(Direction.UP);
                     openNodes.add(northNode);
                     northNode.setVisited(true);
-                    System.out.println(northNode.getCoords() + " " + end);
                     if (northNode.getCoords().equals(end)) {
                         directions.add(Direction.TAKEOUT);
                         while (northNode.getParentNode() != null) {
@@ -135,7 +94,6 @@ public class Pathfinder {
                             northNode = northNode.getParentNode();
                         }
                         Collections.reverse(directions);
-                        System.out.println(directions);
                         return directions;
                     }
                 }
@@ -149,7 +107,6 @@ public class Pathfinder {
                     southNode.setDirectionFromParent(Direction.DOWN);
                     openNodes.add(southNode);
                     southNode.setVisited(true);
-                    System.out.println(southNode.getCoords() + " " + end);
                     if (southNode.getCoords().equals(end)) {
                         directions.add(Direction.TAKEOUT);
                         while (southNode.getParentNode() != null) {
@@ -157,7 +114,6 @@ public class Pathfinder {
                             southNode = southNode.getParentNode();
                         }
                         Collections.reverse(directions);
-                        System.out.println(directions);
                         return directions;
                     }
                 }
@@ -171,7 +127,6 @@ public class Pathfinder {
                     westNode.setDirectionFromParent(Direction.LEFT);
                     openNodes.add(westNode);
                     westNode.setVisited(true);
-                    System.out.println(westNode.getCoords() + " " + end);
                     if (westNode.getCoords().equals(end)) {
                         directions.add(Direction.TAKEOUT);
                         while (westNode.getParentNode() != null) {
@@ -179,7 +134,6 @@ public class Pathfinder {
                             westNode = westNode.getParentNode();
                         }
                         Collections.reverse(directions);
-                        System.out.println(directions);
                         return directions;
                     }
                 }
@@ -193,7 +147,6 @@ public class Pathfinder {
                     eastNode.setDirectionFromParent(Direction.RIGHT);
                     openNodes.add(eastNode);
                     eastNode.setVisited(true);
-                    System.out.println(eastNode.getCoords() + " " + end);
                     if (eastNode.getCoords().equals(end)) {
                         directions.add(Direction.TAKEOUT);
                         while (eastNode.getParentNode() != null) {
@@ -201,26 +154,18 @@ public class Pathfinder {
                             eastNode = eastNode.getParentNode();
                         }
                         Collections.reverse(directions);
-                        System.out.println(directions);
                         return directions;
                     }
                 }
-            } else {
-                openNodes.remove(currentNode);
             }
+            openNodes.remove(currentNode);
         }
-
-        Collections.reverse(directions);
-        System.out.println(directions);
+        directions.add(Direction.WAIT);
         return directions;
     }
 
     public void setShelfViewsContainingGoods(List<ShelfView> shelfViewsContainingGoods) {
         this.shelfViewsContainingGoods = shelfViewsContainingGoods;
-    }
-
-    public List<ShelfView> getShelfViewsContainingGoods() {
-        return shelfViewsContainingGoods;
     }
 
     public List<GoodsType> getGoodsTypes() {
@@ -239,6 +184,12 @@ public class Pathfinder {
         this.shelfViewsContainingGoods.remove(shelfView);
     }
 
+    /**
+     * Compute heuristics
+     * @param currentNode Coordinates of current node
+     * @param goalNode Coordinates of goal node
+     * @return Answer
+     */
     public int computeH(Coords currentNode, Coords goalNode) {
         return Math.abs(currentNode.getRow() - goalNode.getRow()) + Math.abs(currentNode.getColumn() - goalNode.getColumn());
     }
@@ -250,14 +201,6 @@ public class Pathfinder {
             count++;
         }
         return count;
-    }
-
-    public boolean checkValidity(Node node, Node parentNode) {
-        if (node == null || node.equals(parentNode)) {
-            return false;
-        } else {
-            return !node.getCurrentNode().getPath().isBlocked();
-        }
     }
 
     public Node getNodeAtPos(Coords coords, List<Node> nodes) {

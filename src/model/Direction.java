@@ -6,5 +6,6 @@ public enum Direction {
     DOWN,
     LEFT,
     RIGHT,
-    TAKEOUT
+    TAKEOUT,
+    WAIT
 }

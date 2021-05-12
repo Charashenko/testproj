@@ -71,7 +71,6 @@ public class Cart {
                         traveledPath.add(Direction.UP);
                         warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
                         warehouseView.getPathViewAtCoords(position).updatePathColor();
-                        System.out.println("u");
                     } else {
                         new Thread(() -> {
                             this.getPathfinder().computePath();
@@ -89,8 +88,6 @@ public class Cart {
                         traveledPath.add(Direction.DOWN);
                         warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
                         warehouseView.getPathViewAtCoords(position).updatePathColor();
-                        System.out.println("d");
-
                     } else {
                         new Thread(() -> {
                             this.getPathfinder().computePath();
@@ -108,7 +105,6 @@ public class Cart {
                         traveledPath.add(Direction.LEFT);
                         warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
                         warehouseView.getPathViewAtCoords(position).updatePathColor();
-                        System.out.println("l");
                     } else {
                         new Thread(() -> {
                             this.getPathfinder().computePath();
@@ -126,7 +122,6 @@ public class Cart {
                         traveledPath.add(Direction.RIGHT);
                         warehouseView.getPathViewAtCoords(position).getPath().setHasCart(false);
                         warehouseView.getPathViewAtCoords(position).updatePathColor();
-                        System.out.println("r");
                     } else {
                         new Thread(() -> {
                             this.getPathfinder().computePath();
@@ -159,7 +154,8 @@ public class Cart {
                     }
                     cartRoute.setStep(cartRoute.getStep()+1);
                     getPathfinder().achievedStop();
-                    System.out.println("t");
+                    break;
+                case WAIT:
                     break;
             }
             tt.play();
@@ -240,6 +236,9 @@ public class Cart {
                         getTransportedGoods().clear();
                     }
                     cartRoute.setStep(cartRoute.getStep()+1);
+                    getPathfinder().achievedStop();
+                    break;
+                case WAIT:
                     break;
             }
         }

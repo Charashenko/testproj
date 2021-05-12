@@ -87,7 +87,7 @@ public class OnCartInteraction {
                     case RIGHT:
                         currentCoords.incrementColumn();
                         break;
-                    case TAKEOUT:
+                    default:
                         break;
                 }
                 PathView pathView = MainUI.getWarehouseView().getPathViewAtCoords(currentCoords);
@@ -111,7 +111,7 @@ public class OnCartInteraction {
                     case RIGHT:
                         currentCoords.incrementColumn();
                         break;
-                    case TAKEOUT:
+                    default:
                         break;
                 }
                 PathView pathView = MainUI.getWarehouseView().getPathViewAtCoords(currentCoords);
