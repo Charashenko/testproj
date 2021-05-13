@@ -17,6 +17,9 @@ public class Pathfinder {
         this.cartView = cartView;
     }
 
+    /**
+     *
+     */
     public void computePath() {
         CartRoute cartRoute = cartView.getCart().getPlannedRoute();
         HashMap<Integer, Direction> directionHashMap = new HashMap<>();

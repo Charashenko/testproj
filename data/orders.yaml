@@ -9,8 +9,4 @@ order1:
     MYS: 3
     MONITOR: 3
     VEDRO: 3
-
-order2:
-  id: 2
-  content:
-    SRUBOVAK: 1
+    ROUTER: 2

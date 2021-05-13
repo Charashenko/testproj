@@ -16,13 +16,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import model.*;
+import model.Clock;
+import model.GoodsType;
+import model.Order;
 import view.CartView;
 import view.WarehouseView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -33,12 +33,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class MainUI extends Application {
 
-    private static Clock clock = new Clock(300);
+    private static Clock clock = new Clock(300); // default value
     private static final Text informationText = new Text();
     private static WarehouseView warehouseView;
-    private static StartPoint startPoint;
     private static Order order;
-    private static Pathfinder pathfinder;
 
     public static void main(String[] args) {
         launch(args);
@@ -77,7 +75,7 @@ public class MainUI extends Application {
         Menu fileMenu = new Menu("File");
         MenuItem importOrderItem = new MenuItem("Import order file");
         importOrderItem.setOnAction(actionEvent -> {
-            new OnImportOrderFile().handle(actionEvent);
+            new OnImportOrderFile().handle(actionEvent, warehouseView, order);
         });
         MenuItem showAppAboutItem = new MenuItem("About");
         showAppAboutItem.setOnAction(actionEvent -> new OnShowAppAbout().handle(actionEvent));
@@ -172,14 +170,14 @@ public class MainUI extends Application {
 
         configureButton.setOnAction(mouseEvent -> {
             try {
-                if(Integer.parseInt(newClock.getText()) >= 100) {
+                if (Integer.parseInt(newClock.getText()) >= 100) {
                     clock.setClock(Integer.parseInt(newClock.getText()));
                     currentClock.setText(newClock.getText());
                 } else {
                     clock.setClock(100);
                     currentClock.setText("100");
                 }
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 mouseEvent.consume();
             }
         });
@@ -190,7 +188,7 @@ public class MainUI extends Application {
         currentOrder.setFont(new Font("", 18));
         informationPanel.getChildren().addAll(buttonBox, configureBox, currentOrder, informationText);
         informationPanel.setMinWidth(400);
-        informationPanel.setPadding(new Insets(20,2,2,2));
+        informationPanel.setPadding(new Insets(20, 2, 2, 2));
         informationPanel.setAlignment(Pos.TOP_CENTER);
         informationPanel.setSpacing(7);
 
@@ -206,7 +204,7 @@ public class MainUI extends Application {
             currentOrder.setVisible(!currentOrder.isVisible());
             selectedWarehouse.set(!selectedWarehouse.get());
             currentOrder.setText("[Current order]\n" + order.getOrderItemsAsString());
-            if(!selectedWarehouse.get()) {
+            if (!selectedWarehouse.get()) {
                 simulationIndicator.setVisible(false);
                 resetButton.setDisable(true);
                 runButton.setDisable(false);
@@ -214,6 +212,7 @@ public class MainUI extends Application {
                 clock.setRunning(!clock.isRunning());
                 warehouseTab.setContent(setupWarehouseTab(informationText));
                 warehouseTab.getContent().setStyle(borderStyle);
+
             }
         });
 
@@ -233,7 +232,6 @@ public class MainUI extends Application {
         ZoomableScrollPane zoomablePane = new ZoomableScrollPane();
         zoomablePane.setPrefSize(1920, 1080);
         warehouseView = new WarehouseView(informationText);
-        startPoint = new StartPoint(new ArrayList<>(warehouseView.getUnitViews()));
         zoomablePane.addContent(warehouseView.getGuiWarehouse());
         return zoomablePane;
     }
@@ -245,10 +243,10 @@ public class MainUI extends Application {
      */
     public static Node setupOrdersTab() {
         VBox ordersVBox = new VBox();
-        ordersVBox.setPrefSize(1920,1080);
+        ordersVBox.setPrefSize(1920, 1080);
         ordersVBox.setSpacing(5);
         HBox ordersControl = new HBox();
-        ordersControl.setPadding(new Insets(20,0,10,20));
+        ordersControl.setPadding(new Insets(20, 0, 10, 20));
         ordersControl.setSpacing(5);
         ChoiceBox<GoodsType> choiceBox = new ChoiceBox<>();
         choiceBox.getItems().addAll(Arrays.asList(GoodsType.values()));
@@ -272,13 +270,13 @@ public class MainUI extends Application {
         });
 
         plus.setOnAction(actionEvent -> {
-            countLabel.setText(String.valueOf(Integer.parseInt(countLabel.getText())+1));
+            countLabel.setText(String.valueOf(Integer.parseInt(countLabel.getText()) + 1));
             slider.setValue(Integer.parseInt(countLabel.getText()));
         });
 
         minus.setOnAction(actionEvent -> {
-            if(Integer.parseInt(countLabel.getText())-1 >= 1){
-                countLabel.setText(String.valueOf(Integer.parseInt(countLabel.getText())-1));
+            if (Integer.parseInt(countLabel.getText()) - 1 >= 1) {
+                countLabel.setText(String.valueOf(Integer.parseInt(countLabel.getText()) - 1));
                 slider.setValue(Integer.parseInt(countLabel.getText()));
             }
         });
@@ -286,7 +284,7 @@ public class MainUI extends Application {
         ordersControl.getChildren().addAll(choiceBox, plus, minus, slider, countLabel);
         HBox orderManipulationButtons = new HBox();
         orderManipulationButtons.setSpacing(10);
-        orderManipulationButtons.setPadding(new Insets(0,0,10,20));
+        orderManipulationButtons.setPadding(new Insets(0, 0, 10, 20));
         Button addButton = new Button("Add to order");
         Button removeButton = new Button("Remove from order");
         Button deleteButton = new Button("Delete current order");
@@ -305,7 +303,7 @@ public class MainUI extends Application {
         orderManipulationButtons.getChildren().addAll(addButton, removeButton, deleteButton);
 
         VBox currentOrderTextBox = new VBox();
-        currentOrderTextBox.setPadding(new Insets(0,0,10,20));
+        currentOrderTextBox.setPadding(new Insets(0, 0, 10, 20));
         Label currentOrderLabel = new Label("Current order:");
         currentOrderLabel.setFont(new Font(20));
         Text currentOrder = new Text();
@@ -355,9 +353,10 @@ public class MainUI extends Application {
 
     /**
      * Jumps forward in time based on specified number
+     *
      * @param jumpValue Number of times to jump
      */
-    public static void jumpNumberOfPoints(int jumpValue){
+    public static void jumpNumberOfPoints(int jumpValue) {
         new Thread(() -> {
             order.divideCurrentOrder(warehouseView);
             for (CartView cv : warehouseView.getCartViews()) {
@@ -374,6 +373,7 @@ public class MainUI extends Application {
 
     /**
      * Gets warehouse view
+     *
      * @return WarehouseView object
      */
     public static WarehouseView getWarehouseView() {
